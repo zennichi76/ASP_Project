@@ -35,9 +35,14 @@
             font-family: monospace;
             font-size: 3em;
         }
-        #LoginBtn{
+        #LoginBtn, #RegistrationBtn{
             margin-top: 25px;
         }
+        a:link, a:visited {
+            color: white;
+            text-decoration: none;
+            cursor: default;
+}
     </style>
 </head>
 <body>
@@ -52,6 +57,7 @@
             <label for="inputPassword" class="sr-only">Password</label>
             <asp:TextBox ID="password_tb" runat="server" placeholder="Password" required="required" CssClass="form-control" TextMode="Password"></asp:TextBox>          
             <asp:Button ID="LoginBtn" CssClass="btn btn-primary" runat="server" Text="Sign in" OnClick="LoginBtn_Click" />
+            <button id="RegistrationBtn" class="btn btn-danger"><a href="Registration.aspx">Register</a></button>
         </div>
     </form>
     <script src="js/popper.min.js"></script>

@@ -303,6 +303,7 @@
     <Content Include="PendingConsentForms.aspx" />
     <Content Include="Profile.aspx" />
     <Content Include="PurchaseHistory.aspx" />
+    <Content Include="Registration.aspx" />
     <Content Include="Shopping Cart.aspx" />
     <Content Include="SiteMaster.Master">
       <BrowseToURL>~/SiteMaster.Master</BrowseToURL>
@@ -461,6 +462,13 @@
     </Compile>
     <Compile Include="PurchaseHistory.aspx.designer.cs">
       <DependentUpon>PurchaseHistory.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Registration.aspx.cs">
+      <DependentUpon>Registration.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Registration.aspx.designer.cs">
+      <DependentUpon>Registration.aspx</DependentUpon>
     </Compile>
     <Compile Include="Shopping Cart.aspx.cs">
       <DependentUpon>Shopping Cart.aspx</DependentUpon>
