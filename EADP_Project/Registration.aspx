@@ -13,6 +13,8 @@
                 <div class="card">
                     <div class="card-header"><h4>Registration</h4></div>
                     <div class="card-body">
+                        Test Content
+                        Only commit those files you have changed ok?
                     </div>
                 </div>
             </div>
