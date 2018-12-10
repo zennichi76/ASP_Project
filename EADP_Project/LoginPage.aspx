@@ -57,7 +57,8 @@
             <label for="inputPassword" class="sr-only">Password</label>
             <asp:TextBox ID="password_tb" runat="server" placeholder="Password" required="required" CssClass="form-control" TextMode="Password"></asp:TextBox>          
             <asp:Button ID="LoginBtn" CssClass="btn btn-primary" runat="server" Text="Sign in" OnClick="LoginBtn_Click" />
-            <button id="RegistrationBtn" class="btn btn-danger"><a href="Registration.aspx">Register</a></button>
+            <asp:Button ID="RegistrationBtn" CssClass="btn btn-danger" runat="server" Text="Register" OnClick="RegisterBtn_Click" CausesValidation="False" UseSubmitBehavior="False" />
+          
         </div>
     </form>
     <script src="js/popper.min.js"></script>

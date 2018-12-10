@@ -1,7 +1,12 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/SiteMaster.Master" AutoEventWireup="true" CodeBehind="Registration.aspx.cs" Inherits="EADP_Project.Registration" %>
-<asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
-</asp:Content>
-<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
+﻿<%@ Page Title="" Language="C#" AutoEventWireup="true" CodeBehind="Registration.aspx.cs" Inherits="EADP_Project.Registration" %>
+<head>
+
+    <title>
+
+    </title>
+    <link href="css/bootstrap.min.css" rel="stylesheet" />
+</head>
+<body>
     <form id="form1" runat="server">
         <div class="container">
             <div class="col-lg-12" style="margin-top:25px">
@@ -13,5 +18,5 @@
             </div>
         </div>
     </form>
+    </body>
 
-</asp:Content>

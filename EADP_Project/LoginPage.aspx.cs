@@ -37,5 +37,10 @@ namespace EADP_Project
 
             }
         }
+
+        protected void RegisterBtn_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("Registration.aspx");
+        }
     }
 }
