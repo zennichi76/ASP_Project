@@ -40,6 +40,10 @@ namespace EADP_Project
                     EventNavItem.Visible = false;
                 }
             }
+            else
+            {
+                Response.Redirect("LoginPage.aspx");
+            }
         }
     }
 }
