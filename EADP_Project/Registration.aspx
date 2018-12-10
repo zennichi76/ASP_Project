@@ -15,6 +15,7 @@
                     <div class="card-body">
                         Test Content
                         Only commit those files you have changed ok?
+                        Test
                     </div>
                 </div>
             </div>
