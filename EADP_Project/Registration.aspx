@@ -17,8 +17,6 @@
                         <%--Test Content
                         Only commit those files you have changed ok?--%>
 
-
-
                         <div class="form-group">
                             <input type="text" class="form-control" id="inputName" placeholder="Full Name">
                             <br />
@@ -35,25 +33,23 @@
                         <input type="password" class="form-control" id="inputConfirmPassword" placeholder="Confirm Password">
                         </div>
 
-                       
-
-                        
-                        
-                        <div class="form-group col-md-6">
+                        <div class="form-group">
                             <select id="SecurityQuestion1" class="form-control">
                                 <option selected>Security Question 1</option>
                                 <option>...</option>
                             </select>
                             <input type="text" class="form-control" id="securityQuestion1" placeholder="Full Name">
                         </div>
-                        <div class="form-group col-md-6">
+                         <br />
+                        <div class="form-group">
                             <select id="SecurityQuestion2" class="form-control">
                                 <option selected>Security Question 2</option>
                                 <option>...</option>
                             </select>
                             <input type="text" class="form-control" id="securityQuestion2" placeholder="Full Name">
                         </div>
-                        <div class="form-group col-md-6">
+                         <br />
+                        <div class="form-group">
                             <select id="SecurityQuestion3" class="form-control">
                                 <option selected>Security Question 3</option>
                                 <option>...</option>
@@ -64,8 +60,6 @@
                         <div class="form-group col-md-6">
                             captcha
                         </div>
-
-
 
                         <button type="submit" class="btn btn-primary">Register</button>
 
