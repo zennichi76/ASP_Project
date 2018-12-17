@@ -42,5 +42,10 @@ namespace EADP_Project
         {
             Response.Redirect("Registration.aspx");
         }
+
+        protected void ForgetSecQnsBtn_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("ResetSecurityQuestion.aspx");
+        }
     }
 }

@@ -153,6 +153,12 @@ namespace EADP_Project
                 RegisteredActivities_Col.Visible = false;
                 pendingItemsLabel.Text = "You have no pending items.";
                 RegisteredActivities_Col.Visible = false;
+            }else if(current_user_obj.role == "Admin")
+            {
+                ConsentForms_Col.Visible = false;
+                RegisteredActivities_Col.Visible = false;
+                pendingItemsLabel.Text = "You have no pending items.";
+                RegisteredActivities_Col.Visible = false;
             }
             ToConsentFormsManagementBtn.NavigateUrl = Response.ApplyAppPathModifier("ManageConsentFormsPage.aspx");
         }

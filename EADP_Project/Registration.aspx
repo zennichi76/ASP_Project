@@ -18,19 +18,23 @@
                         Only commit those files you have changed ok?--%>
 
                         <div class="form-group">
-                            <input type="text" class="form-control" id="inputName" placeholder="Full Name">
+                            
+                            <asp:TextBox ID="inputNameTB" runat="server" CssClass="form-control" placeholder="Full Name"></asp:TextBox>
                             <br />
-                             <input type="text" class="form-control" id="inputNRIC" placeholder="Type in your NRIC, This will be used as your user id">
+                            <asp:TextBox ID="inputNRICTB" runat="server" CssClass="form-control" placeholder="Type in your NRIC, This will be used as your user id"></asp:TextBox>
+                           
                         </div>
 
 
                         <div class="form-group">
-                            <input type="email" class="form-control" id="inputEmail" placeholder="Email">
+                            <asp:TextBox ID="emailTB" runat="server" CssClass="form-control" placeholder="Type in your Email" TextMode="Email"></asp:TextBox>
                         </div>
                         <div class="form-group">
-                        <input type="password" class="form-control" id="inputPassword" placeholder="Password">
+                            <asp:TextBox ID="passwordTB" runat="server" CssClass="form-control" placeholder="Type In Your Password" TextMode="Password"></asp:TextBox>
+                        
                             <br />
-                        <input type="password" class="form-control" id="inputConfirmPassword" placeholder="Confirm Password">
+                            <asp:TextBox ID="ConfirmPasswordTB" runat="server" CssClass="form-control" placeholder="Please Confirm Your Password" TextMode="Password"></asp:TextBox>
+                       
                         </div>
 
                         <div class="form-group">

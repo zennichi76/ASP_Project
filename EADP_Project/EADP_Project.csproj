@@ -17,7 +17,8 @@
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <UseIISExpress>true</UseIISExpress>
     <Use64BitIISExpress />
-    <IISExpressSSLPort />
+    <IISExpressSSLPort>
+    </IISExpressSSLPort>
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
@@ -67,6 +68,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="AccountSummary.aspx" />
+    <Content Include="AdminManagement.aspx" />
     <Content Include="AllEventPage.aspx" />
     <Content Include="App_Data\applicationData.mdf" />
     <Content Include="App_Data\applicationData_log.ldf">
@@ -348,6 +350,13 @@
     </Compile>
     <Compile Include="AccountSummary.aspx.designer.cs">
       <DependentUpon>AccountSummary.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="AdminManagement.aspx.cs">
+      <DependentUpon>AdminManagement.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AdminManagement.aspx.designer.cs">
+      <DependentUpon>AdminManagement.aspx</DependentUpon>
     </Compile>
     <Compile Include="AllEventPage.aspx.cs">
       <DependentUpon>AllEventPage.aspx</DependentUpon>

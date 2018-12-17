@@ -9,6 +9,7 @@
                     <div class="card-header"><h4>Account Summary</h4></div>
                     <div class="card-body">
                         <asp:Button ID="Button1" runat="server" OnClick="Button1_Click" Text="Mail Test" />
+                        <asp:Label ID="Label1" runat="server" Text="Label"></asp:Label>
                     </div>
                 </div>
             </div>

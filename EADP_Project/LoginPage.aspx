@@ -59,7 +59,14 @@
             <asp:Button ID="LoginBtn" CssClass="btn btn-primary" runat="server" Text="Sign in" OnClick="LoginBtn_Click" />
             <asp:Button ID="RegistrationBtn" CssClass="btn btn-danger" runat="server" Text="Register" OnClick="RegisterBtn_Click" CausesValidation="False" UseSubmitBehavior="False" />
           
+            <div class="row">
+                 <asp:Button ID="ForgetSecQnsBtn" CssClass="btn btn-link" runat="server" Text="Forget Security Questions" CausesValidation="False" UseSubmitBehavior="False" ForeColor="White" OnClick="ForgetSecQnsBtn_Click" />
+            </div>
+
         </div>
+
+        
+
     </form>
     <script src="js/popper.min.js"></script>
     <script src="js/jquery-3.2.1.min.js"></script>

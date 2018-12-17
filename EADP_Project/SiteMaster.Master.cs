@@ -19,6 +19,7 @@ namespace EADP_Project
                 UserBO userbo = new UserBO();
                 string userId = Request.Cookies["CurrentLoggedInUser"].Value;
                 current_user_obj = userbo.getUserById(userId);
+                AdminTools.Visible = false;
                 if (current_user_obj.role == "Teacher")
                 {
                     LinkEvent.HRef = "viewEventPage.aspx";
@@ -39,6 +40,17 @@ namespace EADP_Project
                     LinkTuition.Visible = false;
                     EventNavItem.Visible = false;
                 }
+                else if (current_user_obj.role == "Admin")
+                {
+                    LinkEvent.HRef = "viewEventPage.aspx";
+                    LinkTuition.Visible = false;
+                    EventNavItem.Visible = false;
+                    AdminTools.Visible = true;
+                }
+            }
+            else
+            {
+                Response.Redirect("LoginPage.aspx");
             }
         }
     }
