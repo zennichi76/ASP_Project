@@ -305,6 +305,7 @@
     <Content Include="Profile.aspx" />
     <Content Include="PurchaseHistory.aspx" />
     <Content Include="Registration.aspx" />
+    <Content Include="ResetSecurityQuestion.aspx" />
     <Content Include="Shopping Cart.aspx" />
     <Content Include="SiteMaster.Master">
       <BrowseToURL>~/SiteMaster.Master</BrowseToURL>
@@ -478,6 +479,13 @@
     </Compile>
     <Compile Include="Registration.aspx.designer.cs">
       <DependentUpon>Registration.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ResetSecurityQuestion.aspx.cs">
+      <DependentUpon>ResetSecurityQuestion.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ResetSecurityQuestion.aspx.designer.cs">
+      <DependentUpon>ResetSecurityQuestion.aspx</DependentUpon>
     </Compile>
     <Compile Include="Shopping Cart.aspx.cs">
       <DependentUpon>Shopping Cart.aspx</DependentUpon>
