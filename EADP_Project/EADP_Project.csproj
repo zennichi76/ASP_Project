@@ -341,7 +341,9 @@
     <Content Include="viewEventPage.aspx" />
     <Content Include="viewMyTuitionPage.aspx" />
     <Content Include="ViewParticipators.aspx" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AccountSummary.aspx.cs">
@@ -376,6 +378,7 @@
     <Compile Include="BO\ConsentFormBO.cs" />
     <Compile Include="BO\DietTrackingBO.cs" />
     <Compile Include="BO\eventBO.cs" />
+    <Compile Include="BO\RegistrationBO.cs" />
     <Compile Include="BO\requestBO.cs" />
     <Compile Include="BO\sessionBO.cs" />
     <Compile Include="BO\UserBO.cs" />
@@ -397,6 +400,7 @@
     <Compile Include="DAO\ConsentFormDAO.cs" />
     <Compile Include="DAO\DietTrackingDAO.cs" />
     <Compile Include="DAO\eventDAO.cs" />
+    <Compile Include="DAO\RegistrationDAO.cs" />
     <Compile Include="DAO\requestDAO.cs" />
     <Compile Include="DAO\sessionDAO.cs" />
     <Compile Include="DAO\userDAO.cs" />
@@ -422,6 +426,7 @@
     <Compile Include="Entities\PurchasedItem.cs" />
     <Compile Include="Entities\requestEntity.cs" />
     <Compile Include="Entities\Schedule.cs" />
+    <Compile Include="Entities\SecurityQuestions.cs" />
     <Compile Include="Entities\StudyHours.cs" />
     <Compile Include="Entities\tutionEntities.cs" />
     <Compile Include="Entities\user.cs" />
@@ -446,6 +451,11 @@
     <Compile Include="Diet Tracker Home.aspx.designer.cs">
       <DependentUpon>Diet Tracker Home.aspx</DependentUpon>
     </Compile>
+    <Compile Include="ImageComparison\ImageHasher.cs" />
+    <Compile Include="ImageComparison\ImageUtils.cs" />
+    <Compile Include="ImageComparison\ImgComparator.cs" />
+    <Compile Include="ImageComparison\ImgHash.cs" />
+    <Compile Include="ImageComparison\ParallelTaskRunner.cs" />
     <Compile Include="LoginPage.aspx.cs">
       <DependentUpon>LoginPage.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -581,6 +591,7 @@
       <DependentUpon>ViewParticipators.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

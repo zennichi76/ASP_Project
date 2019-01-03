@@ -20,9 +20,8 @@
                     <div class="card-body">
                         <asp:Panel ID="emailPanel" runat="server">
                             <div class="enterEmail">
-                                <h4>Enter Your Email Address</h4>
-
-                                <input type="email" class="form-control" id="inputEmail" placeholder="Email" />
+                                <h4>Enter Your UserId</h4>
+                                <asp:TextBox ID="inputIdTB" runat="server" CssClass="form-control"></asp:TextBox>
                                 <asp:Button ID="cancelBtn" runat="server" Text="Cancel" CssClass="btn btn-light" OnClick="cancel_Click" />
                                  <asp:Button ID="submitEmailBtn" runat="server" Text="Continue" CssClass="btn btn-primary" OnClick="submitEmailBtn_Click"  />
                                 <%--<button class="btn btn-primary" id="submitEmailBtn">Continue</button>--%>
@@ -42,16 +41,17 @@
                         <asp:Panel ID="answerSecurityQ" runat="server" Visible="false">
                             <div class="enterSecQ">
                                 <h4>Answer Your Current Security Questions</h4>
-                                
-                                <select id="SecurityQuestion" class="form-control">
+                                <asp:Label ID="Label1" runat="server" Text="Label"></asp:Label>
+                                <%--<select id="SecurityQuestion" class="form-control">
                                 <option>This will be populated with the security Question user choose</option>
                                     <option>SQ1</option>
                                     <option>SQ2</option>
                                     <option>SQ3</option>
-                            </select>
-
-                                 <input type="text" class="form-control" id="securityQuestion" placeholder="Full Name"/>
-
+                            </select>--%>
+                                <asp:Image ID="Image1" runat="server" />
+                                 <input type="text" class="form-control" id="securityQn" placeholder="Full Name"/>
+                                 <asp:Image ID="Image2" runat="server" />
+                                 <input type="text" class="form-control" id="securityQn2" placeholder="Full Name"/>
                                 <asp:Button ID="cancelBtnForSecurityQuestion" runat="server" Text="Cancel" CssClass="btn btn-light" OnClick="cancel_Click" />
                                 <asp:Button ID="submitAnsweredSQBtn" runat="server" Text="Continue" CssClass="btn btn-primary" OnClick="submitAnsweredSQBtn_Click" />
                             </div>
@@ -65,7 +65,7 @@
                                 <option selected>Security Question 1</option>
                                 <option>...</option>
                             </select>
-                            <input type="text" class="form-control" id="securityQuestion1" placeholder="Answer"/>
+                            <input type="text" class="form-control" id="securityQuestion1TB" placeholder="Answer"/>
                         </div>
                          <br />
                         <div class="form-group">

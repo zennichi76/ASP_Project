@@ -4,17 +4,27 @@
 
 <html>
 <head runat="server">
+    <%--<META HTTP-EQUIV="REFRESH" CONTENT="10;URL=LoginPage.aspx">--%>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>EADP_Project</title>
     <link href="css/bootstrap.min.css" rel="stylesheet" />
     <script>
-        function logout() {
-            '<%Session["Current_logged_in_user"] = null; %>';
-            return true;
+
+  
+
+
+   function logout() {
+       '<%Session["Current_logged_in_user"] = null; %>';
+       return true;
         }
-    </script>
+
+
+    
+
+
+</script>
     <style>
-        #bg{
+        #bg {
             position: fixed;
             top: 0;
             right: 0;
@@ -23,11 +33,12 @@
             background-size: cover;
             background-position: 50% 50%;
             background-image: url("/img/bookshelf.jpg");
-            background-repeat:repeat;
+            background-repeat: repeat;
             z-index: -1;
         }
-        .navbar_custom{
-            z-index:9;
+
+        .navbar_custom {
+            z-index: 9;
         }
     </style>
     <asp:ContentPlaceHolder ID="head" runat="server">
@@ -42,7 +53,7 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                 <div class="navbar-nav">
-                    
+
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">Profile</a>
                         <div class="dropdown-menu">
@@ -51,24 +62,25 @@
                             <a class="dropdown-item" href="AdminManagement.aspx" id="AdminTools" runat="server">Admin Tools</a>
                             <a class="dropdown-item" href="Profile.aspx">Edit Profile</a>
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="LoginPage.aspx" onclick="logout()">Log out</a>
+                                    <a class="dropdown-item" href="LoginPage.aspx" >Log out</a>
+    
                         </div>
                     </li>
                     <div runat="server" id="EventNavItem">
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">Events</a>
-                        <div class="dropdown-menu">
-                            <a href="#" class="dropdown-item" ID="LinkEvent" runat="server">Events</a>
-                            <a class="dropdown-item" href="viewMyTuitionPage.aspx" id="LinkTuition" runat="server">Tuition</a>
-                        </div>
-                    </li>
-                        </div>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">Events</a>
+                            <div class="dropdown-menu">
+                                <a href="#" class="dropdown-item" id="LinkEvent" runat="server">Events</a>
+                                <a class="dropdown-item" href="viewMyTuitionPage.aspx" id="LinkTuition" runat="server">Tuition</a>
+                            </div>
+                        </li>
+                    </div>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">Education</a>
                         <div class="dropdown-menu">
                             <a class="dropdown-item" href="Bookstore.aspx">Bookstore</a>
                             <a class="dropdown-item" href="StudyGuide.aspx">Study Guide</a>
-                           
+
                         </div>
                     </li>
                     <a class="nav-item nav-link" href="Diet Tracker Home.aspx">Food Diet Tracker</a>
@@ -77,13 +89,50 @@
         </nav>
     </div>
     <div id="bg">
-        </div>
+    </div>
     <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
     </asp:ContentPlaceHolder>
-        
+
 
     <script src="js/popper.min.js"></script>
     <script src="js/jquery-3.2.1.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
+
+    <script type="text/javascript">
+        //Testing for idle timeout 
+        var idleTime = 0;
+        $(document).ready(function () {
+            //Increment the idle time counter every minute.
+            var idleInterval = setInterval(timerIncrement, 60000); // 1 minute
+
+            //Zero the idle timer on mouse movement.
+            $(this).mousemove(function (e) {
+                idleTime = 0;
+                console.log("mouse is moving");
+            });
+            $(this).keypress(function (e) {
+                idleTime = 0;
+                console.log("key is pressed");
+            });
+
+        });
+
+
+        function timerIncrement() {
+            idleTime = idleTime + 1;
+            if (idleTime > 1) { // 15 minutes
+              
+              window.location.href = "LoginPage.aspx";
+
+            }
+
+        }
+
+
+    
+
+    </script>
+
+
 </body>
 </html>
