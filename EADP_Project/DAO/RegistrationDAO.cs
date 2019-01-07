@@ -51,21 +51,22 @@ namespace EADP_Project.DAO
 
         //test for Registration of users
 
-        public int UserRegistration(String User_ID, String password, String name, String email, String confirmEmail, String role)
+        public int UserRegistration(string User_ID, string password, string salt, string name, string email, string confirmEmail, string role)
         {
             DataSet ds = new DataSet();
             StringBuilder sqlStr = new StringBuilder();
             SqlCommand objCmd = new SqlCommand();
             int result;
 
-            sqlStr.AppendLine("Insert into [User] (User_ID,Password,Name,Email,ConfirmEmail,Role)");
-            sqlStr.AppendLine("VALUES (@paraUser_Id, @parapassword, @paraname, @paraemail, @paraconfirmEmail, @pararole)");
+            sqlStr.AppendLine("Insert into [User] (User_ID,Password,Salt,Name,Email,ConfirmEmail,Role)");
+            sqlStr.AppendLine("VALUES (@paraUser_Id, @parapassword, @paraSalt, @paraname, @paraemail, @paraconfirmEmail, @pararole)");
 
             SqlConnection objsqlconn = new SqlConnection(DBConnect);
             objCmd = new SqlCommand(sqlStr.ToString(), objsqlconn);
 
             objCmd.Parameters.AddWithValue("@paraUser_Id", User_ID);
             objCmd.Parameters.AddWithValue("@parapassword", password);
+            objCmd.Parameters.AddWithValue("@paraSalt", salt);
             objCmd.Parameters.AddWithValue("@paraname", name);
             objCmd.Parameters.AddWithValue("@paraemail", email);
             objCmd.Parameters.AddWithValue("@paraconfirmEmail", confirmEmail);

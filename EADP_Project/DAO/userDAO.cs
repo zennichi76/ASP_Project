@@ -45,6 +45,7 @@ namespace EADP_Project.DAO
                 DataRow row = ds.Tables["userTable"].Rows[0]; //First record
                 obj.User_ID = row["User_ID"].ToString();
                 obj.password = row["Password"].ToString();
+                obj.salt = row["Salt"].ToString();
                 obj.name = row["Name"].ToString();
                 obj.email = row["Email"].ToString();
                 obj.role = row["Role"].ToString();

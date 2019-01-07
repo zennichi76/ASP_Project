@@ -8,6 +8,7 @@ namespace EADP_Project.Entities
     public class user
     {
         public String User_ID { get; set; }
+        public String salt { get; set; }
         public String password { get; set; }
         public String name { get; set; }
         public String email { get; set; }
@@ -22,9 +23,10 @@ namespace EADP_Project.Entities
         public int orion_point { get; set; }
         public int cca_point { get; set; }
         public user() { }
-        public user(String User_ID, String password, String name, String email, String role, String school_ID, String teaching_classes, String schedule, String staff_type, String child_ID, String education_level, String education_class, int orion_point, int cca_point)
+        public user(String User_ID, String password, String salt, String name, String email, String role, String school_ID, String teaching_classes, String schedule, String staff_type, String child_ID, String education_level, String education_class, int orion_point, int cca_point)
         {
             this.User_ID = User_ID;
+            this.salt = salt;
             this.password = password;
             this.name = name;
             this.email = role;

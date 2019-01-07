@@ -9,26 +9,33 @@ namespace EADP_Project.BO
 {
     public class Crypto_BO
     {
-        public string password_crypto(string username, string password)
+        public string salt { get; set; } 
+        public string hashedPassword { get; set; } 
+
+        public void password_crypto(string username, string password)
         {
             RNGCryptoServiceProvider rng = new RNGCryptoServiceProvider();
             byte[] saltByte = new byte[8];
 
             rng.GetBytes(saltByte);
-            string salt = Convert.ToBase64String(saltByte);
+            salt = Convert.ToBase64String(saltByte);
 
             SHA512Managed hashing = new SHA512Managed();
 
             string pwdWithSalt = username + password + salt;
             byte[] hashWithSalt = hashing.ComputeHash(Encoding.UTF8.GetBytes(pwdWithSalt));
 
-            return Convert.ToBase64String(hashWithSalt);
+            hashedPassword = Convert.ToBase64String(hashWithSalt);
 
         }
 
-        public bool password_compare(string hashedPassword, string databasePassword)
+        public bool password_compare(string username, string password, string salt, string databasePassword )
         {
-            if (hashedPassword == databasePassword)
+            SHA512Managed hashing = new SHA512Managed();
+            string pwdWithSalt = username + password + salt;
+            byte[] hashWithSalt = hashing.ComputeHash(Encoding.UTF8.GetBytes(pwdWithSalt));
+            string hashToCompare  = Convert.ToBase64String(hashWithSalt);
+            if (hashToCompare == databasePassword)
             {
                 return true;
             }
