@@ -377,6 +377,7 @@
     </Compile>
     <Compile Include="BO\Bookstore_BO.cs" />
     <Compile Include="BO\ConsentFormBO.cs" />
+    <Compile Include="BO\Crypto_BO.cs" />
     <Compile Include="BO\DietTrackingBO.cs" />
     <Compile Include="BO\eventBO.cs" />
     <Compile Include="BO\RegistrationBO.cs" />
