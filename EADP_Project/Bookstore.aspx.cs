@@ -30,15 +30,15 @@ namespace EADP_Project_Education
         {
             if (!File.Exists("logger.txt"))
             {
-                sw = new StreamWriter(@"C:\Users\Justin Tan\Documents\GitHub\ASP_Project\EADP_Project\logger.txt");
+                sw = new StreamWriter(@"C:\Users\Justin Tan\Documents\GitHub\ASP_Project\EADP_Project\App_Data\logger.txt");
             }
             else
             {
                 sw = File.AppendText("logger.txt");
             }
             string ip = System.Net.Dns.GetHostEntry(System.Net.Dns.GetHostName()).AddressList.GetValue(1).ToString();
-            string pageName = Path.GetFileNameWithoutExtension(Page.AppRelativeVirtualPath);
-            sw.WriteLine(ip + " sends request at {0} accessing page " + pageName, DateTime.Now);
+            string pageName = this.Page.ToString().Substring(23) + ".aspx";
+            sw.WriteLine(ip + " sends request at {0} while accessing page " + pageName, DateTime.Now);
             sw.Close();
         }
 

@@ -85,6 +85,7 @@
     <Content Include="App_Data\applicationData_log.ldf">
       <DependentUpon>applicationData.mdf</DependentUpon>
     </Content>
+    <Content Include="App_Data\logger.txt" />
     <Content Include="Bookstore.aspx" />
     <Content Include="CreateEventPage.aspx" />
     <Content Include="createTuitionPage.aspx" />
