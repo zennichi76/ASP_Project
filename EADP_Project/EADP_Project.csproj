@@ -313,7 +313,6 @@
     <Content Include="js\timepicker-1.3.5\test\visuals\i43\uploads\calendar-1.jpg" />
     <Content Include="js\timepicker-1.3.5\test\visuals\i43\uploads\calendar-2.jpg" />
     <Content Include="js\timepicker-1.3.5\test\visuals\i43\uploads\calendar-3.jpg" />
-    <Content Include="logger.txt" />
     <Content Include="LoginPage.aspx" />
     <Content Include="ManageConsentFormsPage.aspx" />
     <Content Include="PendingConsentForms.aspx" />
@@ -425,7 +424,6 @@
     <Compile Include="Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
-    <Compile Include="eadpHM.cs" />
     <Compile Include="Entities\ConsentForm.cs" />
     <Compile Include="Entities\events.cs" />
     <Compile Include="Entities\FormStatus.cs" />
