@@ -22,8 +22,11 @@ namespace EADP_Project.Entities
         public String education_class { get; set; }
         public int orion_point { get; set; }
         public int cca_point { get; set; }
+        public DateTime pwd_startDate { get; set; }
+        public DateTime pwd_endDate { get; set; }
+        public Boolean pwd_changeBool { get; set; }
         public user() { }
-        public user(String User_ID, String password, String salt, String name, String email, String role, String school_ID, String teaching_classes, String schedule, String staff_type, String child_ID, String education_level, String education_class, int orion_point, int cca_point)
+        public user(String User_ID, String password, String salt, String name, String email, String role, String school_ID, String teaching_classes, String schedule, String staff_type, String child_ID, String education_level, String education_class, int orion_point, int cca_point, DateTime pwd_startDate, DateTime pwd_endDate, bool pwd_changeBool)
         {
             this.User_ID = User_ID;
             this.salt = salt;
@@ -39,6 +42,9 @@ namespace EADP_Project.Entities
             this.education_class = education_class;
             this.orion_point = orion_point;
             this.cca_point = cca_point;
+            this.pwd_startDate = pwd_startDate;
+            this.pwd_endDate = pwd_endDate;
+            this.pwd_changeBool = pwd_changeBool;
         }
     }
 }
