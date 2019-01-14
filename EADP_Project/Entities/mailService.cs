@@ -13,19 +13,19 @@ namespace EADP_Project.Entities
         private const string SMTP_PASSWORD = "password";
 
 
-        public string sendmail()
+        public string sendmail(string email_to, string msg_subject, string msg_body)
         {
             try
             {
                 MailMessage mailmessage = new MailMessage();
                 SmtpClient smtpClient = new SmtpClient("smtp.gmail.com", 587);
-                mailmessage.Subject = "Test";
-                mailmessage.Body = "";
+                mailmessage.Subject = msg_body;
+                mailmessage.Body = msg_body;
                 smtpClient.UseDefaultCredentials = false;
                 smtpClient.Credentials = new System.Net.NetworkCredential("zzen2461@gmail.com", "zentestinggrounds");
                 
                 mailmessage.From = new MailAddress("zzen2461@gmail.com");
-                mailmessage.To.Add("zzen2461@gmail.com");
+                mailmessage.To.Add(email_to);
                 smtpClient.DeliveryMethod = SmtpDeliveryMethod.Network;
                 smtpClient.EnableSsl = true;
                 smtpClient.Send(mailmessage);
