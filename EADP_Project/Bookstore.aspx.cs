@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -12,8 +13,34 @@ using System.Web.UI.WebControls;
 
 namespace EADP_Project_Education
 {
-    public partial class Bookstore : System.Web.UI.Page
+    public partial class Bookstore : System.Web.UI.Page , IHttpModule
     {
+        private StreamWriter sw;
+        public void Dispose()
+        {
+
+        }
+
+        public void Init(HttpApplication context)
+        {
+            context.BeginRequest += (new EventHandler(this.Application_BeginRequest));
+        }
+
+        private void Application_BeginRequest(Object source, EventArgs e)
+        {
+            if (!File.Exists("logger.txt"))
+            {
+                sw = new StreamWriter(@"C:\Users\Justin Tan\Documents\GitHub\ASP_Project\EADP_Project\logger.txt");
+            }
+            else
+            {
+                sw = File.AppendText("logger.txt");
+            }
+            string ip = System.Net.Dns.GetHostEntry(System.Net.Dns.GetHostName()).AddressList.GetValue(1).ToString();
+            string pageName = Path.GetFileNameWithoutExtension(Page.AppRelativeVirtualPath);
+            sw.WriteLine(ip + " sends request at {0} accessing page " + pageName, DateTime.Now);
+            sw.Close();
+        }
 
         Bookstore_BO bookstorebo = new Bookstore_BO();
         private String current_logged_in_user;

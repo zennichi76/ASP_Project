@@ -31,7 +31,9 @@ namespace EADP_Project.App_Start
             {
                 sw = File.AppendText("logger.txt");
             }
-            sw.WriteLine("User sends request at {0}", DateTime.Now);
+            string ip = System.Net.Dns.GetHostEntry(System.Net.Dns.GetHostName()).AddressList.GetValue(1).ToString();
+            
+            sw.WriteLine(ip + " sends request at {0}", DateTime.Now);
             sw.Close();
         }
     }
