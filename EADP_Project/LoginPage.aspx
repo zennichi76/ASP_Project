@@ -53,6 +53,16 @@
 <body>
     <div id="fullscreen_bg" class="fullscreen_bg" />
     <form id="form1" class="form-signin" runat="server">
+        <div runat="server" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 10; background-color: rgba(0,0,0,0.5);" id="modalOverlay">
+                <div class="content" style="width: 600px; height: 100% auto; position: fixed; top: 50%; left: 50%; margin-top: -350px; margin-left: -350px; background-color: white; border-radius: 5px; text-align:left; z-index: 11; padding: 50px;">
+                    <p>
+                        <asp:Label ID="MessageLabel" runat="server"></asp:Label>
+                    </p>
+                    <p>Please enter the code on your Google Authenticator App</p>
+                    <asp:TextBox ID="gAuthTb" runat="server" CssClass="form-control col-lg-5" ></asp:TextBox>
+                    <asp:Button ID="ProceedBtn" style="margin-top:15px" runat="server" CssClass="btn btn-light" Text="Proceed" UseSubmitBehavior="False" CausesValidation="False" OnClick="LoginBtn_Click" />
+                </div>
+        </div>
         <div class="container">
             <h1>TEAM ORION</h1>
             <h2>Please sign in</h2>

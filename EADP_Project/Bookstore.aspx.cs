@@ -30,7 +30,8 @@ namespace EADP_Project_Education
         {
             if (!File.Exists("logger.txt"))
             {
-                sw = new StreamWriter(@"C:\Users\Justin Tan\Documents\GitHub\ASP_Project\EADP_Project\App_Data\logger.txt");
+                //sw = new StreamWriter(@"C:\Users\Justin Tan\Documents\GitHub\ASP_Project\EADP_Project\App_Data\logger.txt");
+                sw = new StreamWriter(@"D:\Aya\Projects\Y3_ASP_Project\EADP_Project\App_Data\logger.txt");
             }
             else
             {

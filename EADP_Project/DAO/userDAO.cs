@@ -62,6 +62,12 @@ namespace EADP_Project.DAO
                 obj.pwd_startDate = DateTime.Parse(row["Pwd_startDate"].ToString());
                 obj.pwd_endDate = DateTime.Parse(row["Pwd_endDate"].ToString());
                 obj.pwd_changeBool = (row["Pwd_changeBool"] as int? == 1) ? true : false;
+                obj.gAuth_Enabled = (row["gAuth_Enabled"] as int? == 1) ? true : false;
+                obj.gAuth_Key = "";
+                if (obj.gAuth_Enabled == true)
+                {
+                    obj.gAuth_Key = row["gAuth_Key"].ToString();
+                }
 
 
 

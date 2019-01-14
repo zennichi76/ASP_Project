@@ -25,8 +25,10 @@ namespace EADP_Project.Entities
         public DateTime pwd_startDate { get; set; }
         public DateTime pwd_endDate { get; set; }
         public Boolean pwd_changeBool { get; set; }
+        public Boolean gAuth_Enabled { get; set; }
+        public string gAuth_Key { get; set; }
         public user() { }
-        public user(String User_ID, String password, String salt, String name, String email, String role, String school_ID, String teaching_classes, String schedule, String staff_type, String child_ID, String education_level, String education_class, int orion_point, int cca_point, DateTime pwd_startDate, DateTime pwd_endDate, bool pwd_changeBool)
+        public user(String User_ID, String password, String salt, String name, String email, String role, String school_ID, String teaching_classes, String schedule, String staff_type, String child_ID, String education_level, String education_class, int orion_point, int cca_point, DateTime pwd_startDate, DateTime pwd_endDate, bool pwd_changeBool, bool gAuth_Enabled, string gAuth_Key)
         {
             this.User_ID = User_ID;
             this.salt = salt;
@@ -45,6 +47,8 @@ namespace EADP_Project.Entities
             this.pwd_startDate = pwd_startDate;
             this.pwd_endDate = pwd_endDate;
             this.pwd_changeBool = pwd_changeBool;
+            this.gAuth_Enabled = gAuth_Enabled;
+            this.gAuth_Key = gAuth_Key;
         }
     }
 }

@@ -1,11 +1,8 @@
 ﻿using EADP_Project.BO;
 using EADP_Project.Entities;
+using Google.Authenticator;
+using OtpSharp;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
 
 namespace EADP_Project
 {
@@ -13,15 +10,21 @@ namespace EADP_Project
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            UserBO userbo = new UserBO();
-            String currentLoggedInUser = Request.Cookies["CurrentLoggedInUser"].Value;
-            user userobj = new user();
-            userobj = userbo.getUserById(currentLoggedInUser);
-            UsernameTB.Text = userobj.User_ID;
-            NameTB.Text = userobj.name;
-            EmailTB.Text = userobj.email;
-            LastPwdChangeLbl.Text = userobj.pwd_startDate.ToShortDateString().ToString();
-            DaysToChangeLbl.Text = (userobj.pwd_endDate - userobj.pwd_startDate).Days.ToString() + " days";
+            
+            if (!Page.IsPostBack) {
+                UserBO userbo = new UserBO();
+                String currentLoggedInUser = Request.Cookies["CurrentLoggedInUser"].Value;
+                user userobj = new user();
+                userobj = userbo.getUserById(currentLoggedInUser);
+                UsernameTB.Text = userobj.User_ID;
+                NameTB.Text = userobj.name;
+                EmailTB.Text = userobj.email;
+                LastPwdChangeLbl.Text = userobj.pwd_startDate.ToShortDateString().ToString();
+                DaysToChangeLbl.Text = (userobj.pwd_endDate - userobj.pwd_startDate).Days.ToString() + " days";
+                ////GAuth Test////
+                google_auth_init();
+
+                }
 
         }
 
@@ -61,6 +64,39 @@ namespace EADP_Project
                 ErrorMsgLabelEmail.Text = "Email is changed successfully!";
                 EmailTB.Text = newEmailTB.Text;
             }
+        }
+        protected void google_auth_init()
+        {
+            TwoFactorAuthenticator tfa = new TwoFactorAuthenticator();
+            string key = Base32.Base32Encoder.Encode(KeyGeneration.GenerateRandomKey(20));
+            ViewState["key"] = key;
+            var setupInfo = tfa.GenerateSetupCode("EADP", UsernameTB.Text, key, 250, 250);
+
+            string qrCodeImageUrl = setupInfo.QrCodeSetupImageUrl; //  assigning the Qr code information + URL to string
+            string manualEntrySetupCode = setupInfo.ManualEntryKey; // show the Manual Entry Key for the users that don't have app or phone
+            gAuthImage.ImageUrl = qrCodeImageUrl;// showing the qr code on the page "linking the string to image element"
+            gAuthManualKeyLbl.Text = manualEntrySetupCode; // showing the manual Entry setup code for the users that can not use their phone
+        }
+
+        protected void activateBtn_Click(object sender, EventArgs e)
+        {
+                string key = ViewState["key"].ToString();
+                string user_enter = gAuthPassTb.Text;
+                TwoFactorAuthenticator tfa = new TwoFactorAuthenticator();
+                bool isCorrectPIN = tfa.ValidateTwoFactorPIN(key, user_enter);
+                if (isCorrectPIN == true)
+                {
+                UserBO userbo = new UserBO();
+                userbo.activate2FA(Request.Cookies["CurrentLoggedInUser"].Value, key);
+
+                GoogleAuthErrorMsgLabel.Text = "Success";
+
+                }
+                else
+                {
+
+                GoogleAuthErrorMsgLabel.Text = "Fail";
+                }
         }
     }
 }
