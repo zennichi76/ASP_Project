@@ -182,9 +182,9 @@ namespace EADP_Project
                 }
                 else
                 {
-                     pass = false;
-                     errLblForSQ.Text = "Please choose the first file that is .jpg or .png only";
-                     errLblForSQ.Visible = true;
+                    pass = false;
+                    errLblForSQ.Text = "Please choose the first file that is .jpg or .png only";
+                    errLblForSQ.Visible = true;
                 }
 
             }
@@ -298,12 +298,12 @@ namespace EADP_Project
             }
             else
             {
-                String User_ID = inputNRICTB.Text;
-                String password = passwordTB.Text;
-                String name = inputNameTB.Text;
-                String email = emailTB.Text;
-                String confirmEmail = "false";
-                String role = "Student";
+                string User_ID = inputNRICTB.Text;
+                string password = passwordTB.Text;
+                string name = inputNameTB.Text;
+                string email = emailTB.Text;
+                string confirmEmail = "false";
+                string role = "Student";
                 //String school_ID, String education_level, String education_class;
                 string firstImageAns = firstImageAnsTB.Text.Trim();
                 string secondImageAns = secondImageAnsTB.Text.Trim();
@@ -328,7 +328,7 @@ namespace EADP_Project
                 System.Drawing.Image firstUploaded = System.Drawing.Image.FromStream(imageUpload.PostedFile.InputStream);
                 System.Drawing.Image secUploaded = System.Drawing.Image.FromStream(image2Upload.PostedFile.InputStream);
                 System.Drawing.Image thirdUploaded = System.Drawing.Image.FromStream(image3Upload.PostedFile.InputStream);
-                
+
                 int originalWidth = firstUploaded.Width;
                 int originalHeight = firstUploaded.Height;
                 float percentWidth = (float)256 / (float)originalWidth;
@@ -384,7 +384,7 @@ namespace EADP_Project
                     newImage1.Save(ms, codec, jpegParms);
                     results = ms.ToArray();
 
-                    for(int i = 0; i < results.Length; i++)
+                    for (int i = 0; i < results.Length; i++)
                     {
                         //Stream test = firstUploaded;
                     }
@@ -439,7 +439,7 @@ namespace EADP_Project
                 }
 
 
-              
+
                 ////Calling Compare Function
                 //if (Compare(bmp1, bmp2) == CompareResult.ciCompareOk)
                 //{
@@ -457,16 +457,16 @@ namespace EADP_Project
                 //    Label1.Text = "Size Is Not Same";
                 //}
 
-              
+
                 //Label1.Text = equalElements.ToString() + " - "+ equalElements1.ToString() + " - " +  equalElements2.ToString();
 
-                
+
 
                 //////////////////////////////////////////////////////////////////////////////////////////////
                 RegistrationBO addUser = new RegistrationBO();
-            //    addUser.insertUser(User_ID, password, name, email, confirmEmail, role);
-              //  addUser.insertSQ(User_ID, bytes, firstImageAns, secbytes, secondImageAns, thirdbytes, thirdImageAns);
-
+                addUser.insertUser(User_ID, password, name, email, confirmEmail, role);
+                //addUser.insertSQ(User_ID, bytes, firstImageAns, secbytes, secondImageAns, thirdbytes, thirdImageAns);
+                
                 errLblForSQ.Text = "";
                 errLblForSQ.Visible = false;
                 errLblForName.Text = "";

@@ -9,7 +9,7 @@ namespace EADP_Project.BO
 {
     public class UserBO
     {
-        public user login_validation(String user_ID, String password)
+        public user login_validation(string user_ID, string password)
         {
             user obj = new user();
             userDAO userdao = new userDAO();
@@ -20,7 +20,9 @@ namespace EADP_Project.BO
             }
             else
             {
-                if (obj.password == password)
+                Crypto_BO crpyto = new Crypto_BO();
+                bool password_correct = crpyto.password_compare(user_ID, password, obj.salt, obj.password);
+                if (password_correct)//obj.password == password)
                 {
                     return obj; //user pass login
                 }
@@ -30,7 +32,7 @@ namespace EADP_Project.BO
                 }
             }
         }
-        public user getUserById(String user_ID)
+        public user getUserById(string user_ID)
         {
             user obj = new user();
             userDAO userdao = new userDAO();
@@ -44,25 +46,30 @@ namespace EADP_Project.BO
                 return obj;
             }
         }
-        public List<String> getTeachersTeachingClasses(String user_ID)
+        public List<string> getTeachersTeachingClasses(string user_ID)
         {
-            List<String> obj = new List<String>();
+            List<string> obj = new List<string>();
             userDAO userdao = new userDAO();
             obj = userdao.getTeachersTeachingClasses(user_ID);
             return obj;
         }
 
-        public void updatePwd(String user_ID, String pwd)
+        public void updatePwd(string user_ID, string pwd)
         {
+            string salt;
+            Crypto_BO crypto = new Crypto_BO();
+            crypto.password_crypto(user_ID, pwd);
+            pwd = crypto.hashedPassword;
+            salt = crypto.salt;
             userDAO userdao = new userDAO();
-            userdao.updatePwd(user_ID, pwd);
+            userdao.updatePwd(user_ID, pwd, salt);
         }
-        public void updateEmail(String user_ID, String email)
+        public void updateEmail(string user_ID, string email)
         {
             userDAO userdao = new userDAO();
             userdao.updateEmail(user_ID, email);
         }
-        public List<user> retrieveClassListBySchoolAndClass(String school, String edu_class)
+        public List<user> retrieveClassListBySchoolAndClass(string school, string edu_class)
         {
             userDAO userdao = new userDAO();
             return userdao.retrieveClassListBySchoolAndClass(school, edu_class);

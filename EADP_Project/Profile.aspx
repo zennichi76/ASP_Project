@@ -40,6 +40,12 @@
                         <p>
                             Change Password:                       
                         </p>
+                        <p style="color: grey">
+                            Password Last Changed on: <asp:Label ID="LastPwdChangeLbl" runat="server"></asp:Label>
+                        </p>
+                        <p style="color: grey">
+                            Please Change Your Password in: <asp:Label ID="DaysToChangeLbl" runat="server"></asp:Label>
+                        </p>
                         <p style="color: red">
                             <asp:Label ID="ErrorMsgLabel" runat="server"></asp:Label>
                         </p>

@@ -302,6 +302,7 @@
     <Content Include="js\timepicker-1.3.5\test\visuals\i43\uploads\calendar-1.jpg" />
     <Content Include="js\timepicker-1.3.5\test\visuals\i43\uploads\calendar-2.jpg" />
     <Content Include="js\timepicker-1.3.5\test\visuals\i43\uploads\calendar-3.jpg" />
+    <Content Include="logger.txt" />
     <Content Include="LoginPage.aspx" />
     <Content Include="ManageConsentFormsPage.aspx" />
     <Content Include="PendingConsentForms.aspx" />
@@ -377,6 +378,7 @@
     </Compile>
     <Compile Include="BO\Bookstore_BO.cs" />
     <Compile Include="BO\ConsentFormBO.cs" />
+    <Compile Include="BO\Crypto_BO.cs" />
     <Compile Include="BO\DietTrackingBO.cs" />
     <Compile Include="BO\eventBO.cs" />
     <Compile Include="BO\RegistrationBO.cs" />
@@ -419,6 +421,7 @@
     <Compile Include="Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
+    <Compile Include="eadpHM.cs" />
     <Compile Include="Entities\ConsentForm.cs" />
     <Compile Include="Entities\events.cs" />
     <Compile Include="Entities\FormStatus.cs" />
