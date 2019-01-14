@@ -149,6 +149,51 @@ namespace EADP_Project.DAO
             result = cmd.ExecuteNonQuery();
             myConn.Close();
         }
+        public void activate2FA(string user_ID, string key)
+        {
+            int result;
+            //get conn string
+            string DBConnect;
+            DBConnect = ConfigurationManager.ConnectionStrings["ConnStr"].ConnectionString;
+
+            StringBuilder sqlCommand = new StringBuilder();
+            sqlCommand.AppendLine("Update [user] set gAuth_Enabled=@paragAuthEnabled, gAuth_Key=@paragAuthKey");
+            sqlCommand.AppendLine("Where User_ID=@paraUserID");
+
+            SqlConnection myConn = new SqlConnection(DBConnect); //conn in java, make connection
+            SqlCommand cmd = new SqlCommand(sqlCommand.ToString()); //attach command to connection
+            cmd.Connection = myConn;
+            cmd.Parameters.AddWithValue("@paraUserID", user_ID);
+            cmd.Parameters.AddWithValue("@paragAuthEnabled", true);
+            cmd.Parameters.AddWithValue("@paragAuthKey", key);
+
+            myConn.Open();
+            result = cmd.ExecuteNonQuery();
+            myConn.Close();
+        }
+
+        public void deactivate2FA(string user_ID, string key)
+        {
+            int result;
+            //get conn string
+            string DBConnect;
+            DBConnect = ConfigurationManager.ConnectionStrings["ConnStr"].ConnectionString;
+
+            StringBuilder sqlCommand = new StringBuilder();
+            sqlCommand.AppendLine("Update [user] set gAuth_Enabled=@paragAuthEnabled, gAuth_Key=@paragAuthKey");
+            sqlCommand.AppendLine("Where User_ID=@paraUserID");
+
+            SqlConnection myConn = new SqlConnection(DBConnect); //conn in java, make connection
+            SqlCommand cmd = new SqlCommand(sqlCommand.ToString()); //attach command to connection
+            cmd.Connection = myConn;
+            cmd.Parameters.AddWithValue("@paraUserID", user_ID);
+            cmd.Parameters.AddWithValue("@paragAuthEnabled", false);
+            cmd.Parameters.AddWithValue("@paragAuthKey", "");
+
+            myConn.Open();
+            result = cmd.ExecuteNonQuery();
+            myConn.Close();
+        }
 
         public List<user> retrieveClassListBySchoolAndClass(String school, String edu_class)
         {
