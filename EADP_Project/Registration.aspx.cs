@@ -3,6 +3,7 @@ using ImagesComparator;
 
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
@@ -11,6 +12,8 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text.RegularExpressions;
 using System.Web;
+using System.Web.Configuration;
+using System.Web.SessionState;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -20,7 +23,86 @@ namespace EADP_Project
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            Response.Cache.SetCacheability(HttpCacheability.NoCache);
+            if (!IsPostBack)
+            {
+                //SessionIDManager manager = new SessionIDManager();
+                //string currSessionID = manager.GetSessionID(Context);
 
+                if (Session["AuthToken"] != null && Request.Cookies["AuthToken"] != null)
+                {
+                    //second check for cookie has the same value as the second session
+                    if ((Session["AuthToken"].ToString().Equals(Request.Cookies["AuthToken"].Value)))  
+                    {
+
+                    }
+                }
+
+            
+                Session["Reset"] = true;
+                Configuration config = WebConfigurationManager.OpenWebConfiguration("~/Web.Config");
+                SessionStateSection section = (SessionStateSection)config.GetSection("system.web/sessionState");
+                int totalTime = (int)section.Timeout.TotalMinutes * 1000 * 60;
+
+               ClientScript.RegisterStartupScript(this.GetType(), "", "sessionAlert(" + totalTime + ");", true);
+            }
+        }
+
+        //remove session if user didn't choose anything
+        public void removeSession()
+        {
+            //  clear session
+            Session.Clear();
+            Session.Abandon();
+            Session.RemoveAll();
+            if (Request.Cookies["ASP.NET_SessionId"] != null)
+            {
+                Response.Cookies["ASP.NET_SessionId"].Value = string.Empty;
+                Response.Cookies["ASP.NET_SessionId"].Expires = DateTime.Now.AddMonths(-20);
+            }
+            if (Request.Cookies["AuthToken"] != null)
+            {
+                //Empty Cookie
+                Response.Cookies["AuthToken"].Value = string.Empty;
+                Response.Cookies["AuthToken"].Expires = DateTime.Now.AddMonths(-20);
+            }
+            Response.Redirect("LoginPage.aspx");
+        }
+
+        //session fixation for timeout
+        protected void RemoveSessionBtn_OnClick(object Source, EventArgs e)
+        {
+            //  clear session
+            Session.Clear();
+            Session.Abandon();
+            Session.RemoveAll();
+            if (Request.Cookies["ASP.NET_SessionId"] != null)
+            {
+                Response.Cookies["ASP.NET_SessionId"].Value = string.Empty;
+                Response.Cookies["ASP.NET_SessionId"].Expires = DateTime.Now.AddMonths(-20);
+            }
+            if (Request.Cookies["AuthToken"] != null)
+            {
+                //Empty Cookie
+                Response.Cookies["AuthToken"].Value = string.Empty;
+                Response.Cookies["AuthToken"].Expires = DateTime.Now.AddMonths(-20);
+            }
+            Response.Redirect("LoginPage.aspx");
+
+        }
+
+
+
+        //session reset(dk if it's working not)
+        protected void ResetSessionBtn_OnClick(object Source, EventArgs e)
+        {
+            Session["Reset"] = true;
+            Configuration config = WebConfigurationManager.OpenWebConfiguration("~/Web.Config");
+            SessionStateSection section = (SessionStateSection)config.GetSection("system.web/sessionState");
+            int totalTime = (int)section.Timeout.TotalMinutes * 1000 * 60;
+
+            ClientScript.RegisterStartupScript(this.GetType(), "", "sessionAlert(" + totalTime + ");", true);
+           
         }
 
         public bool isValidated()
@@ -100,9 +182,9 @@ namespace EADP_Project
                 }
                 else
                 {
-                     pass = false;
-                     errLblForSQ.Text = "Please choose the first file that is .jpg or .png only";
-                     errLblForSQ.Visible = true;
+                    pass = false;
+                    errLblForSQ.Text = "Please choose the first file that is .jpg or .png only";
+                    errLblForSQ.Visible = true;
                 }
 
             }
@@ -216,12 +298,12 @@ namespace EADP_Project
             }
             else
             {
-                String User_ID = inputNRICTB.Text;
-                String password = passwordTB.Text;
-                String name = inputNameTB.Text;
-                String email = emailTB.Text;
-                String confirmEmail = "false";
-                String role = "Student";
+                string User_ID = inputNRICTB.Text;
+                string password = passwordTB.Text;
+                string name = inputNameTB.Text;
+                string email = emailTB.Text;
+                string confirmEmail = "false";
+                string role = "Student";
                 //String school_ID, String education_level, String education_class;
                 string firstImageAns = firstImageAnsTB.Text.Trim();
                 string secondImageAns = secondImageAnsTB.Text.Trim();
@@ -246,7 +328,7 @@ namespace EADP_Project
                 System.Drawing.Image firstUploaded = System.Drawing.Image.FromStream(imageUpload.PostedFile.InputStream);
                 System.Drawing.Image secUploaded = System.Drawing.Image.FromStream(image2Upload.PostedFile.InputStream);
                 System.Drawing.Image thirdUploaded = System.Drawing.Image.FromStream(image3Upload.PostedFile.InputStream);
-                
+
                 int originalWidth = firstUploaded.Width;
                 int originalHeight = firstUploaded.Height;
                 float percentWidth = (float)256 / (float)originalWidth;
@@ -302,7 +384,7 @@ namespace EADP_Project
                     newImage1.Save(ms, codec, jpegParms);
                     results = ms.ToArray();
 
-                    for(int i = 0; i < results.Length; i++)
+                    for (int i = 0; i < results.Length; i++)
                     {
                         //Stream test = firstUploaded;
                     }
@@ -357,7 +439,7 @@ namespace EADP_Project
                 }
 
 
-              
+
                 ////Calling Compare Function
                 //if (Compare(bmp1, bmp2) == CompareResult.ciCompareOk)
                 //{
@@ -375,16 +457,16 @@ namespace EADP_Project
                 //    Label1.Text = "Size Is Not Same";
                 //}
 
-              
+
                 //Label1.Text = equalElements.ToString() + " - "+ equalElements1.ToString() + " - " +  equalElements2.ToString();
 
-                
+
 
                 //////////////////////////////////////////////////////////////////////////////////////////////
                 RegistrationBO addUser = new RegistrationBO();
-            //    addUser.insertUser(User_ID, password, name, email, confirmEmail, role);
-              //  addUser.insertSQ(User_ID, bytes, firstImageAns, secbytes, secondImageAns, thirdbytes, thirdImageAns);
-
+                addUser.insertUser(User_ID, password, name, email, confirmEmail, role);
+                //addUser.insertSQ(User_ID, bytes, firstImageAns, secbytes, secondImageAns, thirdbytes, thirdImageAns);
+                
                 errLblForSQ.Text = "";
                 errLblForSQ.Visible = false;
                 errLblForName.Text = "";

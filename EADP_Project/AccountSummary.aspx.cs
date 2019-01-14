@@ -18,7 +18,7 @@ namespace EADP_Project
         protected void Button1_Click(object sender, EventArgs e)
         {
             mailService mail = new mailService();
-            Label1.Text = mail.sendmail();
+            Label1.Text = mail.sendmail("zzen2461@gmail.com", "Test", "Body");
         }
     }
 }

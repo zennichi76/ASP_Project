@@ -29,7 +29,7 @@ namespace EADP_Project.Controller
             sqlStr.AppendLine("maxCapacity,CCAPoints,Orion_Points,user_Id)");
             sqlStr.AppendLine("VALUES (@paraEventName,@paraEventSDate, @paraEventEDate, @paraEventSTime,");
             sqlStr.AppendLine("@paraEventETime,@paraEventDescription,@paraMaxCapacity,");
-            //@paraEventLocation,@paraParticipationAmount,");@paraParticipatorId
+
             sqlStr.AppendLine("@paraCCAPoints, @paraOrion_Points,@parauser_Id)");
 
             SqlConnection objsqlconn = new SqlConnection(DBConnect);
@@ -45,9 +45,6 @@ namespace EADP_Project.Controller
             objCmd.Parameters.AddWithValue("@paraEventDescription", eventDescription);
 
             objCmd.Parameters.AddWithValue("@paraMaxCapacity", maxCapacity);
-
-            //sqlCmd.Parameters.AddWithValue("@paraParticipationAmount", participationAmount);
-            //sqlCmd.Parameters.AddWithValue("@paraParticipatorId", participatorId);
             objCmd.Parameters.AddWithValue("@paraCCAPoints", CcaPoints);
             objCmd.Parameters.AddWithValue("@paraOrion_Points", Orion_Points);
             objCmd.Parameters.AddWithValue("@parauser_Id", user_Id);
@@ -314,7 +311,7 @@ namespace EADP_Project.Controller
 
             //declare list to hold collection of events objs
             events theevent = new events();
-
+        
             //retrieve conn string from web config
             //done at class level
 

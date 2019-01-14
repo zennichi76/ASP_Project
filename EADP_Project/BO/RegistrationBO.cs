@@ -10,13 +10,18 @@ namespace EADP_Project.BO
     public class RegistrationBO
     {
         public RegistrationDAO objRegister = new RegistrationDAO();
- /*school_ID, education_level, education_class*/
+        /*school_ID, education_level, education_class*/
         public String insertUser(String User_ID, String password, String name, String email, String confirmEmail, String role)
         {
             string result = "";
             if (result == "")
             {
-                objRegister.UserRegistration(User_ID, password, name, email, confirmEmail, role);
+                string salt;
+                Crypto_BO crypto = new Crypto_BO();
+                crypto.password_crypto(User_ID, password);
+                password = crypto.hashedPassword;
+                salt = crypto.salt;
+                objRegister.UserRegistration(User_ID, password, salt, name, email, confirmEmail, role);
             }
             else
             {

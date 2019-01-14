@@ -7,7 +7,7 @@
     <title></title>
     <link href="css/bootstrap.min.css" rel="stylesheet" />
     <style>
-        .fullscreen_bg{
+        .fullscreen_bg {
             position: fixed;
             top: 0;
             right: 0;
@@ -16,9 +16,10 @@
             background-size: cover;
             background-position: 50% 50%;
             background-image: url("/img/login_bg.jpeg");
-            background-repeat:repeat;
+            background-repeat: repeat;
         }
-        .form-signin{
+
+        .form-signin {
             height: 200px;
             width: 400px;
             position: fixed;
@@ -26,27 +27,31 @@
             left: 50%;
             margin-top: -100px;
             margin-left: -200px;
-        }      
+        }
+
         h2 {
             color: white;
         }
-        h1{
+
+        h1 {
             color: white;
             font-family: monospace;
             font-size: 3em;
         }
-        #LoginBtn, #RegistrationBtn{
+
+        #LoginBtn, #RegistrationBtn {
             margin-top: 25px;
         }
+
         a:link, a:visited {
             color: white;
             text-decoration: none;
             cursor: default;
-}
+        }
     </style>
 </head>
 <body>
-    <div id="fullscreen_bg" class="fullscreen_bg"/>
+    <div id="fullscreen_bg" class="fullscreen_bg" />
     <form id="form1" class="form-signin" runat="server">
         <div class="container">
             <h1>TEAM ORION</h1>
@@ -55,21 +60,49 @@
             <label for="inputID" class="sr-only">User ID</label>
             <asp:TextBox ID="username_tb" runat="server" placeholder="Username" required="required" CssClass="form-control"></asp:TextBox>
             <label for="inputPassword" class="sr-only">Password</label>
-            <asp:TextBox ID="password_tb" runat="server" placeholder="Password" required="required" CssClass="form-control" TextMode="Password"></asp:TextBox>          
+            <asp:TextBox ID="password_tb" runat="server" placeholder="Password" required="required" CssClass="form-control" TextMode="Password"></asp:TextBox>
             <asp:Button ID="LoginBtn" CssClass="btn btn-primary" runat="server" Text="Sign in" OnClick="LoginBtn_Click" />
             <asp:Button ID="RegistrationBtn" CssClass="btn btn-danger" runat="server" Text="Register" OnClick="RegisterBtn_Click" CausesValidation="False" UseSubmitBehavior="False" />
-          
+
             <div class="row">
-                 <asp:Button ID="ForgetSecQnsBtn" CssClass="btn btn-link" runat="server" Text="Forget Security Questions" CausesValidation="False" UseSubmitBehavior="False" ForeColor="White" OnClick="ForgetSecQnsBtn_Click" />
+                <asp:Button ID="ForgetSecQnsBtn" CssClass="btn btn-link" runat="server" Text="Forget Security Questions" CausesValidation="False" UseSubmitBehavior="False" ForeColor="White" OnClick="ForgetSecQnsBtn_Click" />
             </div>
 
         </div>
 
-        
+        <script src="js/popper.min.js"></script>
+        <script src="js/jquery-3.2.1.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+        <script type="text/javascript">
+     // window.onload = assignName();
+            $(document).ready(function () {
+
+            });
+
+            function uuidv4() {
+                return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
+                    (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16))
+            }
+            function assignName() {
+                var winBrow = "guid_" + uuidv4();
+                return winBrow;
+            }
+
+            console.log(assignName());
+            // Check browser support
+            if (typeof (Storage) !== "undefined") {
+                // Store
+                sessionStorage.setItem("browid", assignName());
+
+            } else {
+                alert("Sorry, your browser does not support Web Storage...");
+            }
+        </script>
 
     </form>
-    <script src="js/popper.min.js"></script>
-    <script src="js/jquery-3.2.1.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
+
+
+
+
 </body>
 </html>

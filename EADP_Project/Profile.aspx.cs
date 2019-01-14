@@ -20,6 +20,8 @@ namespace EADP_Project
             UsernameTB.Text = userobj.User_ID;
             NameTB.Text = userobj.name;
             EmailTB.Text = userobj.email;
+            LastPwdChangeLbl.Text = userobj.pwd_startDate.ToShortDateString().ToString();
+            DaysToChangeLbl.Text = (userobj.pwd_endDate - userobj.pwd_startDate).Days.ToString() + " days";
 
         }
 

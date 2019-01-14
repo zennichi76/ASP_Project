@@ -31,6 +31,15 @@ namespace EADP_Project {
         protected global::System.Web.UI.HtmlControls.HtmlAnchor AdminTools;
         
         /// <summary>
+        /// logOutBtn control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlAnchor logOutBtn;
+        
+        /// <summary>
         /// EventNavItem control.
         /// </summary>
         /// <remarks>
@@ -56,6 +65,24 @@ namespace EADP_Project {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlAnchor LinkTuition;
+        
+        /// <summary>
+        /// RemoveSessionBtn control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlButton RemoveSessionBtn;
+        
+        /// <summary>
+        /// invalidateSessionbtn control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlButton invalidateSessionbtn;
         
         /// <summary>
         /// ContentPlaceHolder1 control.
