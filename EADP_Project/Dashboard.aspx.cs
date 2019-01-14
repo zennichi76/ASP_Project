@@ -18,18 +18,25 @@ namespace EADP_Project
         private String current_logged_in_user;
     
         private user current_user_obj;
+        string cookieName;
+        string browserID;
         protected void Page_Load(object sender, EventArgs e)
         {
 
-            /*Session Fixation*/
-            //check if the 2 sessions n cookie is not null
-            if (Session["LoginUserName"] != null && Session["AuthToken"] != null && Request.Cookies["AuthToken"] != null && Request.Cookies["CurrentLoggedInUser"] != null)
+            Response.Cache.SetCacheability(HttpCacheability.NoCache);
+            if (!this.IsPostBack)
             {
-                //second check for cookie has the same value as the second session
-                if ((Session["AuthToken"].ToString().Equals(Request.Cookies["AuthToken"].Value)))  /*End of Session Fixation*/
+                /*Session Fixation*/
+                // check if the 2 sessions n cookie is not null
+               
+
+                if (Session["LoginUserName"] != null && Session["AuthToken"] != null && Request.Cookies["AuthToken"] != null && Request.Cookies["CurrentLoggedInUser"] != null)
                 {
-                     current_logged_in_user = Request.Cookies["CurrentLoggedInUser"].Value;
-                    //current_logged_in_user = Session["LoginUserName"].ToString();
+                    //second check for cookie has the same value as the second session
+                    if ((Session["AuthToken"].ToString().Equals(Request.Cookies["AuthToken"].Value)))  /*End of Session Fixation*/
+                    {
+
+                    current_logged_in_user = Request.Cookies["CurrentLoggedInUser"].Value;
                     ErrorConsentForm.Visible = false;
                     ErrorLabelPurchase.Visible = false;
                     UserBO userbo = new UserBO();
@@ -178,10 +185,21 @@ namespace EADP_Project
                     }
                     ToConsentFormsManagementBtn.NavigateUrl = Response.ApplyAppPathModifier("ManageConsentFormsPage.aspx");
                 }
+                }
+                else
+                {
+                    Response.Redirect("LoginPage.aspx");
+                }
+
+               
+
+
             }
 
-           
-          
         }
+
+   
+
+
     }
 }

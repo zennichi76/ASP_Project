@@ -3,6 +3,7 @@ using ImagesComparator;
 
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
@@ -11,6 +12,8 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text.RegularExpressions;
 using System.Web;
+using System.Web.Configuration;
+using System.Web.SessionState;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -20,7 +23,86 @@ namespace EADP_Project
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            Response.Cache.SetCacheability(HttpCacheability.NoCache);
+            if (!IsPostBack)
+            {
+                //SessionIDManager manager = new SessionIDManager();
+                //string currSessionID = manager.GetSessionID(Context);
 
+                if (Session["AuthToken"] != null && Request.Cookies["AuthToken"] != null)
+                {
+                    //second check for cookie has the same value as the second session
+                    if ((Session["AuthToken"].ToString().Equals(Request.Cookies["AuthToken"].Value)))  
+                    {
+
+                    }
+                }
+
+            
+                Session["Reset"] = true;
+                Configuration config = WebConfigurationManager.OpenWebConfiguration("~/Web.Config");
+                SessionStateSection section = (SessionStateSection)config.GetSection("system.web/sessionState");
+                int totalTime = (int)section.Timeout.TotalMinutes * 1000 * 60;
+
+               ClientScript.RegisterStartupScript(this.GetType(), "", "sessionAlert(" + totalTime + ");", true);
+            }
+        }
+
+        //remove session if user didn't choose anything
+        public void removeSession()
+        {
+            //  clear session
+            Session.Clear();
+            Session.Abandon();
+            Session.RemoveAll();
+            if (Request.Cookies["ASP.NET_SessionId"] != null)
+            {
+                Response.Cookies["ASP.NET_SessionId"].Value = string.Empty;
+                Response.Cookies["ASP.NET_SessionId"].Expires = DateTime.Now.AddMonths(-20);
+            }
+            if (Request.Cookies["AuthToken"] != null)
+            {
+                //Empty Cookie
+                Response.Cookies["AuthToken"].Value = string.Empty;
+                Response.Cookies["AuthToken"].Expires = DateTime.Now.AddMonths(-20);
+            }
+            Response.Redirect("LoginPage.aspx");
+        }
+
+        //session fixation for timeout
+        protected void RemoveSessionBtn_OnClick(object Source, EventArgs e)
+        {
+            //  clear session
+            Session.Clear();
+            Session.Abandon();
+            Session.RemoveAll();
+            if (Request.Cookies["ASP.NET_SessionId"] != null)
+            {
+                Response.Cookies["ASP.NET_SessionId"].Value = string.Empty;
+                Response.Cookies["ASP.NET_SessionId"].Expires = DateTime.Now.AddMonths(-20);
+            }
+            if (Request.Cookies["AuthToken"] != null)
+            {
+                //Empty Cookie
+                Response.Cookies["AuthToken"].Value = string.Empty;
+                Response.Cookies["AuthToken"].Expires = DateTime.Now.AddMonths(-20);
+            }
+            Response.Redirect("LoginPage.aspx");
+
+        }
+
+
+
+        //session reset(dk if it's working not)
+        protected void ResetSessionBtn_OnClick(object Source, EventArgs e)
+        {
+            Session["Reset"] = true;
+            Configuration config = WebConfigurationManager.OpenWebConfiguration("~/Web.Config");
+            SessionStateSection section = (SessionStateSection)config.GetSection("system.web/sessionState");
+            int totalTime = (int)section.Timeout.TotalMinutes * 1000 * 60;
+
+            ClientScript.RegisterStartupScript(this.GetType(), "", "sessionAlert(" + totalTime + ");", true);
+           
         }
 
         public bool isValidated()
