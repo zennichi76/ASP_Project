@@ -58,8 +58,8 @@ namespace EADP_Project.DAO
             SqlCommand objCmd = new SqlCommand();
             int result;
 
-            sqlStr.AppendLine("Insert into [User] (User_ID,Password,Salt,Name,Email,ConfirmEmail,Role)");
-            sqlStr.AppendLine("VALUES (@paraUser_Id, @parapassword, @paraSalt, @paraname, @paraemail, @paraconfirmEmail, @pararole)");
+            sqlStr.AppendLine("Insert into [User] (User_ID,Password,Salt,Name,Email,ConfirmEmail,Role, Pwd_startDate, Pwd_endDate, Pwd_changeBool)");
+            sqlStr.AppendLine("VALUES (@paraUser_Id, @parapassword, @paraSalt, @paraname, @paraemail, @paraconfirmEmail, @pararole, @parapwdStartDate, @parapwdEndDate, @parapwdChangeBool)");
 
             SqlConnection objsqlconn = new SqlConnection(DBConnect);
             objCmd = new SqlCommand(sqlStr.ToString(), objsqlconn);
@@ -71,6 +71,9 @@ namespace EADP_Project.DAO
             objCmd.Parameters.AddWithValue("@paraemail", email);
             objCmd.Parameters.AddWithValue("@paraconfirmEmail", confirmEmail);
             objCmd.Parameters.AddWithValue("@pararole", role);
+            objCmd.Parameters.AddWithValue("@parapwdStartDate", DateTime.Now);
+            objCmd.Parameters.AddWithValue("@parapwdEndDate", DateTime.Now.AddDays(30.0));
+            objCmd.Parameters.AddWithValue("@paraPwdChangeBool", false);
 
             objsqlconn.Open();
             result = objCmd.ExecuteNonQuery();

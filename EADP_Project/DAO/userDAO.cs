@@ -58,9 +58,12 @@ namespace EADP_Project.DAO
                 obj.education_level = row["Education_Level"].ToString();
                 obj.orion_point = int.Parse(row["Orion_Points"].ToString());
                 obj.cca_point = int.Parse(row["CCA_Points"].ToString());
+                obj.pwd_startDate = DateTime.Parse(row["Pwd_startDate"].ToString());
+                obj.pwd_endDate = DateTime.Parse(row["Pwd_endDate"].ToString());
+                obj.pwd_changeBool = (row["Pwd_changeBool"] as int? == 1) ? true : false;
 
 
-               
+
             }
             return obj;
         }
@@ -101,7 +104,7 @@ namespace EADP_Project.DAO
             return TeachingClasses;
 
         }
-        public void updatePwd(String user_ID, String pwd)
+        public void updatePwd(String user_ID, String pwd, String salt)
         {
             int result;
             //get conn string
@@ -109,14 +112,18 @@ namespace EADP_Project.DAO
             DBConnect = ConfigurationManager.ConnectionStrings["ConnStr"].ConnectionString;
 
             StringBuilder sqlCommand = new StringBuilder();
-            sqlCommand.AppendLine("Update [user] set Password=@paraPassword");
+            sqlCommand.AppendLine("Update [user] set Password=@paraPassword, Salt=@paraSalt, Pwd_startDate=@parapwdStartDate, Pwd_endDate=@parapwdEndDate, Pwd_changeBool=@parapwdChangeBool");
             sqlCommand.AppendLine("Where User_ID=@paraUserID");
 
             SqlConnection myConn = new SqlConnection(DBConnect); //conn in java, make connection
             SqlCommand cmd = new SqlCommand(sqlCommand.ToString()); //attach command to connection
             cmd.Connection = myConn;
-            cmd.Parameters.AddWithValue("@paraPassword", pwd);
             cmd.Parameters.AddWithValue("@paraUserID", user_ID);
+            cmd.Parameters.AddWithValue("@paraPassword", pwd);
+            cmd.Parameters.AddWithValue("@paraSalt", salt);
+            cmd.Parameters.AddWithValue("@parapwdStartDate", DateTime.Now);
+            cmd.Parameters.AddWithValue("@parapwdEndDate", DateTime.Now.AddDays(30.0));
+            cmd.Parameters.AddWithValue("@paraPwdChangeBool", false);
             myConn.Open();
             result = cmd.ExecuteNonQuery();
             myConn.Close();

@@ -56,8 +56,13 @@ namespace EADP_Project.BO
 
         public void updatePwd(string user_ID, string pwd)
         {
+            string salt;
+            Crypto_BO crypto = new Crypto_BO();
+            crypto.password_crypto(user_ID, pwd);
+            pwd = crypto.hashedPassword;
+            salt = crypto.salt;
             userDAO userdao = new userDAO();
-            userdao.updatePwd(user_ID, pwd);
+            userdao.updatePwd(user_ID, pwd, salt);
         }
         public void updateEmail(string user_ID, string email)
         {
