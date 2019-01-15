@@ -62,6 +62,12 @@ namespace EADP_Project.DAO
                 obj.pwd_startDate = DateTime.Parse(row["Pwd_startDate"].ToString());
                 obj.pwd_endDate = DateTime.Parse(row["Pwd_endDate"].ToString());
                 obj.pwd_changeBool = (row["Pwd_changeBool"] as int? == 1) ? true : false;
+                obj.gAuth_Enabled = (row["gAuth_Enabled"] as int? == 1) ? true : false;
+                obj.gAuth_Key = "";
+                if (obj.gAuth_Enabled == true)
+                {
+                    obj.gAuth_Key = row["gAuth_Key"].ToString();
+                }
 
 
 
@@ -145,6 +151,51 @@ namespace EADP_Project.DAO
             cmd.Connection = myConn;
             cmd.Parameters.AddWithValue("@paraEmail", email);
             cmd.Parameters.AddWithValue("@paraUserID", user_ID);
+            myConn.Open();
+            result = cmd.ExecuteNonQuery();
+            myConn.Close();
+        }
+        public void activate2FA(string user_ID, string key)
+        {
+            int result;
+            //get conn string
+            string DBConnect;
+            DBConnect = ConfigurationManager.ConnectionStrings["ConnStr"].ConnectionString;
+
+            StringBuilder sqlCommand = new StringBuilder();
+            sqlCommand.AppendLine("Update [user] set gAuth_Enabled=@paragAuthEnabled, gAuth_Key=@paragAuthKey");
+            sqlCommand.AppendLine("Where User_ID=@paraUserID");
+
+            SqlConnection myConn = new SqlConnection(DBConnect); //conn in java, make connection
+            SqlCommand cmd = new SqlCommand(sqlCommand.ToString()); //attach command to connection
+            cmd.Connection = myConn;
+            cmd.Parameters.AddWithValue("@paraUserID", user_ID);
+            cmd.Parameters.AddWithValue("@paragAuthEnabled", true);
+            cmd.Parameters.AddWithValue("@paragAuthKey", key);
+
+            myConn.Open();
+            result = cmd.ExecuteNonQuery();
+            myConn.Close();
+        }
+
+        public void deactivate2FA(string user_ID, string key)
+        {
+            int result;
+            //get conn string
+            string DBConnect;
+            DBConnect = ConfigurationManager.ConnectionStrings["ConnStr"].ConnectionString;
+
+            StringBuilder sqlCommand = new StringBuilder();
+            sqlCommand.AppendLine("Update [user] set gAuth_Enabled=@paragAuthEnabled, gAuth_Key=@paragAuthKey");
+            sqlCommand.AppendLine("Where User_ID=@paraUserID");
+
+            SqlConnection myConn = new SqlConnection(DBConnect); //conn in java, make connection
+            SqlCommand cmd = new SqlCommand(sqlCommand.ToString()); //attach command to connection
+            cmd.Connection = myConn;
+            cmd.Parameters.AddWithValue("@paraUserID", user_ID);
+            cmd.Parameters.AddWithValue("@paragAuthEnabled", false);
+            cmd.Parameters.AddWithValue("@paragAuthKey", "");
+
             myConn.Open();
             result = cmd.ExecuteNonQuery();
             myConn.Close();
