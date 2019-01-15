@@ -22,7 +22,17 @@ namespace EADP_Project
                 LastPwdChangeLbl.Text = userobj.pwd_startDate.ToShortDateString().ToString();
                 DaysToChangeLbl.Text = (userobj.pwd_endDate - userobj.pwd_startDate).Days.ToString() + " days";
                 ////GAuth Test////
-                google_auth_init();
+                if (userobj.gAuth_Enabled == true)
+                {
+                    gAuthEnableLink.Visible = false;
+                    gAuthDisableLink.Visible = true;
+                }
+                else
+                {
+                    gAuthEnableLink.Visible = true;
+                    gAuthDisableLink.Visible = false;
+                }
+                gAuthCard.Visible = false;
 
                 }
 
@@ -89,14 +99,32 @@ namespace EADP_Project
                 UserBO userbo = new UserBO();
                 userbo.activate2FA(Request.Cookies["CurrentLoggedInUser"].Value, key);
 
-                GoogleAuthErrorMsgLabel.Text = "Success";
 
-                }
+                GoogleAuthErrorMsgLabel.Text = "";
+                gAuthCard.Visible = false;
+                mainPanel.Visible = true;
+                gAuthEnableLink.Visible = false;
+                gAuthDisableLink.Visible = true;
+                gAuthSuccessMessage.Text = "Google Authenticator Activated";
+            }
                 else
                 {
 
-                GoogleAuthErrorMsgLabel.Text = "Fail";
+                GoogleAuthErrorMsgLabel.Text = "Incorrect PIN entered";
                 }
+        }
+
+        protected void gAuthEnableLink_Click(object sender, EventArgs e)
+        {
+
+            gAuthCard.Visible = true;
+            google_auth_init();
+            mainPanel.Visible = false;
+        }
+
+        protected void gAuthDisableLink_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

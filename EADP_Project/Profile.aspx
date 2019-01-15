@@ -6,7 +6,7 @@
     <form id="form1" runat="server">
         <div class="container">
             <div class="col-lg-12">
-                <div class="card" style="margin: 0 auto; margin-top: 25px">
+                <div runat="server" id="mainPanel" class="card" style="margin: 0 auto; margin-top: 25px">
                     <div class="card-header">
                         <h4>Profile</h4>
                     </div>
@@ -50,11 +50,18 @@
                             <asp:TextBox ID="ChangePwdConfirmTB" runat="server" TextMode="Password" Style="margin-left: 15px" CssClass="form-control col-lg-2" placeholder="Confirm Password"></asp:TextBox>
                         </div>
                         <asp:Button ID="Button1" CssClass="btn btn-outline-dark" runat="server" Style="margin-top: 15px" Text="Change Password" OnClick="Button1_Click" UseSubmitBehavior="False" />
+                    
+                        <p></p>
+                        <p>
+                            Google Authenticator: <asp:LinkButton ID="gAuthEnableLink" runat="server" OnClick="gAuthEnableLink_Click" CausesValidation="False">Add Google Authenticator</asp:LinkButton>                       
+                            <asp:LinkButton ID="gAuthDisableLink" runat="server" OnClick="gAuthDisableLink_Click" CausesValidation="False" >Remove Google Authenicator</asp:LinkButton>                       
+                            <asp:Label ID="gAuthSuccessMessage" style="color: red" runat="server"></asp:Label>
+                        </p>
                     </div>
                 </div>
-                <div class="card" style="margin: 0 auto; margin-top: 25px">
+                <div class="card"  runat="server" id="gAuthCard" style="margin: 0 auto; margin-top: 25px">
                     <div class="card-header">
-                        <h4>2FA test</h4>
+                        <h4>Google Authenticator</h4>
                     </div>
                     <div class="card-body">
                         <p>To enable Google Authenticator, first scan this QR code in the Google Authenticator App on your phone:</p>
