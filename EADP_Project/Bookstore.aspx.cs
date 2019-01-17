@@ -16,6 +16,7 @@ namespace EADP_Project_Education
     public partial class Bookstore : System.Web.UI.Page , IHttpModule
     {
         private StreamWriter sw;
+       
         public void Dispose()
         {
 
@@ -28,19 +29,61 @@ namespace EADP_Project_Education
 
         private void Application_BeginRequest(Object source, EventArgs e)
         {
-            if (!File.Exists("logger.txt"))
-            {
-                //sw = new StreamWriter(@"C:\Users\Justin Tan\Documents\GitHub\ASP_Project\EADP_Project\App_Data\logger.txt");
-                sw = new StreamWriter(@"D:\Aya\Projects\Y3_ASP_Project\EADP_Project\App_Data\logger.txt");
-            }
-            else
-            {
-                sw = File.AppendText("logger.txt");
-            }
             string ip = System.Net.Dns.GetHostEntry(System.Net.Dns.GetHostName()).AddressList.GetValue(1).ToString();
-            string pageName = this.Page.ToString().Substring(23) + ".aspx";
-            sw.WriteLine(ip + " sends request at {0} while accessing page " + pageName, DateTime.Now);
-            sw.Close();
+            string path = HttpContext.Current.Request.Url.AbsolutePath;
+            path = path.Substring(1);
+            string log = ip + " sends request at " + DateTime.Now + " while accessing page " + path;
+
+            try
+            {
+                using (StreamWriter sw = File.AppendText(@"C:\Users\Justin Tan\Documents\GitHub\ASP_Project\EADP_Project\App_Data\logger_" + DateTime.Today.ToString("yyyyMMdd") + ".txt"))
+                {
+                    sw.WriteLine(log);
+                    sw.Close();
+                }
+            }
+            catch (System.IO.IOException)
+            {
+                try
+                {
+                    sw = File.AppendText(@"C:\Users\Justin Tan\Documents\GitHub\ASP_Project\EADP_Project\App_Data\logger_" + DateTime.Today.ToString("yyyyMMdd") + ".txt");
+                    sw.WriteLine(log);
+                    sw.Close();
+                }
+                catch (System.IO.IOException)
+                {
+                    try
+                    {
+                        sw = File.AppendText(@"C:\Users\Justin Tan\Documents\GitHub\ASP_Project\EADP_Project\App_Data\logger_" + DateTime.Today.ToString("yyyyMMdd") + ".txt");
+                        sw.WriteLine(log);
+                        sw.Close();
+                    }
+                    catch (System.IO.IOException)
+                    {
+                        sw = File.AppendText(@"C:\Users\Justin Tan\Documents\GitHub\ASP_Project\EADP_Project\App_Data\logger_" + DateTime.Today.ToString("yyyyMMdd") + ".txt");
+                        sw.WriteLine(log);
+                        sw.Close();
+                    }
+
+                }
+
+            }
+
+
+            //if (!File.Exists(@"C:\Users\Justin Tan\Documents\GitHub\ASP_Project\EADP_Project\App_Data\logger.txt"))
+            //{
+            //    sw = new StreamWriter(@"C:\Users\Justin Tan\Documents\GitHub\ASP_Project\EADP_Project\App_Data\logger.txt");
+            //    //sw = new StreamWriter(@"C:\Users\Justin Tan\Desktop\ASP_Project\ASP_Project\EADP_Project\App_Data\logger.txt");
+            //}
+            //else
+            //{
+            //    sw = File.AppendText(@"C:\Users\Justin Tan\Documents\GitHub\ASP_Project\EADP_Project\App_Data\logger.txt");
+            //}
+            //string ip = System.Net.Dns.GetHostEntry(System.Net.Dns.GetHostName()).AddressList.GetValue(1).ToString();
+            //string path = HttpContext.Current.Request.Url.AbsolutePath;
+            //path = path.Substring(1);
+            //sw.WriteLine(ip + " sends request at {0} while accessing page " + path, DateTime.Now);
+            //sw.Close();
         }
 
         Bookstore_BO bookstorebo = new Bookstore_BO();

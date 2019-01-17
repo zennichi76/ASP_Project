@@ -8,6 +8,7 @@
     <link href="css/bootstrap.min.css" rel="stylesheet" />
     <style>
         .fullscreen_bg {
+
             position: fixed;
             top: 0;
             right: 0;
