@@ -31,21 +31,30 @@ namespace EADP_Project {
         protected global::System.Web.UI.WebControls.GridView StudentTables;
         
         /// <summary>
-        /// TextBox1 control.
+        /// FileUpload_Log control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBox1;
+        protected global::System.Web.UI.WebControls.FileUpload FileUpload_Log;
         
         /// <summary>
-        /// btn_python control.
+        /// btn_upload_file control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btn_python;
+        protected global::System.Web.UI.WebControls.Button btn_upload_file;
+        
+        /// <summary>
+        /// tb_log_raw control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox tb_log_raw;
     }
 }

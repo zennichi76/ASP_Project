@@ -73,3 +73,13 @@
 192.168.1.115 sends request at 17/1/2019 10:01:38 PM while accessing page css/Base.css
 192.168.1.115 sends request at 17/1/2019 10:01:39 PM while accessing page css/Base.css
 192.168.1.115 sends request at 17/1/2019 10:01:40 PM while accessing page StudyGuide.aspx
+192.168.1.115 sends request at 17/1/2019 10:19:25 PM while accessing page LoginPage.aspx
+192.168.1.115 sends request at 17/1/2019 10:19:43 PM while accessing page LoginPage.aspx
+192.168.1.115 sends request at 17/1/2019 10:19:43 PM while accessing page Dashboard.aspx
+192.168.1.115 sends request at 17/1/2019 10:19:46 PM while accessing page AdminManagement.aspx
+192.168.1.115 sends request at 17/1/2019 10:19:59 PM while accessing page AdminManagement.aspx
+192.168.1.115 sends request at 17/1/2019 10:33:28 PM while accessing page LoginPage.aspx
+192.168.1.115 sends request at 17/1/2019 10:33:45 PM while accessing page LoginPage.aspx
+192.168.1.115 sends request at 17/1/2019 10:33:46 PM while accessing page Dashboard.aspx
+192.168.1.115 sends request at 17/1/2019 10:33:48 PM while accessing page AdminManagement.aspx
+192.168.1.115 sends request at 17/1/2019 10:33:53 PM while accessing page AdminManagement.aspx

@@ -43,8 +43,20 @@
                                     <br />
                                     <table class="w-100">
                                         <tr>
+                                            <td>
+                                               
+                                                <asp:FileUpload ID="FileUpload_Log" runat="server" Width="495px" />
+                                               
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <asp:Button ID="btn_upload_file" runat="server" OnClick="btn_upload_file_Click" Text="Upload" />
+                                            </td>
+                                        </tr>
+                                        <tr>
                                             <td class="auto-style1">
-                                                <asp:TextBox ID="TextBox1" runat="server" Height="476px" TextMode="MultiLine" Width="492px"></asp:TextBox>
+                                                <asp:TextBox ID="tb_log_raw" runat="server" Height="476px" TextMode="MultiLine" Width="492px"></asp:TextBox>
                                             </td>
                                             <td>
                                                 <div id="container" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto">
@@ -53,7 +65,6 @@
                                             </td>
                                         </tr>
                                     </table>
-                                    <asp:Button ID="btn_python" runat="server" OnClick="btn_python_Click" Text="Run Python Script" />
                                     <br />
                                 </div>
                             </div>
@@ -64,9 +75,17 @@
 
         </div>
     </form>
+<script data-main="scripts/main" src="scripts/require.js"></script>
 <script src="https://code.highcharts.com/highcharts.js"></script>
 <script src="https://code.highcharts.com/modules/exporting.js"></script>
 <script src="https://code.highcharts.com/modules/export-data.js"></script>
+<script>
+    var fs = require("fs");
+    var count_text = fs.readFileSync("C:/Users/Justin Tan/PycharmProjects/ASP_Test/count_list.txt").toString('utf-8')
+    var ip_text = fs.readFileSync("C:/Users/Justin Tan/PycharmProjects/ASP_Test/ip_list.txt").toString('utf-8')
+    console.log(count_text)
+    console.log(ip_text)
+</script>
 <script>
     Highcharts.chart('container', {
     chart: {

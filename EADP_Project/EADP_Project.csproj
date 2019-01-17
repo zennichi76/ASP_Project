@@ -141,6 +141,7 @@
     <Content Include="js\bootstrap.min.js.map" />
     <Content Include="ConsentFormStatus.aspx" />
     <Content Include="js\jquery.simulate.js" />
+    <Content Include="js\require.js" />
     <Content Include="js\timepicker-1.3.5\.gitignore" />
     <Content Include="js\timepicker-1.3.5\.travis.yml" />
     <Content Include="js\timepicker-1.3.5\AUTHORS" />
