@@ -76,7 +76,7 @@
                                         </tr>
                                         <tr>
                                             <td>
-                                                <asp:TextBox ID="TextBox1" runat="server" Height="281px" TextMode="MultiLine" Width="722px"></asp:TextBox>
+                                                <asp:TextBox ID="tb_flag" runat="server" Height="281px" TextMode="MultiLine" Width="722px"></asp:TextBox>
                                             </td>
                                             <td>&nbsp;</td>
                                         </tr>
@@ -154,6 +154,6 @@
             y: count5
         }]
     }]
-});
+    });
 </script>
 </asp:Content>

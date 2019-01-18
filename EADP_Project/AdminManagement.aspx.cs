@@ -13,7 +13,7 @@ namespace EADP_Project
 {
     public partial class AdminManagement : System.Web.UI.Page
     {
-        public string ip1, ip2, ip3, ip4, ip5, count1, count2, count3, count4, count5;
+        public string ip1, ip2, ip3, ip4, ip5, count1, count2, count3, count4, count5, flag_ips;
         protected void Page_Load(object sender, EventArgs e)
         {
             
@@ -40,8 +40,11 @@ namespace EADP_Project
             engine.ExecuteFile(@"C:\Users\Justin Tan\PycharmProjects\ASP_Test\test.py", scope);
             var raw_content = scope.GetVariable("raw_log");
             raw_content(inputContent);
-            //var raw_content_2 = scope.GetVariable("raw_log_2");
-            //raw_content_2(inputContent);
+
+            var scope2 = engine.CreateScope();
+            engine.ExecuteFile(@"C:\Users\Justin Tan\PycharmProjects\ASP_Test\test2.py", scope);
+            var raw_content_2 = scope.GetVariable("raw_log_2");
+            raw_content_2(inputContent);
 
             StreamReader readPythonIp = new StreamReader(@"C:\Users\Justin Tan\PycharmProjects\ASP_Test\ip_list.txt");
             try
@@ -93,6 +96,13 @@ namespace EADP_Project
             count3 = readPythonCount.ReadLine();
             count4 = readPythonCount.ReadLine();
             count5 = readPythonCount.ReadLine();
+
+            readPythonCount.Close();
+
+            StreamReader readPythonIntruder = new StreamReader(@"C:\Users\Justin Tan\PycharmProjects\ASP_Test\flag_list.txt");
+            flag_ips = readPythonIntruder.ReadToEnd().ToString();
+            tb_flag.Text = flag_ips;
+            readPythonIntruder.Close();
         }
             
     }
