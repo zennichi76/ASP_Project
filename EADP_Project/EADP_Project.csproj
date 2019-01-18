@@ -125,6 +125,7 @@
     <Content Include="img\Cheese.jpg" />
     <Content Include="img\cleanv.jpg" />
     <Content Include="img\cookedmeat.jpg" />
+    <Content Include="img\invalid.png" />
     <Content Include="img\delete.png" />
     <Content Include="img\DietTracker.PNG" />
     <Content Include="img\edit.png" />
@@ -134,6 +135,7 @@
     <Content Include="img\MasterCard_Logo.svg.png" />
     <Content Include="img\pennpaperbg.jpg" />
     <Content Include="img\save.png" />
+    <Content Include="img\valid.png" />
     <Content Include="img\visa.png" />
     <Content Include="js\bootstrap.bundle.js.map" />
     <Content Include="js\bootstrap.bundle.min.js.map" />

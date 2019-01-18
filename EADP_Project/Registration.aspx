@@ -19,10 +19,10 @@
 
         #pswd_info {
                 position:absolute;
-                bottom: 265px;
+                bottom: 225px;
                 bottom: -115px\9; /* IE Specific */
                 right:55px;
-                width:350px;
+                width:400px;
                 padding:15px;
                 background:#fefefe;
                 font-size:.875em;
@@ -422,7 +422,7 @@
                 }
 
                 //Validate for length of Password.
-                if (passed > 0 && password.length > 8) {
+                if (passed > 2 && password.length > 8) {
                     passed++;
                 }
 
