@@ -22,7 +22,7 @@ namespace EADP_Project.Entities
                 mailmessage.Subject = msg_body;
                 mailmessage.Body = msg_body;
                 smtpClient.UseDefaultCredentials = false;
-                smtpClient.Credentials = new System.Net.NetworkCredential("zzen2461@gmail.com", "zentestinggrounds");
+                smtpClient.Credentials = new System.Net.NetworkCredential("zzen2461@gmail.com", "fqrppqguauyjwlis");
                 
                 mailmessage.From = new MailAddress("zzen2461@gmail.com");
                 mailmessage.To.Add(email_to);
