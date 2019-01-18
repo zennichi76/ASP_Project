@@ -13,9 +13,10 @@ namespace EADP_Project
 {
     public partial class AdminManagement : System.Web.UI.Page
     {
+        public string ip1, ip2, ip3, ip4, ip5, count1, count2, count3, count4, count5;
         protected void Page_Load(object sender, EventArgs e)
         {
-            string number = "OnError hundred";
+            
         }
 
         protected void Button1_Click(object sender, EventArgs e)
@@ -39,8 +40,60 @@ namespace EADP_Project
             engine.ExecuteFile(@"C:\Users\Justin Tan\PycharmProjects\ASP_Test\test.py", scope);
             var raw_content = scope.GetVariable("raw_log");
             raw_content(inputContent);
-            var raw_content_2 = scope.GetVariable("raw_log_2");
-            raw_content_2(inputContent);
+            //var raw_content_2 = scope.GetVariable("raw_log_2");
+            //raw_content_2(inputContent);
+
+            StreamReader readPythonIp = new StreamReader(@"C:\Users\Justin Tan\PycharmProjects\ASP_Test\ip_list.txt");
+            try
+            {
+                ip1 = readPythonIp.ReadLine().ToString();
+            }
+            catch (NullReferenceException)
+            {
+                ip1 = "";
+            }
+            try
+            {
+                ip2 = readPythonIp.ReadLine().ToString();
+            }
+            catch (NullReferenceException)
+            {
+                ip2 = "";
+            }
+            try
+            {
+                ip3 = readPythonIp.ReadLine().ToString();
+            }
+            catch (NullReferenceException)
+            {
+                ip3 = "";
+            }
+            try
+            {
+                ip4 = readPythonIp.ReadLine().ToString();
+            }
+            catch (NullReferenceException)
+            {
+                ip4 = "";
+            }
+            try
+            {
+                ip5 = readPythonIp.ReadLine().ToString();
+            }
+            catch (NullReferenceException)
+            {
+                ip5 = "";
+            }
+
+            readPythonIp.Close();
+
+            StreamReader readPythonCount = new StreamReader(@"C:\Users\Justin Tan\PycharmProjects\ASP_Test\count_list.txt");
+            count1 = readPythonCount.ReadLine();
+            count2 = readPythonCount.ReadLine();
+            count3 = readPythonCount.ReadLine();
+            count4 = readPythonCount.ReadLine();
+            count5 = readPythonCount.ReadLine();
         }
+            
     }
 }

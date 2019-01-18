@@ -39,6 +39,8 @@
                                         </Columns>
                                     </asp:GridView>
                                     <br />
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <asp:Label ID="Label1" runat="server" Font-Bold="True" Font-Size="Larger" Text="Intrusion Detection &amp; Logging"></asp:Label>
                                     <br />
                                     <br />
                                     <table class="w-100">
@@ -51,7 +53,7 @@
                                         </tr>
                                         <tr>
                                             <td>
-                                                <asp:Button ID="btn_upload_file" runat="server" OnClick="btn_upload_file_Click" Text="Upload" />
+                                                <asp:Button ID="btn_upload_file" runat="server" OnClick="btn_upload_file_Click" Text="Process Server Logging File" Width="492px" />
                                             </td>
                                         </tr>
                                         <tr>
@@ -65,6 +67,21 @@
                                             </td>
                                         </tr>
                                     </table>
+                                    <table class="w-100">
+                                        <tr>
+                                            <td>
+                                                <asp:Label ID="Label2" runat="server" Font-Bold="True" Text="Possible Intruders Detected"></asp:Label>
+                                            </td>
+                                            <td>&nbsp;</td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <asp:TextBox ID="TextBox1" runat="server" Height="281px" TextMode="MultiLine" Width="722px"></asp:TextBox>
+                                            </td>
+                                            <td>&nbsp;</td>
+                                        </tr>
+                                    </table>
+                                    <br />
                                     <br />
                                 </div>
                             </div>
@@ -75,18 +92,20 @@
 
         </div>
     </form>
-<script data-main="scripts/main" src="scripts/require.js"></script>
 <script src="https://code.highcharts.com/highcharts.js"></script>
 <script src="https://code.highcharts.com/modules/exporting.js"></script>
 <script src="https://code.highcharts.com/modules/export-data.js"></script>
 <script>
-    var fs = require("fs");
-    var count_text = fs.readFileSync("C:/Users/Justin Tan/PycharmProjects/ASP_Test/count_list.txt").toString('utf-8')
-    var ip_text = fs.readFileSync("C:/Users/Justin Tan/PycharmProjects/ASP_Test/ip_list.txt").toString('utf-8')
-    console.log(count_text)
-    console.log(ip_text)
-</script>
-<script>
+    var ip1 = '<%=ip1%>';
+    var ip2 = '<%=ip2%>';
+    var ip3 = '<%=ip3%>';
+    var ip4 = '<%=ip4%>';
+    var ip5 = '<%=ip5%>';
+    var count1 = parseFloat('<%=count1%>');
+    var count2 = parseFloat('<%=count2%>');
+    var count3 = parseFloat('<%=count3%>');
+    var count4 = parseFloat('<%=count4%>');
+    var count5 = parseFloat('<%=count5%>');
     Highcharts.chart('container', {
     chart: {
         plotBackgroundColor: null,
@@ -95,7 +114,7 @@
         type: 'pie'
     },
     title: {
-        text: 'Hello Friend'
+        text: 'Highest Percentage of traffic by users'
     },
     tooltip: {
         pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
@@ -114,37 +133,25 @@
         }
     },
     series: [{
-        name: 'Brands',
+        name: 'Ip Address',
         colorByPoint: true,
         data: [{
-            name: 'Chrome',
-            y: 61.41,
+            name: ip1,
+            y: count1,
             sliced: true,
             selected: true
         }, {
-            name: 'Internet Explorer',
-            y: 11.84
+            name: ip2,
+            y: count2
         }, {
-            name: 'Firefox',
-            y: 10.85
+            name: ip3,
+            y: count3
         }, {
-            name: 'Edge',
-            y: 4.67
+            name: ip4,
+            y: count4
         }, {
-            name: 'Safari',
-            y: 4.18
-        }, {
-            name: 'Sogou Explorer',
-            y: 1.64
-        }, {
-            name: 'Opera',
-            y: 1.6
-        }, {
-            name: 'QQ',
-            y: 1.2
-        }, {
-            name: 'Other',
-            y: 2.61
+            name: ip5,
+            y: count5
         }]
     }]
 });
