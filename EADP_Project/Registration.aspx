@@ -112,7 +112,8 @@
                                          <li id="length" class="invalid">Be at least <strong>8 characters</strong></li>
                                          <li id="capital" class="invalid">At least <strong>one uppercase letter</strong></li>
                                          <li id="letter" class="invalid">At least <strong>one lowercase letter</strong></li>                                      
-                                         <li id="number" class="invalid">At least <strong>one number</strong></li>                                   
+                                         <li id="number" class="invalid">At least <strong>one number</strong></li>  
+                                         <li id="alphanum" class="invalid">At least <strong>one non-alphanumeric character</strong></li>     
                                     </ul>
                                 </div>
                             <div class="mt-1">
@@ -271,6 +272,13 @@
                         $('#number').removeClass('valid').addClass('invalid');
                     }
 
+                    //validate non-alphanumeric character
+                    if (pswd.match(/[$@$!%*#?&]/)) {
+                        $('#alphanum').removeClass('invalid').addClass('valid');
+                    } else {
+                        $('#alphanum').removeClass('valid').addClass('invalid');
+                    }
+                 
                 }).focus(function () {
                     $('#pswd_info').show();
                 }).blur(function () {
@@ -414,7 +422,7 @@
                 }
 
                 //Validate for length of Password.
-                if (passed > 8 && password.length > 8) {
+                if (passed > 0 && password.length > 8) {
                     passed++;
                 }
 
@@ -432,14 +440,14 @@
                         color = "darkorange";
                         break;
                     case 3:
-                    case 4:
                         strength = "Strong";
                         color = "green";
                         break;
-                    case 5:
+                    case 4:
                         strength = "Very Strong";
                         color = "darkgreen";
                         break;
+                  
                 }
                 password_strength.innerHTML = strength;
                 password_strength.style.color = color;
