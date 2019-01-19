@@ -53,7 +53,11 @@ namespace EADP_Project.BO
             obj = userdao.getTeachersTeachingClasses(user_ID);
             return obj;
         }
-
+        public void addNewLoginLog(string user_ID)
+        {
+            userDAO userdao = new userDAO();
+            userdao.log_login_operation(user_ID);
+        }
         public void updatePwd(string user_ID, string pwd)
         {
             string salt;

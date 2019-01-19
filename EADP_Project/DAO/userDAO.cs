@@ -240,6 +240,28 @@ namespace EADP_Project.DAO
             }
             return classList;
         }
+        public void log_login_operation(string userID)
+        {
+            DateTime currentTime = DateTime.Now;
+            int result;
+            //get conn string
+            string DBConnect;
+            DBConnect = ConfigurationManager.ConnectionStrings["ConnStr"].ConnectionString;
+
+            StringBuilder sqlCommand = new StringBuilder();
+            sqlCommand.AppendLine("Insert into accessHistory (User_ID, dateTime_accessed)");
+            sqlCommand.AppendLine("Values (@paraUserID, @paraTime)");
+
+            SqlConnection myConn = new SqlConnection(DBConnect); //conn in java, make connection
+            SqlCommand cmd = new SqlCommand(sqlCommand.ToString()); //attach command to connection
+            cmd.Connection = myConn;
+            cmd.Parameters.AddWithValue("@paraUserID", userID);
+            cmd.Parameters.AddWithValue("@paraTime", currentTime);
+
+            myConn.Open();
+            result = cmd.ExecuteNonQuery();
+            myConn.Close();
+        }
 
     }
 }
