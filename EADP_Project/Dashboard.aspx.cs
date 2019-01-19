@@ -10,6 +10,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Configuration;
 using System.Web.Configuration;
+using System.IO;
 
 namespace EADP_Project
 {
@@ -194,6 +195,13 @@ namespace EADP_Project
                
 
 
+            }
+
+            string blacklist = File.ReadAllText(@"C:\Users\Justin Tan\Documents\GitHub\ASP_Project\EADP_Project\App_Data\blacklist.txt");
+            string ip = System.Net.Dns.GetHostEntry(System.Net.Dns.GetHostName()).AddressList.GetValue(1).ToString();
+            if (blacklist.Contains(ip))
+            {
+                Server.Transfer("Blacklist.aspx");
             }
 
         }

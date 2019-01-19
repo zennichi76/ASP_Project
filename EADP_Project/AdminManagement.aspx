@@ -4,6 +4,9 @@
         .auto-style1 {
             width: 405px;
         }
+        .auto-style2 {
+            width: 445px;
+        }
     </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
@@ -58,7 +61,7 @@
                                         </tr>
                                         <tr>
                                             <td class="auto-style1">
-                                                <asp:TextBox ID="tb_log_raw" runat="server" Height="476px" TextMode="MultiLine" Width="492px"></asp:TextBox>
+                                                <asp:TextBox ID="tb_log_raw" runat="server" Height="476px" TextMode="MultiLine" Width="492px" ReadOnly="True"></asp:TextBox>
                                             </td>
                                             <td>
                                                 <div id="container" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto">
@@ -66,21 +69,58 @@
                                                 </div>
                                             </td>
                                         </tr>
+                                        <tr>
+                                            <td class="auto-style1">
+                                                <asp:Label ID="Label2" runat="server" Font-Bold="True" Text="Possible Intruders Detected"></asp:Label>
+                                            </td>
+                                            <td>
+                                                <asp:Label ID="Label3" runat="server" Font-Bold="True" Text="Trace User Traffic"></asp:Label>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="auto-style1">
+                                                &nbsp;</td>
+                                            <td>
+                                                <asp:FileUpload ID="FileUpload_iptrace" runat="server" Width="250px" />
+                                                <asp:TextBox ID="tb_ip_trace" runat="server" Width="180px"></asp:TextBox>
+                                                <asp:Button ID="btn_begin_trace" runat="server" OnClick="btn_begin_trace_Click" Text="Begin Trace" />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="auto-style1">
+                                                <asp:TextBox ID="tb_flag" runat="server" Height="280px" TextMode="MultiLine" Width="491px"></asp:TextBox>
+                                            </td>
+                                            <td>
+                                                <asp:TextBox ID="tb_usertraffic" runat="server" Height="280px" ReadOnly="True" TextMode="MultiLine" Width="580px"></asp:TextBox>
+                                            </td>
+                                        </tr>
                                     </table>
                                     <table class="w-100">
                                         <tr>
+                                            <td class="auto-style2">
+                                                &nbsp;</td>
                                             <td>
-                                                <asp:Label ID="Label2" runat="server" Font-Bold="True" Text="Possible Intruders Detected"></asp:Label>
-                                            </td>
+                                                &nbsp;</td>
                                             <td>&nbsp;</td>
                                         </tr>
                                         <tr>
-                                            <td>
-                                                <asp:TextBox ID="tb_flag" runat="server" Height="281px" TextMode="MultiLine" Width="722px"></asp:TextBox>
+                                            <td class="auto-style2">
+                                                <asp:Label ID="Label4" runat="server" Font-Bold="True" Text="Current Blacked Listed IPs (Add/Remove Accordingly)" Width="625px"></asp:Label>
                                             </td>
+                                            <td>
+                                                &nbsp;</td>
                                             <td>&nbsp;</td>
                                         </tr>
-                                    </table>
+                                        <tr>
+                                            <td class="auto-style2">
+                                                <asp:TextBox ID="tb_blacklist" runat="server" Height="300px" OnTextChanged="tb_blacklist_TextChanged" TextMode="MultiLine" Width="625px"></asp:TextBox>
+                                            </td>
+                                            <td>
+                                                </td>
+                                            <td>&nbsp;</td>
+                                        </tr>
+                                        </table>
+                                    <asp:Button ID="btn_apply" runat="server" OnClick="btn_apply_Click" Text="Apply Changes" />
                                     <br />
                                     <br />
                                 </div>

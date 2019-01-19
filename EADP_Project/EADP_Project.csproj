@@ -103,6 +103,7 @@
     <Content Include="App_Data\applicationData_log.ldf">
       <DependentUpon>applicationData.mdf</DependentUpon>
     </Content>
+    <Content Include="Blacklist.aspx" />
     <Content Include="Bookstore.aspx" />
     <Content Include="CreateEventPage.aspx" />
     <Content Include="createTuitionPage.aspx" />
@@ -389,6 +390,13 @@
     </Compile>
     <Compile Include="AllEventPage.aspx.designer.cs">
       <DependentUpon>AllEventPage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Blacklist.aspx.cs">
+      <DependentUpon>Blacklist.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Blacklist.aspx.designer.cs">
+      <DependentUpon>Blacklist.aspx</DependentUpon>
     </Compile>
     <Compile Include="Bookstore.aspx.cs">
       <DependentUpon>Bookstore.aspx</DependentUpon>

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Web;
@@ -14,19 +15,10 @@ namespace EADP_Project
     public partial class AdminManagement : System.Web.UI.Page
     {
         public string ip1, ip2, ip3, ip4, ip5, count1, count2, count3, count4, count5, flag_ips;
+
         protected void Page_Load(object sender, EventArgs e)
         {
-            
-        }
-
-        protected void Button1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        protected void btn_python_Click(object sender, EventArgs e)
-        {
-            
+            tb_blacklist.Text = File.ReadAllText(@"C:\Users\Justin Tan\Documents\GitHub\ASP_Project\EADP_Project\App_Data\blacklist.txt");
         }
 
         protected void btn_upload_file_Click(object sender, EventArgs e)
@@ -104,6 +96,41 @@ namespace EADP_Project
             tb_flag.Text = flag_ips;
             readPythonIntruder.Close();
         }
-            
+
+        protected void btn_begin_trace_Click(object sender, EventArgs e)
+        {
+            StreamReader sr_iptrace = new StreamReader(FileUpload_iptrace.PostedFile.InputStream);
+            var logList = new List<string>();
+
+            while (sr_iptrace.ReadLine() != null)
+            {
+                if(sr_iptrace.ReadLine() != null)
+                {
+                    string data = sr_iptrace.ReadLine();
+                    if (data.Contains(tb_ip_trace.Text.ToString()))
+                    {
+                        logList.Add(data);
+                    }
+                }
+            }
+            tb_usertraffic.Text = string.Join("\n", logList.ToArray());
+        }
+
+        protected void tb_blacklist_TextChanged(object sender, EventArgs e)
+        {
+            string updated_ip = tb_blacklist.Text;
+            File.WriteAllText(@"C:\Users\Justin Tan\Documents\GitHub\ASP_Project\EADP_Project\App_Data\blacklist.txt", updated_ip);
+
+        }
+
+        protected void btn_apply_Click(object sender, EventArgs e)
+        {
+            File.WriteAllText(@"C:\Users\Justin Tan\Documents\GitHub\ASP_Project\EADP_Project\App_Data\blacklist.txt", tb_blacklist.Text);
+
+            //List<string> updated_ip = new List<string>();
+            //updated_ip.Add(tb_blacklist.Text);
+            //StreamWriter sw = File.WriteAllLines(@"C:\Users\Justin Tan\Documents\GitHub\ASP_Project\EADP_Project\App_Data\blacklist.txt", updated_ip);
+        }
+
     }
 }

@@ -38,7 +38,7 @@ namespace EADP_Project_Education
             {
                 using (StreamWriter sw = File.AppendText(@"C:\Users\Justin Tan\Documents\GitHub\ASP_Project\EADP_Project\App_Data\logger_" + DateTime.Today.ToString("yyyyMMdd") + ".txt"))
                 {
-                    sw.Write(log);
+                    sw.WriteLine(log);
                     sw.Close();
                 }
             }
@@ -47,7 +47,7 @@ namespace EADP_Project_Education
                 try
                 {
                     sw = File.AppendText(@"C:\Users\Justin Tan\Documents\GitHub\ASP_Project\EADP_Project\App_Data\logger_" + DateTime.Today.ToString("yyyyMMdd") + ".txt");
-                    sw.Write(log);
+                    sw.WriteLine(log);
                     sw.Close();
                 }
                 catch (System.IO.IOException)
@@ -55,20 +55,20 @@ namespace EADP_Project_Education
                     try
                     {
                         sw = File.AppendText(@"C:\Users\Justin Tan\Documents\GitHub\ASP_Project\EADP_Project\App_Data\logger_" + DateTime.Today.ToString("yyyyMMdd") + ".txt");
-                        sw.Write(log);
+                        sw.WriteLine(log);
                         sw.Close();
                     }
                     catch (System.IO.IOException)
                     {
                         sw = File.AppendText(@"C:\Users\Justin Tan\Documents\GitHub\ASP_Project\EADP_Project\App_Data\logger_" + DateTime.Today.ToString("yyyyMMdd") + ".txt");
-                        sw.Write(log);
+                        sw.WriteLine(log);
                         sw.Close();
                     }
 
                 }
 
             }
-
+            
 
             //if (!File.Exists(@"C:\Users\Justin Tan\Documents\GitHub\ASP_Project\EADP_Project\App_Data\logger.txt"))
             //{
