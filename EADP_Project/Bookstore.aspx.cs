@@ -32,13 +32,13 @@ namespace EADP_Project_Education
             string ip = System.Net.Dns.GetHostEntry(System.Net.Dns.GetHostName()).AddressList.GetValue(1).ToString();
             string path = HttpContext.Current.Request.Url.AbsolutePath;
             path = path.Substring(1);
-            string log = ip + " sends request at " + DateTime.Now + " while accessing page " + path + "\n";
+            string log = ip + " sends request at " + DateTime.Now + " while accessing page " + path;
 
             try
             {
-                using (StreamWriter sw = File.AppendText(@"C:\Users\Justin Tan\Documents\GitHub\ASP_Project\EADP_Project\App_Data\logger_" + DateTime.Today.ToString("yyyyMMdd") + ".txt"))
+                using (StreamWriter sw = File.AppendText(@"C:\Users\Yun\Desktop\ASP_Project\ASP_Project\EADP_Project\Logs\logger_" + DateTime.Today.ToString("yyyyMMdd") + ".txt"))
                 {
-                    sw.Write(log);
+                    sw.WriteLine(log);
                     sw.Close();
                 }
             }
@@ -46,22 +46,22 @@ namespace EADP_Project_Education
             {
                 try
                 {
-                    sw = File.AppendText(@"C:\Users\Justin Tan\Documents\GitHub\ASP_Project\EADP_Project\App_Data\logger_" + DateTime.Today.ToString("yyyyMMdd") + ".txt");
-                    sw.Write(log);
+                    sw = File.AppendText(@"C:\Users\Yun\Desktop\ASP_Project\ASP_Project\EADP_Project\Logs\logger_" + DateTime.Today.ToString("yyyyMMdd") + ".txt");
+                    sw.WriteLine(log);
                     sw.Close();
                 }
                 catch (System.IO.IOException)
                 {
                     try
                     {
-                        sw = File.AppendText(@"C:\Users\Justin Tan\Documents\GitHub\ASP_Project\EADP_Project\App_Data\logger_" + DateTime.Today.ToString("yyyyMMdd") + ".txt");
-                        sw.Write(log);
+                        sw = File.AppendText(@"C:\Users\Yun\Desktop\ASP_Project\ASP_Project\EADP_Project\Logs\logger_" + DateTime.Today.ToString("yyyyMMdd") + ".txt");
+                        sw.WriteLine(log);
                         sw.Close();
                     }
                     catch (System.IO.IOException)
                     {
-                        sw = File.AppendText(@"C:\Users\Justin Tan\Documents\GitHub\ASP_Project\EADP_Project\App_Data\logger_" + DateTime.Today.ToString("yyyyMMdd") + ".txt");
-                        sw.Write(log);
+                        sw = File.AppendText(@"C:\Users\Yun\Desktop\ASP_Project\ASP_Project\EADP_Project\Logs\logger_" + DateTime.Today.ToString("yyyyMMdd") + ".txt");
+                        sw.WriteLine(log);
                         sw.Close();
                     }
 

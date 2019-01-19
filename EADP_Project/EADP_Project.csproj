@@ -344,6 +344,8 @@
     <Content Include="SiteMaster.Master">
       <BrowseToURL>~/SiteMaster.Master</BrowseToURL>
     </Content>
+    <Content Include="Python_Scripts\test.py" />
+    <Content Include="Python_Scripts\test2.py" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
