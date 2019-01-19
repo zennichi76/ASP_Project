@@ -20,7 +20,9 @@ namespace EADP_Project
                 NameTB.Text = userobj.name;
                 EmailTB.Text = userobj.email;
                 LastPwdChangeLbl.Text = userobj.pwd_startDate.ToShortDateString().ToString();
-                DaysToChangeLbl.Text = (userobj.pwd_endDate - userobj.pwd_startDate).Days.ToString() + " days";
+                DaysToChangeLbl.Text = (userobj.pwd_endDate - DateTime.Now).Days.ToString() + " days";
+                accessLogView.DataSource = userbo.getAccessLogById(currentLoggedInUser);
+                accessLogView.DataBind();
                 ////GAuth Test////
                 if (userobj.gAuth_Enabled == true)
                 {
@@ -49,6 +51,11 @@ namespace EADP_Project
                 UserBO userbo = new UserBO();
                 userbo.updatePwd(Request.Cookies["CurrentLoggedInUser"].Value, ChangePwdTB.Text);
                 ErrorMsgLabel.Text = "Password is changed successfully!";
+                String currentLoggedInUser = Request.Cookies["CurrentLoggedInUser"].Value;
+                user userobj = new user();
+                userobj = userbo.getUserById(currentLoggedInUser);
+                LastPwdChangeLbl.Text = userobj.pwd_startDate.ToShortDateString().ToString();
+                DaysToChangeLbl.Text = (userobj.pwd_endDate - DateTime.Now).Days.ToString() + " days";
             }
             else
             {

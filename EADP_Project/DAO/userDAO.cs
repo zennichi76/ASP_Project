@@ -74,6 +74,65 @@ namespace EADP_Project.DAO
             }
             return obj;
         }
+
+        public List<accessLogItem> getAccessLogById(string user_ID)
+        {
+            //get conn string
+            string DBConnect;
+            DBConnect = ConfigurationManager.ConnectionStrings["ConnStr"].ConnectionString;
+            //make adapter
+            SqlDataAdapter da;
+            //make dataset to store results (ResultSet equivalent in Java) 
+            DataSet ds = new DataSet();
+
+            StringBuilder sqlCommand = new StringBuilder();
+            sqlCommand.AppendLine("Select * from [accessHistory] where");
+            sqlCommand.AppendLine("User_ID = @paraUserId order by dateTime_accessed desc ");
+
+            List<accessLogItem> objList = new List<accessLogItem>();
+
+            SqlConnection myConn = new SqlConnection(DBConnect);
+            da = new SqlDataAdapter(sqlCommand.ToString(), myConn);
+            da.SelectCommand.Parameters.AddWithValue("paraUserId", user_ID);
+
+            da.Fill(ds, "logsTable"); //Executes command and fills data set with the results
+            int rec_cnt = ds.Tables["logsTable"].Rows.Count; //recordcount
+            if (rec_cnt == 0) //no record has been found
+            {
+                //return a null object 
+                objList = null;
+            }
+            else if (rec_cnt > 0)
+            {
+                if(rec_cnt > 5)
+                {
+                    for (int i = 0; i < 5; i++)
+                    {
+                        DataRow row = ds.Tables["logsTable"].Rows[i];
+                        accessLogItem obj = new accessLogItem();
+                        obj.ip = row["ip"].ToString();
+                        obj.accessTime = DateTime.Parse(row["dateTime_accessed"].ToString());
+
+                        objList.Add(obj);
+                    }
+                }
+                else
+                {
+                    for (int i = 0; i < rec_cnt; i++)
+                    {
+                        DataRow row = ds.Tables["logsTable"].Rows[i];
+                        accessLogItem obj = new accessLogItem();
+                        obj.ip = row["ip"].ToString();
+                        obj.accessTime = DateTime.Parse(row["dateTime_accessed"].ToString());
+
+                        objList.Add(obj);
+                    }
+                }
+                
+            }
+            return objList;
+        }
+
         public List<String> getTeachersTeachingClasses(String user_ID)
         {
             //get conn string
@@ -129,7 +188,7 @@ namespace EADP_Project.DAO
             cmd.Parameters.AddWithValue("@paraPassword", pwd);
             cmd.Parameters.AddWithValue("@paraSalt", salt);
             cmd.Parameters.AddWithValue("@parapwdStartDate", DateTime.Now);
-            cmd.Parameters.AddWithValue("@parapwdEndDate", DateTime.Now.AddDays(30.0));
+            cmd.Parameters.AddWithValue("@parapwdEndDate", DateTime.Now.AddDays(90.0));
             cmd.Parameters.AddWithValue("@paraPwdChangeBool", false);
             myConn.Open();
             result = cmd.ExecuteNonQuery();
@@ -243,20 +302,22 @@ namespace EADP_Project.DAO
         public void log_login_operation(string userID)
         {
             DateTime currentTime = DateTime.Now;
+            string ip = System.Net.Dns.GetHostEntry(System.Net.Dns.GetHostName()).AddressList.GetValue(1).ToString();
             int result;
             //get conn string
             string DBConnect;
             DBConnect = ConfigurationManager.ConnectionStrings["ConnStr"].ConnectionString;
 
             StringBuilder sqlCommand = new StringBuilder();
-            sqlCommand.AppendLine("Insert into accessHistory (User_ID, dateTime_accessed)");
-            sqlCommand.AppendLine("Values (@paraUserID, @paraTime)");
+            sqlCommand.AppendLine("Insert into accessHistory (User_ID, dateTime_accessed, ip)");
+            sqlCommand.AppendLine("Values (@paraUserID, @paraTime, @paraIp)");
 
             SqlConnection myConn = new SqlConnection(DBConnect); //conn in java, make connection
             SqlCommand cmd = new SqlCommand(sqlCommand.ToString()); //attach command to connection
             cmd.Connection = myConn;
             cmd.Parameters.AddWithValue("@paraUserID", userID);
             cmd.Parameters.AddWithValue("@paraTime", currentTime);
+            cmd.Parameters.AddWithValue("@paraIp", ip);
 
             myConn.Open();
             result = cmd.ExecuteNonQuery();

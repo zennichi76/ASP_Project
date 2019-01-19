@@ -22,6 +22,16 @@
                         <br>
                             Email:
                             <asp:Label ID="EmailTB" runat="server"></asp:Label>
+                        <br>
+                            Access History 
+
+                            <asp:GridView ID="accessLogView"  CssClass="table table-bordered table-light" runat="server" AutoGenerateColumns="False">
+                                <Columns>
+                                    <asp:BoundField DataField="ip" HeaderText="IP Address" />
+                                    <asp:BoundField HeaderText="Access Time" DataField="accessTime" />
+                                </Columns>
+                            </asp:GridView>
+
                         </p>
                         <p>
                             Change Email:                       

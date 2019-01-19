@@ -46,6 +46,15 @@ namespace EADP_Project.BO
                 return obj;
             }
         }
+
+        public List<accessLogItem> getAccessLogById(string user_ID)
+        {
+            List<accessLogItem> obj = new List<accessLogItem>();
+            userDAO userdao = new userDAO();
+            obj = userdao.getAccessLogById(user_ID);
+            return obj;
+        }
+
         public List<string> getTeachersTeachingClasses(string user_ID)
         {
             List<string> obj = new List<string>();

@@ -446,6 +446,7 @@
     <Compile Include="Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Entities\accessLogItem.cs" />
     <Compile Include="Entities\ConsentForm.cs" />
     <Compile Include="Entities\events.cs" />
     <Compile Include="Entities\FormStatus.cs" />
