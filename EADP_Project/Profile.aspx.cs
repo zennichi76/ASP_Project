@@ -124,7 +124,11 @@ namespace EADP_Project
 
         protected void gAuthDisableLink_Click(object sender, EventArgs e)
         {
-
+            UserBO userbo = new UserBO();
+            userbo.deactivate2FA(Request.Cookies["CurrentLoggedInUser"].Value);
+            gAuthDisableLink.Visible = false;
+            gAuthEnableLink.Visible = true;
+            gAuthSuccessMessage.Text = "Google Authenticator Activated";
         }
     }
 }

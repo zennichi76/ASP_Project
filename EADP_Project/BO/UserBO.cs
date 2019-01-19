@@ -69,10 +69,10 @@ namespace EADP_Project.BO
             userDAO userdao = new userDAO();
             userdao.activate2FA(user_ID, key);
         }
-        public void deactivate2FA(string user_ID, string key)
+        public void deactivate2FA(string user_ID)
         {
             userDAO userdao = new userDAO();
-            userdao.deactivate2FA(user_ID, key);
+            userdao.deactivate2FA(user_ID);
         }
         public void updateEmail(string user_ID, string email)
         {

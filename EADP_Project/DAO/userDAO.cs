@@ -178,7 +178,7 @@ namespace EADP_Project.DAO
             myConn.Close();
         }
 
-        public void deactivate2FA(string user_ID, string key)
+        public void deactivate2FA(string user_ID)
         {
             int result;
             //get conn string
