@@ -1,4 +1,5 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/SiteMaster.Master" AutoEventWireup="true" CodeBehind="Profile.aspx.cs" Inherits="EADP_Project.Profile" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/SiteMaster.Master" AutoEventWireup="true" CodeBehind="Profile.aspx.cs" Inherits="EADP_Project.Profile" MaintainScrollPositionOnPostback="true" %>
+
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 </asp:Content>
@@ -22,6 +23,16 @@
                         <br>
                             Email:
                             <asp:Label ID="EmailTB" runat="server"></asp:Label>
+                        <br>
+                            Access History 
+
+                            <asp:GridView ID="accessLogView"  CssClass="table table-bordered table-light" runat="server" AutoGenerateColumns="False">
+                                <Columns>
+                                    <asp:BoundField DataField="ip" HeaderText="IP Address" />
+                                    <asp:BoundField HeaderText="Access Time" DataField="accessTime" />
+                                </Columns>
+                            </asp:GridView>
+
                         </p>
                         <p>
                             Change Email:                       
@@ -45,9 +56,12 @@
                             <asp:Label ID="ErrorMsgLabel" runat="server"></asp:Label>
                         </p>
 
-                        <div class="row">
-                            <asp:TextBox ID="ChangePwdTB" runat="server" TextMode="Password" Style="margin-left: 15px" CssClass="form-control col-lg-2" placeholder="New Password"></asp:TextBox>
-                            <asp:TextBox ID="ChangePwdConfirmTB" runat="server" TextMode="Password" Style="margin-left: 15px" CssClass="form-control col-lg-2" placeholder="Confirm Password"></asp:TextBox>
+                        <div class="mt-1">
+                            <asp:TextBox ID="ChangePwdTB" runat="server" TextMode="Password" CssClass="form-control col-lg-2" placeholder="New Password" onkeyup="CheckPasswordStrength(this.value)"></asp:TextBox>
+                             <div class="mt-1">
+                                <span id="password_strength"></span>
+                                </div>
+                            <asp:TextBox ID="ChangePwdConfirmTB" runat="server" TextMode="Password" CssClass="form-control col-lg-2" placeholder="Confirm Password"></asp:TextBox>
                         </div>
                         <asp:Button ID="Button1" CssClass="btn btn-outline-dark" runat="server" Style="margin-top: 15px" Text="Change Password" OnClick="Button1_Click" UseSubmitBehavior="False" />
                     
@@ -79,5 +93,72 @@
                 </div>
             </div>
         </div>
+
+         <script src="js/popper.min.js"></script>
+        <script src="js/jquery-3.2.1.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+        <script src="js/jquery.simulate.js"></script>
+       
+        <script type="text/javascript">     
+
+            // Password Strength 
+            function CheckPasswordStrength(password) {
+                var password_strength = document.getElementById("password_strength");
+
+                //TextBox left blank.
+                if (password.length == 0) {
+                    password_strength.innerHTML = "";
+                    return;
+                }
+
+                //Regular Expressions.
+                var regex = new Array();
+                regex.push("[A-Z]"); //Uppercase Alphabet.
+                regex.push("[a-z]"); //Lowercase Alphabet.
+                regex.push("[0-9]"); //Digit.
+                regex.push("[$@$!%*#?&]"); //Special Character.
+
+                var passed = 0;
+
+                //Validate for each Regular Expression.
+                for (var i = 0; i < regex.length; i++) {
+                    if (new RegExp(regex[i]).test(password)) {
+                        passed++;
+                    }
+                }
+
+                //Validate for length of Password.
+                if (passed > 2 && password.length > 8) {
+                    passed++;
+                }
+
+                //Display status.
+                var color = "";
+                var strength = "";
+                switch (passed) {
+                    case 0:
+                    case 1:
+                        strength = "Weak";
+                        color = "red";
+                        break;
+                    case 2:
+                        strength = "Good";
+                        color = "darkorange";
+                        break;
+                    case 3:
+                        strength = "Strong";
+                        color = "green";
+                        break;
+                    case 4:
+                        strength = "Very Strong";
+                        color = "darkgreen";
+                        break;
+
+                }
+                password_strength.innerHTML = strength;
+                password_strength.style.color = color;
+            }
+
+            </script>
     </form>
 </asp:Content>

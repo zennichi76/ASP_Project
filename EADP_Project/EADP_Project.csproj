@@ -126,6 +126,7 @@
     <Content Include="img\Cheese.jpg" />
     <Content Include="img\cleanv.jpg" />
     <Content Include="img\cookedmeat.jpg" />
+    <Content Include="img\invalid.png" />
     <Content Include="img\delete.png" />
     <Content Include="img\DietTracker.PNG" />
     <Content Include="img\edit.png" />
@@ -135,6 +136,7 @@
     <Content Include="img\MasterCard_Logo.svg.png" />
     <Content Include="img\pennpaperbg.jpg" />
     <Content Include="img\save.png" />
+    <Content Include="img\valid.png" />
     <Content Include="img\visa.png" />
     <Content Include="js\bootstrap.bundle.js.map" />
     <Content Include="js\bootstrap.bundle.min.js.map" />
@@ -343,6 +345,8 @@
     <Content Include="SiteMaster.Master">
       <BrowseToURL>~/SiteMaster.Master</BrowseToURL>
     </Content>
+    <Content Include="Python_Scripts\test.py" />
+    <Content Include="Python_Scripts\test2.py" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -450,6 +454,7 @@
     <Compile Include="Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Entities\accessLogItem.cs" />
     <Compile Include="Entities\ConsentForm.cs" />
     <Compile Include="Entities\events.cs" />
     <Compile Include="Entities\FormStatus.cs" />
@@ -647,6 +652,7 @@
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>
+      <UserProperties css_4bootstrap-grid_1min_1css_1map__JSONSchema="" />
     </VisualStudio>
   </ProjectExtensions>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

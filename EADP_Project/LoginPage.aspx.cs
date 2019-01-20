@@ -92,6 +92,8 @@ namespace EADP_Project
                 }
                 else if((modalOverlay.Visible && new TwoFactorAuthenticator().ValidateTwoFactorPIN(ViewState["key"].ToString(), gAuthTb.Text)) || (returnedObj.gAuth_Enabled == false && modalOverlay.Visible == false))
                 {
+                    UserBO userbo = new UserBO();
+                    userbo.addNewLoginLog(returnedObj.User_ID.ToString());
                     //to create session for user
                     Session["LoginUserName"] = returnedObj.User_ID.ToString();
                     string guid = Guid.NewGuid().ToString();

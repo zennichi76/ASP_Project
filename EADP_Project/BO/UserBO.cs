@@ -46,6 +46,15 @@ namespace EADP_Project.BO
                 return obj;
             }
         }
+
+        public List<accessLogItem> getAccessLogById(string user_ID)
+        {
+            List<accessLogItem> obj = new List<accessLogItem>();
+            userDAO userdao = new userDAO();
+            obj = userdao.getAccessLogById(user_ID);
+            return obj;
+        }
+
         public List<string> getTeachersTeachingClasses(string user_ID)
         {
             List<string> obj = new List<string>();
@@ -53,7 +62,11 @@ namespace EADP_Project.BO
             obj = userdao.getTeachersTeachingClasses(user_ID);
             return obj;
         }
-
+        public void addNewLoginLog(string user_ID)
+        {
+            userDAO userdao = new userDAO();
+            userdao.log_login_operation(user_ID);
+        }
         public void updatePwd(string user_ID, string pwd)
         {
             string salt;
@@ -69,10 +82,10 @@ namespace EADP_Project.BO
             userDAO userdao = new userDAO();
             userdao.activate2FA(user_ID, key);
         }
-        public void deactivate2FA(string user_ID, string key)
+        public void deactivate2FA(string user_ID)
         {
             userDAO userdao = new userDAO();
-            userdao.deactivate2FA(user_ID, key);
+            userdao.deactivate2FA(user_ID);
         }
         public void updateEmail(string user_ID, string email)
         {
