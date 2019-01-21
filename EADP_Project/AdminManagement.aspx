@@ -18,26 +18,33 @@
                         <div class="card-body">
                             <div class="row" style="margin-top: 25px">
                                 <div class="col-lg-12" style="margin: 0 auto">
-                                    <table class="table table-bordered table-light">
-                                        <tr>
-                                            <th>NRIC</th>
-                                            <th>Role</th>
-                                        </tr>
-                                        <tr>
-                                            <td>Sample Data</td>
-                                            <td>Sample Data</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Sample Data</td>
-                                            <td>Sample Data</td>
-                                        </tr>
-                                    </table>
-                                    <asp:GridView ID="StudentTables" CssClass="table table-bordered table-light" runat="server" AutoGenerateColumns="False">
+                                  <div class="input-group mb-3">
+                                  
+                                        <asp:TextBox ID="tbSearch" placeholder="Users" CssClass="form-control" runat="server" Width="238px"></asp:TextBox>
+                                        <div class="input-group-append">
+                                            <asp:Button ID="btnSearch" CssClass="btn btn-outline-dark" runat="server" Text="Search Users" Onclick="btnSearch_Click" />
+                                        </div>
+                                    </div> 
+                                    <asp:GridView ID="gvUsers" runat="server" AutoGenerateColumns="False" DataKeyNames="Name" 
+                                        BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" CellPadding="4" ForeColor="Black" GridLines="Horizontal" 
+                                        OnSelectedIndexChanged="gvUsers_SelectedIndexChanged" Width="100%"
+                                        AllowPaging="true" OnPageIndexChanging="gvUsers_PageIndexChanging"> 
                                         <Columns>
-                                            <asp:BoundField ItemStyle-Width="30%" HeaderText="Student's NRIC ">
-                                            </asp:BoundField>
-                                        </Columns>
+                                            <asp:BoundField DataField="Name" HeaderText="Name" />
+                                            <asp:BoundField DataField="Email" HeaderText="Email" />
+                                            <asp:BoundField DataField="Role" HeaderText="Role" />
+                                            </Columns>
+                                        <FooterStyle BackColor="#CCCC99" ForeColor="Black" />
+                                        <HeaderStyle BackColor="#333333" Font-Bold="True" ForeColor="White" />
+                                        <PagerStyle BackColor="White" ForeColor="Black" HorizontalAlign="Right" />
+                                        <PagerSettings NextPageText="Next" PreviousPageText="Previous" />
+                                        <SelectedRowStyle BackColor="#CC3333" Font-Bold="True" ForeColor="White" />
+                                        <SortedAscendingCellStyle BackColor="#F7F7F7" />
+                                        <SortedAscendingHeaderStyle BackColor="#4B4B4B" />
+                                        <SortedDescendingCellStyle BackColor="#E5E5E5" />
+                                        <SortedDescendingHeaderStyle BackColor="#242121" />
                                     </asp:GridView>
+                                    
                                     <br />
                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                     <asp:Label ID="Label1" runat="server" Font-Bold="True" Font-Size="Larger" Text="Intrusion Detection &amp; Logging"></asp:Label>

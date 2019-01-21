@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using EADP_Project.BO;
 using IronPython.Hosting;
 using Microsoft.Scripting.Hosting;
 
@@ -14,9 +16,40 @@ namespace EADP_Project
     public partial class AdminManagement : System.Web.UI.Page
     {
         public string ip1, ip2, ip3, ip4, ip5, count1, count2, count3, count4, count5, flag_ips;
+
+        protected void gvUsers_PageIndexChanging(object sender, GridViewPageEventArgs e)
+        {
+            gvUsers.PageIndex = e.NewPageIndex;
+            PopulateGVUsers();
+        }
+
+        protected void btnSearch_Click(object sender, EventArgs e)
+        {
+            PopulateGVUsers();
+        }
+
+        protected void gvUsers_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
         protected void Page_Load(object sender, EventArgs e)
         {
-            
+            if (!IsPostBack)
+            {
+                PopulateGVUsers();
+            }
+        }
+
+        void PopulateGVUsers()
+        {
+            string selectedUsers = tbSearch.Text.Trim();
+            UserBO userinfobo = new UserBO();
+            DataTable dt = new DataTable();
+            dt = userinfobo.getUserInfo(selectedUsers);
+            gvUsers.DataSource = dt;
+            gvUsers.DataBind();
+           
         }
 
         protected void Button1_Click(object sender, EventArgs e)
