@@ -3,6 +3,10 @@ using EADP_Project.Entities;
 using Google.Authenticator;
 using OtpSharp;
 using System;
+using System.Configuration;
+using System.Web;
+using System.Web.Configuration;
+using System.Web.UI;
 
 namespace EADP_Project
 {
@@ -10,31 +14,52 @@ namespace EADP_Project
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            
-            if (!Page.IsPostBack) {
-                UserBO userbo = new UserBO();
-                String currentLoggedInUser = Request.Cookies["CurrentLoggedInUser"].Value;
-                user userobj = new user();
-                userobj = userbo.getUserById(currentLoggedInUser);
-                UsernameTB.Text = userobj.User_ID;
-                NameTB.Text = userobj.name;
-                EmailTB.Text = userobj.email;
-                LastPwdChangeLbl.Text = userobj.pwd_startDate.ToShortDateString().ToString();
-                DaysToChangeLbl.Text = (userobj.pwd_endDate - userobj.pwd_startDate).Days.ToString() + " days";
-                ////GAuth Test////
-                if (userobj.gAuth_Enabled == true)
+            if (!Page.IsPostBack)
+            {
+                Response.Cache.SetCacheability(HttpCacheability.NoCache);
+                Configuration config = WebConfigurationManager.OpenWebConfiguration("~/Web.Config");
+                SessionStateSection section = (SessionStateSection)config.GetSection("system.web/sessionState");
+                int totalTime = (int)section.Timeout.TotalMinutes * 1000 * 60;
+
+                ClientScript.RegisterStartupScript(this.GetType(), "", "sessionAlert(" + totalTime + ");", true);
+                /*Session Fixation*/
+                // check if the 2 sessions n cookie is not null
+
+                if (Session["LoginUserName"] != null && Session["AuthToken"] != null && Request.Cookies["AuthToken"] != null && Request.Cookies["CurrentLoggedInUser"] != null)
                 {
-                    gAuthEnableLink.Visible = false;
-                    gAuthDisableLink.Visible = true;
-                }
+                    if ((Session["AuthToken"].ToString().Equals(Request.Cookies["AuthToken"].Value)))  /*End of Session Fixation*/
+                    { //pass
+                        UserBO userbo = new UserBO();
+                        String currentLoggedInUser = Request.Cookies["CurrentLoggedInUser"].Value;
+                        user userobj = new user();
+                        userobj = userbo.getUserById(currentLoggedInUser);
+                        UsernameTB.Text = userobj.User_ID;
+                        NameTB.Text = userobj.name;
+                        EmailTB.Text = userobj.email;
+                        LastPwdChangeLbl.Text = userobj.pwd_startDate.ToShortDateString().ToString();
+                        DaysToChangeLbl.Text = (userobj.pwd_endDate - userobj.pwd_startDate).Days.ToString() + " days";
+                        ////GAuth Test////
+                        if (userobj.gAuth_Enabled == true)
+                        {
+                            gAuthEnableLink.Visible = false;
+                            gAuthDisableLink.Visible = true;
+                        }
+                        else
+                        {
+                            gAuthEnableLink.Visible = true;
+                            gAuthDisableLink.Visible = false;
+                        }
+                        gAuthCard.Visible = false;
+
+                    }//end of second check
+
+                }//end of first check
                 else
                 {
-                    gAuthEnableLink.Visible = true;
-                    gAuthDisableLink.Visible = false;
+                    Response.Redirect("LoginPage.aspx");
                 }
-                gAuthCard.Visible = false;
 
-                }
+            }
 
         }
 
@@ -126,5 +151,67 @@ namespace EADP_Project
         {
 
         }
+
+
+        //session fixation for timeout
+        protected void RemoveSessionBtn_OnClick(object Source, EventArgs e)
+        {
+            try
+            {
+                //  clear session
+                Session.Clear();
+                Session.Abandon();
+                Session.RemoveAll();
+                if (Request.Cookies["ASP.NET_SessionId"] != null)
+                {
+                    Response.Cookies["ASP.NET_SessionId"].Value = string.Empty;
+                    Response.Cookies["ASP.NET_SessionId"].Expires = DateTime.Now.AddMonths(-20);
+                }
+                if (Request.Cookies["AuthToken"] != null)
+                {
+                    //Empty Cookie
+                    Response.Cookies["AuthToken"].Value = string.Empty;
+                    Response.Cookies["AuthToken"].Expires = DateTime.Now.AddMonths(-20);
+                }
+                if (Request.Cookies["CurrentLoggedInUser"] != null)
+                {
+                    //Empty Cookie
+                    Response.Cookies["CurrentLoggedInUser"].Value = string.Empty;
+                    Response.Cookies["CurrentLoggedInUser"].Expires = DateTime.Now.AddMonths(-20);
+                }
+                ScriptManager.RegisterStartupScript(this, GetType(), "", "sessionStorage.removeItem(browid);", true);
+                Response.Redirect("LoginPage.aspx");
+            }
+            catch
+            {
+
+            }
+
+
+        }
+
+        //session reset
+        protected void ResetSessionBtn_OnClick(object Source, EventArgs e)
+        {
+            try
+            {
+                HttpContext.Current.Session["Reset"] = true;
+                //Session["Reset"] = true;
+                Configuration config = WebConfigurationManager.OpenWebConfiguration("~/Web.Config");
+                SessionStateSection section = (SessionStateSection)config.GetSection("system.web/sessionState");
+                int totalTime = (int)section.Timeout.TotalMinutes * 1000 * 60;
+                this.Page.ClientScript.RegisterStartupScript(this.GetType(), "", "sessionAlert(" + totalTime + ");", true);
+                 this.Page.ClientScript.RegisterStartupScript(this.GetType(), "Pop", "openModal();", true);
+
+            }
+            catch
+            {
+                this.Page.ClientScript.RegisterStartupScript(this.GetType(), "Pop", "openFModal();", true);
+
+            }
+
+        }
+
+
     }
 }

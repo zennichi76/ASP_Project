@@ -13,53 +13,17 @@ namespace EADP_Project.DAO
     public class RegistrationDAO
     {
         string DBConnect = ConfigurationManager.ConnectionStrings["ConnStr"].ToString();
+        //Registration of users
 
-        ////for Actual Registration of users
-        //public int UserRegistration(String User_ID, String password, String name, String email, String confirmEmail, String role, String school_ID, String education_level, String education_class)
-        //{
-        //    DataSet ds = new DataSet();
-        //    StringBuilder sqlStr = new StringBuilder();
-        //    SqlCommand objCmd = new SqlCommand();
-        //    int result;
-
-        //    sqlStr.AppendLine("INSERT INTO User (User_ID, Password, Name, Email, ConfirmEmail, Role, School, Education_Level;, Eduaction_Class)");
-        //    sqlStr.AppendLine("VALUES (@paraUser_ID, @paraPassword, @paraName, @paraEmail,@paraConfirmEmail, @paraRole, @paraSchool, @paraEducation_Level,@paraEducation_Class)");
-
-        //    SqlConnection objsqlconn = new SqlConnection(DBConnect);
-        //    objCmd = new SqlCommand(sqlStr.ToString(), objsqlconn);
-
-
-        //    //SqlCommand objcmd = new SqlCommand(sqlstring, objsqlconn);
-
-        //    objCmd.Parameters.AddWithValue("@paraUser_ID", User_ID);
-        //    objCmd.Parameters.AddWithValue("@paraPassword", password);
-        //    objCmd.Parameters.AddWithValue("@paraName", name);
-        //    objCmd.Parameters.AddWithValue("@paraEmail", email);
-        //    objCmd.Parameters.AddWithValue("@paraConfirmEmail", confirmEmail);
-        //    objCmd.Parameters.AddWithValue("@paraRole", role);
-        //    objCmd.Parameters.AddWithValue("@paraSchool", school_ID);
-        //    objCmd.Parameters.AddWithValue("@parastatus", education_level);
-        //    objCmd.Parameters.AddWithValue("@paratutorId", education_class);
-
-        //    objsqlconn.Open();
-        //    result = objCmd.ExecuteNonQuery();
-        //    objsqlconn.Close();
-
-        //    return result;
-
-        //}
-
-        //test for Registration of users
-
-        public int UserRegistration(string User_ID, string password, string salt, string name, string email, string confirmEmail, string role)
+        public int UserRegistration(string User_ID, string password, string salt, string name, string email, string confirmEmail, string role, String activationCode, DateTime codeEDate)
         {
             DataSet ds = new DataSet();
             StringBuilder sqlStr = new StringBuilder();
             SqlCommand objCmd = new SqlCommand();
             int result;
 
-            sqlStr.AppendLine("Insert into [User] (User_ID,Password,Salt,Name,Email,ConfirmEmail,Role, Pwd_startDate, Pwd_endDate, Pwd_changeBool)");
-            sqlStr.AppendLine("VALUES (@paraUser_Id, @parapassword, @paraSalt, @paraname, @paraemail, @paraconfirmEmail, @pararole, @parapwdStartDate, @parapwdEndDate, @parapwdChangeBool)");
+            sqlStr.AppendLine("Insert into [User] (User_ID,Password,Salt,Name,Email,ConfirmEmail,Role, Pwd_startDate, Pwd_endDate, Pwd_changeBool,ActivationCode,codeEDate)");
+            sqlStr.AppendLine("VALUES (@paraUser_Id, @parapassword, @paraSalt, @paraname, @paraemail, @paraconfirmEmail, @pararole, @parapwdStartDate, @parapwdEndDate, @parapwdChangeBool,@paraActivationCode, @paraedate)");
 
             SqlConnection objsqlconn = new SqlConnection(DBConnect);
             objCmd = new SqlCommand(sqlStr.ToString(), objsqlconn);
@@ -74,12 +38,56 @@ namespace EADP_Project.DAO
             objCmd.Parameters.AddWithValue("@parapwdStartDate", DateTime.Now);
             objCmd.Parameters.AddWithValue("@parapwdEndDate", DateTime.Now.AddDays(30.0));
             objCmd.Parameters.AddWithValue("@paraPwdChangeBool", false);
+            objCmd.Parameters.AddWithValue("@paraActivationCode", activationCode);
+            objCmd.Parameters.AddWithValue("@paraedate", codeEDate);
 
             objsqlconn.Open();
             result = objCmd.ExecuteNonQuery();
             objsqlconn.Close();
 
             return result;
+
+        }
+
+        //check for existing username
+        public bool checkIfUserExist(string User_ID, string email)
+        {
+            SqlDataAdapter da;
+            DataSet ds = new DataSet();
+
+            //declare list to hold collection of events objs
+            user theUser = new user();
+
+            //sql commant to select data from table 
+            StringBuilder sqlCommand = new StringBuilder();
+            sqlCommand.AppendLine("Select User_ID , Email from [User] ");
+            sqlCommand.AppendLine("where User_ID = @paraUser_Id and Email = @paraemail");
+
+            //Instantiate sqlcommnd instance
+            SqlConnection objsqlconn = new SqlConnection(DBConnect);
+
+            //RETRIEVE RECORD USING DATAADAPTER
+            da = new SqlDataAdapter(sqlCommand.ToString(), objsqlconn);
+            da.SelectCommand.CommandType = System.Data.CommandType.StoredProcedure;
+            da.SelectCommand.CommandType = CommandType.Text;
+            da.SelectCommand.Parameters.AddWithValue("@paraUser_Id", User_ID);
+            da.SelectCommand.Parameters.AddWithValue("@paraemail", email);
+
+            //fill dataset to table
+            da.Fill(ds, "userTable");
+
+            //if no record, set list to null
+            int count = ds.Tables["userTable"].Rows.Count;
+            if (count == 0)
+            {
+                return true; //user no exist
+
+            }
+            else
+            {
+                return false; // this means the user exist
+
+            }
 
         }
 
@@ -112,6 +120,47 @@ namespace EADP_Project.DAO
             return result;
 
         }
+
+        //update security Q
+        public int updateSQ(String User_ID, Byte[] firstSecurityQ, String firstSecurityQA, Byte[] secondSecurityQ, String secondSecurityQA, Byte[] thirdSecurityQ, String thirdSecurityQA)
+        {
+
+            DataSet ds = new DataSet();
+            StringBuilder sqlStr = new StringBuilder();
+            SqlCommand objCmd = new SqlCommand();
+            int results;
+            SqlDataAdapter da;
+
+            sqlStr.AppendLine("Update SecurityQuestions set User_ID = @paraUserID, FirstSecurityQuestion = @paraFirstSecurityQuestion ,FirstSecurityQuestionAns = @paraFirstSecurityQuestionAns,");
+            sqlStr.AppendLine("SecondSecurityQuestion= @paraSecondSecurityQuestion , SecondSecurityQuestionAns= @paraSecondSecurityQuestionAns , ThirdSecurityQuestion= @paraThirdSecurityQuestion ,ThirdSecurityQuestionAns = @paraThirdSecurityQuestionAns");
+            sqlStr.AppendLine(" where User_ID = @paraUserID");
+
+            SqlConnection objsqlconn = new SqlConnection(DBConnect);
+            objCmd = new SqlCommand(sqlStr.ToString(), objsqlconn);
+            da = new SqlDataAdapter(objCmd.ToString(), objsqlconn);
+            da.SelectCommand.CommandType = System.Data.CommandType.StoredProcedure;
+            da.SelectCommand.CommandType = CommandType.Text;
+            string x = da.ToString();
+
+
+            //SqlCommand objcmd = new SqlCommand(sqlstring, objsqlconn);
+            objCmd.Parameters.AddWithValue("@paraUserID", User_ID);
+            objCmd.Parameters.AddWithValue("@paraFirstSecurityQuestion", firstSecurityQ);
+            objCmd.Parameters.AddWithValue("@paraFirstSecurityQuestionAns", firstSecurityQA);
+            objCmd.Parameters.AddWithValue("@paraSecondSecurityQuestion", secondSecurityQ);
+            objCmd.Parameters.AddWithValue("@paraSecondSecurityQuestionAns", secondSecurityQA);
+            objCmd.Parameters.AddWithValue("@paraThirdSecurityQuestion", thirdSecurityQ);
+            objCmd.Parameters.AddWithValue("@paraThirdSecurityQuestionAns", thirdSecurityQA);
+
+            objsqlconn.Open();
+            results = objCmd.ExecuteNonQuery();
+            objsqlconn.Close();
+            return results;
+
+
+
+        }
+
 
 
         //for loading the security questions for authentication
@@ -227,6 +276,122 @@ namespace EADP_Project.DAO
             }
 
             return securityList;
+
+        }
+
+        //for getting the code to activate account if user didnt activate acc
+        public activationCode getActivationCodeBasedOnNRIC(String User_ID)
+        {
+            SqlDataAdapter da;
+            DataSet ds = new DataSet();
+
+            //declare list to hold collection of events objs
+            activationCode activationCodeList = new activationCode();
+
+            //sql commant to select data from table 
+            StringBuilder sqlCommand = new StringBuilder();
+            sqlCommand.AppendLine("Select User_ID, ActivationCode, codeEDate, Name, Email, ConfirmEmail");
+
+            sqlCommand.AppendLine("from [User] where User_ID = @parauser_Id ");
+
+            //Instantiate sqlcommnd instance
+            SqlConnection objsqlconn = new SqlConnection(DBConnect);
+
+            //RETRIEVE RECORD USING DATAADAPTER
+            da = new SqlDataAdapter(sqlCommand.ToString(), objsqlconn);
+            da.SelectCommand.CommandType = System.Data.CommandType.StoredProcedure;
+            da.SelectCommand.CommandType = CommandType.Text;
+            da.SelectCommand.Parameters.AddWithValue("@parauser_Id", User_ID);
+            //fill dataset to table
+            da.Fill(ds, "userTable");
+
+            //if no record, set list to null
+            int count = ds.Tables["userTable"].Rows.Count;
+            if (count == 0)
+            {
+                activationCodeList = null;
+
+            }
+            else
+            {
+                // Step 7 : Iterate DataRow to extract table column tdTerm and tdRate and
+                //          create interestRte instance and add the instance to a List collection
+                foreach (DataRow row in ds.Tables["userTable"].Rows)
+                {
+                    //SecurityQuestions objSQ = new SecurityQuestions();
+                    activationCodeList.userId = Convert.ToString(row["User_ID"]);
+                    activationCodeList.ActivationCode = Convert.ToString(row["ActivationCode"]);
+                    activationCodeList.codeEDate = Convert.ToDateTime(row["codeEDate"]);
+                    activationCodeList.Name = Convert.ToString(row["Name"]);
+                    activationCodeList.confirmEmail = Convert.ToString(row["ConfirmEmail"]);
+                    activationCodeList.email = Convert.ToString(row["Email"]);
+                }
+
+            }
+
+            return activationCodeList;
+
+        }
+
+
+
+        //for asking new Activaation Code
+        public int getNewActivationCode(String User_ID, String activationCode, DateTime codeEDate)
+        {
+            DataSet ds = new DataSet();
+            StringBuilder sqlStr = new StringBuilder();
+            SqlCommand objCmd = new SqlCommand();
+            int result;
+            SqlDataAdapter da;
+
+            sqlStr.AppendLine("update [User] set ActivationCode = @paraActivationCode , codeEDate = @paraedate");
+            sqlStr.AppendLine("where User_ID = @parauser_Id");
+
+            SqlConnection objsqlconn = new SqlConnection(DBConnect);
+            objCmd = new SqlCommand(sqlStr.ToString(), objsqlconn);
+            da = new SqlDataAdapter(objCmd.ToString(), objsqlconn);
+            da.SelectCommand.CommandType = System.Data.CommandType.StoredProcedure;
+            da.SelectCommand.CommandType = CommandType.Text;
+
+
+            objCmd.Parameters.AddWithValue("@parauser_Id", User_ID);
+            objCmd.Parameters.AddWithValue("@paraActivationCode", activationCode);
+            objCmd.Parameters.AddWithValue("@paraedate", codeEDate);
+
+            objsqlconn.Open();
+            result = objCmd.ExecuteNonQuery();
+            objsqlconn.Close();
+
+            return result;
+
+        }
+
+        //for updating the user table to activate the account
+        public int ValidateActivationCode(String User_ID, String confirmEmail)
+        {
+
+            DataSet ds = new DataSet();
+            StringBuilder sqlStr = new StringBuilder();
+            SqlCommand objCmd = new SqlCommand();
+            int result;
+            SqlDataAdapter da;
+
+            sqlStr.AppendLine("update [User] set ActivationCode = NULL , ConfirmEmail = @paraConfirmEmail");
+            sqlStr.AppendLine("where User_ID = @parauser_Id");
+
+            SqlConnection objsqlconn = new SqlConnection(DBConnect);
+            objCmd = new SqlCommand(sqlStr.ToString(), objsqlconn);
+            da = new SqlDataAdapter(objCmd.ToString(), objsqlconn);
+            da.SelectCommand.CommandType = System.Data.CommandType.StoredProcedure;
+            da.SelectCommand.CommandType = CommandType.Text;
+            objCmd.Parameters.AddWithValue("@parauser_Id", User_ID);
+            objCmd.Parameters.AddWithValue("@paraConfirmEmail", confirmEmail);
+
+            objsqlconn.Open();
+            result = objCmd.ExecuteNonQuery();
+            objsqlconn.Close();
+
+            return result;
 
         }
 

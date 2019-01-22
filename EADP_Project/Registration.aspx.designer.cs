@@ -22,6 +22,15 @@ namespace EADP_Project {
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
         
         /// <summary>
+        /// regsitrationPanel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel regsitrationPanel;
+        
+        /// <summary>
         /// inputNameTB control.
         /// </summary>
         /// <remarks>
@@ -31,13 +40,13 @@ namespace EADP_Project {
         protected global::System.Web.UI.WebControls.TextBox inputNameTB;
         
         /// <summary>
-        /// errLblForName control.
+        /// errNameLbl control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label errLblForName;
+        protected global::System.Web.UI.WebControls.Label errNameLbl;
         
         /// <summary>
         /// inputNRICTB control.
@@ -85,15 +94,6 @@ namespace EADP_Project {
         protected global::System.Web.UI.WebControls.FileUpload imageUpload;
         
         /// <summary>
-        /// firstImagePreview control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Image firstImagePreview;
-        
-        /// <summary>
         /// firstImageAnsTB control.
         /// </summary>
         /// <remarks>
@@ -110,15 +110,6 @@ namespace EADP_Project {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.FileUpload image2Upload;
-        
-        /// <summary>
-        /// secondImagePreview control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Image secondImagePreview;
         
         /// <summary>
         /// secondImageAnsTB control.
@@ -139,15 +130,6 @@ namespace EADP_Project {
         protected global::System.Web.UI.WebControls.FileUpload image3Upload;
         
         /// <summary>
-        /// ThirdImagePreview control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Image ThirdImagePreview;
-        
-        /// <summary>
         /// thirdImageAnsTB control.
         /// </summary>
         /// <remarks>
@@ -164,6 +146,15 @@ namespace EADP_Project {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label errLblForSQ;
+        
+        /// <summary>
+        /// errCaptcha control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label errCaptcha;
         
         /// <summary>
         /// RegisterBtn control.
@@ -200,14 +191,5 @@ namespace EADP_Project {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlButton redirectBtn;
-        
-        /// <summary>
-        /// Label1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label1;
     }
 }
