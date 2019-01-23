@@ -10,7 +10,7 @@
 namespace EADP_Project {
     
     
-    public partial class WebForm1 {
+    public partial class ConfirmAccount {
         
         /// <summary>
         /// form1 control.
@@ -22,57 +22,30 @@ namespace EADP_Project {
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
         
         /// <summary>
-        /// ClassesDropDownList control.
+        /// confirmCodeTB control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ClassesDropDownList;
+        protected global::System.Web.UI.WebControls.TextBox confirmCodeTB;
         
         /// <summary>
-        /// StudentTables control.
+        /// resendBtn control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView StudentTables;
+        protected global::System.Web.UI.WebControls.Button resendBtn;
         
         /// <summary>
-        /// noStudentsMsg control.
+        /// submitBtn control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label noStudentsMsg;
-        
-        /// <summary>
-        /// ExportBtn control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button ExportBtn;
-        
-        /// <summary>
-        /// Button3 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button Button3;
-        
-        /// <summary>
-        /// Button4 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlButton Button4;
+        protected global::System.Web.UI.WebControls.Button submitBtn;
     }
 }
