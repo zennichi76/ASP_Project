@@ -36,7 +36,7 @@ namespace EADP_Project.DAO
             objCmd.Parameters.AddWithValue("@paraconfirmEmail", confirmEmail);
             objCmd.Parameters.AddWithValue("@pararole", role);
             objCmd.Parameters.AddWithValue("@parapwdStartDate", DateTime.Now);
-            objCmd.Parameters.AddWithValue("@parapwdEndDate", DateTime.Now.AddDays(30.0));
+            objCmd.Parameters.AddWithValue("@parapwdEndDate", DateTime.Now.AddDays(90.0));
             objCmd.Parameters.AddWithValue("@paraPwdChangeBool", false);
             objCmd.Parameters.AddWithValue("@paraActivationCode", activationCode);
             objCmd.Parameters.AddWithValue("@paraedate", codeEDate);

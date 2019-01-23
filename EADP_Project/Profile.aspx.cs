@@ -14,18 +14,21 @@ namespace EADP_Project
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!Page.IsPostBack)
-            {
-                Response.Cache.SetCacheability(HttpCacheability.NoCache);
-                Configuration config = WebConfigurationManager.OpenWebConfiguration("~/Web.Config");
-                SessionStateSection section = (SessionStateSection)config.GetSection("system.web/sessionState");
-                int totalTime = (int)section.Timeout.TotalMinutes * 1000 * 60;
-
-                ClientScript.RegisterStartupScript(this.GetType(), "", "sessionAlert(" + totalTime + ");", true);
-                /*Session Fixation*/
-                // check if the 2 sessions n cookie is not null
-
-                if (Session["LoginUserName"] != null && Session["AuthToken"] != null && Request.Cookies["AuthToken"] != null && Request.Cookies["CurrentLoggedInUser"] != null)
+            
+            if (!Page.IsPostBack) {
+                UserBO userbo = new UserBO();
+                String currentLoggedInUser = Request.Cookies["CurrentLoggedInUser"].Value;
+                user userobj = new user();
+                userobj = userbo.getUserById(currentLoggedInUser);
+                UsernameTB.Text = userobj.User_ID;
+                NameTB.Text = userobj.name;
+                EmailTB.Text = userobj.email;
+                LastPwdChangeLbl.Text = userobj.pwd_startDate.ToShortDateString().ToString();
+                DaysToChangeLbl.Text = (userobj.pwd_endDate - DateTime.Now).Days.ToString() + " days";
+                accessLogView.DataSource = userbo.getAccessLogById(currentLoggedInUser);
+                accessLogView.DataBind();
+                ////GAuth Test////
+                if (userobj.gAuth_Enabled == true)
                 {
                     if ((Session["AuthToken"].ToString().Equals(Request.Cookies["AuthToken"].Value)))  /*End of Session Fixation*/
                     { //pass
@@ -74,6 +77,11 @@ namespace EADP_Project
                 UserBO userbo = new UserBO();
                 userbo.updatePwd(Request.Cookies["CurrentLoggedInUser"].Value, ChangePwdTB.Text);
                 ErrorMsgLabel.Text = "Password is changed successfully!";
+                String currentLoggedInUser = Request.Cookies["CurrentLoggedInUser"].Value;
+                user userobj = new user();
+                userobj = userbo.getUserById(currentLoggedInUser);
+                LastPwdChangeLbl.Text = userobj.pwd_startDate.ToShortDateString().ToString();
+                DaysToChangeLbl.Text = (userobj.pwd_endDate - DateTime.Now).Days.ToString() + " days";
             }
             else
             {
@@ -149,7 +157,11 @@ namespace EADP_Project
 
         protected void gAuthDisableLink_Click(object sender, EventArgs e)
         {
-
+            UserBO userbo = new UserBO();
+            userbo.deactivate2FA(Request.Cookies["CurrentLoggedInUser"].Value);
+            gAuthDisableLink.Visible = false;
+            gAuthEnableLink.Visible = true;
+            gAuthSuccessMessage.Text = "Google Authenticator Activated";
         }
 
 

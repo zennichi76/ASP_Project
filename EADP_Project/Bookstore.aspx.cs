@@ -36,7 +36,7 @@ namespace EADP_Project_Education
 
             try
             {
-                using (StreamWriter sw = File.AppendText(@"C:\Users\Justin Tan\Documents\GitHub\ASP_Project\EADP_Project\App_Data\logger_" + DateTime.Today.ToString("yyyyMMdd") + ".txt"))
+                using (StreamWriter sw = File.AppendText(@"C:\Users\Yun\Desktop\ASP_Project\ASP_Project\EADP_Project\Logs\logger_" + DateTime.Today.ToString("yyyyMMdd") + ".txt"))
                 {
                     sw.WriteLine(log);
                     sw.Close();
@@ -46,7 +46,7 @@ namespace EADP_Project_Education
             {
                 try
                 {
-                    sw = File.AppendText(@"C:\Users\Justin Tan\Documents\GitHub\ASP_Project\EADP_Project\App_Data\logger_" + DateTime.Today.ToString("yyyyMMdd") + ".txt");
+                    sw = File.AppendText(@"C:\Users\Yun\Desktop\ASP_Project\ASP_Project\EADP_Project\Logs\logger_" + DateTime.Today.ToString("yyyyMMdd") + ".txt");
                     sw.WriteLine(log);
                     sw.Close();
                 }
@@ -54,13 +54,13 @@ namespace EADP_Project_Education
                 {
                     try
                     {
-                        sw = File.AppendText(@"C:\Users\Justin Tan\Documents\GitHub\ASP_Project\EADP_Project\App_Data\logger_" + DateTime.Today.ToString("yyyyMMdd") + ".txt");
+                        sw = File.AppendText(@"C:\Users\Yun\Desktop\ASP_Project\ASP_Project\EADP_Project\Logs\logger_" + DateTime.Today.ToString("yyyyMMdd") + ".txt");
                         sw.WriteLine(log);
                         sw.Close();
                     }
                     catch (System.IO.IOException)
                     {
-                        sw = File.AppendText(@"C:\Users\Justin Tan\Documents\GitHub\ASP_Project\EADP_Project\App_Data\logger_" + DateTime.Today.ToString("yyyyMMdd") + ".txt");
+                        sw = File.AppendText(@"C:\Users\Yun\Desktop\ASP_Project\ASP_Project\EADP_Project\Logs\logger_" + DateTime.Today.ToString("yyyyMMdd") + ".txt");
                         sw.WriteLine(log);
                         sw.Close();
                     }

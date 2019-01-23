@@ -6,6 +6,68 @@
     <link href="css/bootstrap.min.css" rel="stylesheet" />
 
     <style>
+        ul, li {
+              margin:0;
+              padding:0;
+              list-style-type:none;
+               }
+
+        form ul li {
+                margin:10px 20px;
+
+            }
+
+        #pswd_info {
+                position:absolute;
+                bottom: 225px;
+                bottom: -115px\9; /* IE Specific */
+                right:55px;
+                width:400px;
+                padding:15px;
+                background:#fefefe;
+                font-size:.875em;
+                border-radius:5px;
+                box-shadow:0 1px 3px #ccc;
+                border:1px solid #ddd;
+                   }
+
+        #pswd_info h4 {
+                margin:0 0 10px 0;
+                padding:0;
+                font-weight:normal;
+            }
+        
+
+        #pswd_info::before {
+                content: "\25B2";
+                position:absolute;
+                top:-12px;
+                left:45%;
+                font-size:14px;
+                line-height:14px;
+                color:#ddd;
+                text-shadow:none;
+                display:block;
+            }
+
+        .invalid {
+                background:url(../img/invalid.png) no-repeat 0 50%;
+                padding-left:22px;
+                line-height:24px;
+                color:#ec3f41;
+            }
+
+        .valid {
+                background:url(../img/valid.png) no-repeat 0 50%;
+                padding-left:22px;
+                line-height:24px;
+                color:#3a7d34;
+            }
+
+        #pswd_info {
+                display:none;
+            }
+
     </style>
 </head>
 <body>
@@ -36,8 +98,22 @@
                             </div>
                             <hr />
                             <div class="mt-1">
-                                <asp:TextBox ID="passwordTB" runat="server" CssClass="form-control" placeholder="Password" TextMode="Password" required></asp:TextBox>
+                                <asp:TextBox ID="passwordTB" runat="server" CssClass="form-control" placeholder="Password" TextMode="Password" onkeyup="CheckPasswordStrength(this.value)"></asp:TextBox>
                             </div>
+
+                            <div class="mt-1">
+                                <span id="password_strength"></span>
+                                </div>
+                            <div class="mt-1" id="pswd_info">
+                                <h4>Password must meet the following requirements:</h4>
+                                    <ul>
+                                         <li id="length" class="invalid">Be at least <strong>8 characters</strong></li>
+                                         <li id="capital" class="invalid">At least <strong>one uppercase letter</strong></li>
+                                         <li id="letter" class="invalid">At least <strong>one lowercase letter</strong></li>                                      
+                                         <li id="number" class="invalid">At least <strong>one number</strong></li>  
+                                         <li id="alphanum" class="invalid">At least <strong>one non-alphanumeric character</strong></li>     
+                                    </ul>
+                                </div>
                             <div class="mt-1">
                                 <asp:TextBox ID="ConfirmPasswordTB" runat="server" CssClass="form-control" placeholder="Confirm Password" TextMode="Password" required></asp:TextBox>
                             </div>
@@ -207,6 +283,52 @@
                         document.getElementById("<%=ConfirmPasswordTB.ClientID%>").style.borderColor = "red";
                     document.getElementById("<%=ConfirmPasswordTB.ClientID%>").style.borderWidth = "2px";
                 });
+
+                // Password complexity
+                $('input[type=password]').keyup(function () {
+                  
+                    var pswd = $(this).val();
+
+                    //validate the length
+                    if (pswd.length < 8) {
+                        $('#length').removeClass('valid').addClass('invalid');
+                    } else {
+                        $('#length').removeClass('invalid').addClass('valid');
+                    }
+
+                    //validate letter
+                    if (pswd.match(/[A-z]/)) {
+                        $('#letter').removeClass('invalid').addClass('valid');
+                    } else {
+                        $('#letter').removeClass('valid').addClass('invalid');
+                    }
+
+                    //validate capital letter
+                    if (pswd.match(/[A-Z]/)) {
+                        $('#capital').removeClass('invalid').addClass('valid');
+                    } else {
+                        $('#capital').removeClass('valid').addClass('invalid');
+                    }
+
+                    //validate number
+                    if (pswd.match(/\d/)) {
+                        $('#number').removeClass('invalid').addClass('valid');
+                    } else {
+                        $('#number').removeClass('valid').addClass('invalid');
+                    }
+
+                    //validate non-alphanumeric character
+                    if (pswd.match(/[$@$!%*#?&]/)) {
+                        $('#alphanum').removeClass('invalid').addClass('valid');
+                    } else {
+                        $('#alphanum').removeClass('valid').addClass('invalid');
+                    }
+                 
+                }).focus(function () {
+                    $('#pswd_info').show();
+                }).blur(function () {
+                    $('#pswd_info').hide();
+                });
             });
 
             ////Testing for idle timeout 
@@ -307,8 +429,69 @@
                 $(this).select();
             }).blur(function () {
 
-            });
+                });
 
+            // Password Strength 
+            function CheckPasswordStrength(password) {
+                var password_strength = document.getElementById("password_strength");
+
+                //TextBox left blank.
+                if (password.length == 0) {
+                    password_strength.innerHTML = "";
+                    return;
+                }
+
+                //Regular Expressions.
+                var regex = new Array();
+                regex.push("[A-Z]"); //Uppercase Alphabet.
+                regex.push("[a-z]"); //Lowercase Alphabet.
+                regex.push("[0-9]"); //Digit.
+                regex.push("[$@$!%*#?&]"); //Special Character.
+
+                var passed = 0;
+
+                //Validate for each Regular Expression.
+                for (var i = 0; i < regex.length; i++) {
+                    if (new RegExp(regex[i]).test(password)) {
+                        passed++;
+                    }
+                }
+
+                //Validate for length of Password.
+                if (passed > 2 && password.length > 8) {
+                    passed++;
+                }
+
+                //Display status.
+                var color = "";
+                var strength = "";
+                switch (passed) {
+                    case 0:
+                    case 1:
+                        strength = "Weak";
+                        color = "red";
+                        break;
+                    case 2:
+                        strength = "Good";
+                        color = "darkorange";
+                        break;
+                    case 3:
+                        strength = "Strong";
+                        color = "green";
+                        break;
+                    case 4:
+                        strength = "Very Strong";
+                        color = "darkgreen";
+                        break;
+                  
+                }
+                password_strength.innerHTML = strength;
+                password_strength.style.color = color;
+            }
+
+            
+
+           
 
             //for previewing images
             function ShowPreview(input) {

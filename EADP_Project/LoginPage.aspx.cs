@@ -321,6 +321,13 @@ namespace EADP_Project
                     {
                         RegistrationBO getCode = new RegistrationBO();
                         activationCode validateCode = getCode.getACBasedOnID(input_username);
+                    UserBO userbo = new UserBO();
+                    userbo.addNewLoginLog(returnedObj.User_ID.ToString());
+                    //to create session for user
+                    Session["LoginUserName"] = returnedObj.User_ID.ToString();
+                    string guid = Guid.NewGuid().ToString();
+                    //create second session for user and assigning a random GUID
+                    Session["AuthToken"] = guid;
 
                         string code = validateCode.ActivationCode;
                         DateTime eDate = validateCode.codeEDate;
