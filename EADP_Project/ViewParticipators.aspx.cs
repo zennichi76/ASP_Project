@@ -13,14 +13,31 @@ namespace EADP_Project.EventPage
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!IsPostBack)
-            {
-               // Response.Cookies["Current_user"].Value = "S12345678F";
-                //wacked the mygv(gridview name)
-                loadAllData();
-                allocatePanel.Visible = false;
+                Response.Cache.SetCacheability(HttpCacheability.NoCache);
+                if (!IsPostBack)
+                {
+                    /*Session Fixation*/
+                    // check if the 2 sessions n cookie is not null
+                    if (Session["LoginUserName"] != null && Session["AuthToken"] != null && Request.Cookies["AuthToken"] != null && Request.Cookies["CurrentLoggedInUser"] != null)
+                    {
+                        if((Session["AuthToken"].ToString().Equals(Request.Cookies["AuthToken"].Value)))  /*End of Session Fixation*/
+                        { //pass
 
-            }
+                            loadAllData();
+                        }//end of second check
+                        else
+                        {
+                           
+                        }
+
+                    }//end of first check
+                    else
+                    {
+                        Response.Redirect("LoginPage.aspx");
+                    }
+
+                }
+
         }
 
         String participatorId;
