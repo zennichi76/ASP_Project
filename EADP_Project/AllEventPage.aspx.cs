@@ -15,32 +15,25 @@ namespace EADP_Project.EventPage
         String participatorId;
         protected void Page_Load(object sender, EventArgs e)
         {
-            Response.Cache.SetCacheability(HttpCacheability.NoCache);
+            
+
             if (!IsPostBack)
             {
-                /*Session Fixation*/
-                // check if the 2 sessions n cookie is not null
-
-                if (Session["LoginUserName"] != null && Session["AuthToken"] != null && Request.Cookies["AuthToken"] != null && Request.Cookies["CurrentLoggedInUser"] != null)
-                {
-                    if ((Session["AuthToken"].ToString().Equals(Request.Cookies["AuthToken"].Value)))  /*End of Session Fixation*/
-                    {
-                        //pass
-                        participatorId = Request.Cookies["CurrentLoggedInUser"].Value;
-                        loadAllData();
-                        eventDetailsPanel.Visible = false;
-                        EventPanel.Visible = true;
-                    }//end of second check
-
-                }//end of first check
-                else
+                if (Request.Cookies["CurrentLoggedInUser"].Value != null)
                 {
 
-                    ScriptManager.RegisterStartupScript(this, GetType(), "", "sessionStorage.removeItem('browid');", true);
-                    Response.Redirect("LoginPage.aspx");
+                    participatorId = Request.Cookies["CurrentLoggedInUser"].Value;
+                    loadAllData();
+                    eventDetailsPanel.Visible = false;
+                    EventPanel.Visible = true;
                 }
+
+
             }
         }
+
+
+        
         int eventId;
 
 
@@ -51,8 +44,10 @@ namespace EADP_Project.EventPage
             AllEventGridView.DataSource = filltable.loadAllEvent();
             AllEventGridView.DataBind();
 
-        }
 
+
+        }
+        
 
         protected void AllEventGridView_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -67,7 +62,7 @@ namespace EADP_Project.EventPage
             events eventobj = getDetails.GetEventById(eventId);
             events test = getDetails.getNumParticipants(eventId);
 
-
+           
 
             selectedEventIdLbl.Text = eventobj.eventId.ToString();
             selectedEventLbl.Text = eventobj.eventName.ToString();
@@ -130,14 +125,14 @@ namespace EADP_Project.EventPage
             }
             else if (signUp.checkIfParticipantExist(eventId, participatorId) == false)
             {
-                // joinBtn.Visible = false;
+               // joinBtn.Visible = false;
                 string display = "You have already sign up for this event!";
                 ClientScript.RegisterStartupScript(this.GetType(), "You have already sign up for this event!", "alert('" + display + "');", true);
             }
 
             else
             {
-                signUp.signUpEvent(eventId, eventName, eventSDate, eventEDate, eventSTime, eventETime, eventDescription, currentParticipator, CCAPoints, Orion_Points, creatorId);
+                signUp.signUpEvent(eventId, eventName, eventSDate, eventEDate, eventSTime, eventETime, eventDescription, currentParticipator,CCAPoints,Orion_Points,creatorId);
                 string display = "Congrats for signing up! See you on the day of the event!";
                 ClientScript.RegisterStartupScript(this.GetType(), "Congrats for signing up! See you on the day of the event!", "alert('" + display + "');", true);
                 eventDetailsPanel.Visible = false;
@@ -146,11 +141,10 @@ namespace EADP_Project.EventPage
         }
 
 
-        protected void joinBtn_Click(object sender, EventArgs e)
-        {
+            protected void joinBtn_Click(object sender, EventArgs e)
+             {
             string confirmValue = Request.Form["confirm_value"];
-            if (confirmValue == "Yes")
-            {
+            if (confirmValue == "Yes") {
                 signUpEvent();
             }
             else
@@ -158,8 +152,8 @@ namespace EADP_Project.EventPage
                 string display = "You did not sign up for the event!";
                 ClientScript.RegisterStartupScript(this.GetType(), "You did not sign up for the event!", "alert('" + display + "');", true);
             }
-
-        }
+               
+            }
 
         protected void openEventPanelBtn_Click(object sender, EventArgs e)
         {
@@ -182,3 +176,4 @@ namespace EADP_Project.EventPage
     }
 }
 
+   

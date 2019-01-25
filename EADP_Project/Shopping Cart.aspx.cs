@@ -16,87 +16,13 @@ namespace EADP_Project_Education
 
         protected void Page_Load(object sender, EventArgs e)
         {
-                Response.Cache.SetCacheability(HttpCacheability.NoCache);
-                if (!IsPostBack)
-                {
-                    /*Session Fixation*/
-                    // check if the 2 sessions n cookie is not null
-                    if (Session["LoginUserName"] != null && Session["AuthToken"] != null && Request.Cookies["AuthToken"] != null && Request.Cookies["CurrentLoggedInUser"] != null)
-                    {
-                        if ((Session["AuthToken"].ToString().Equals(Request.Cookies["AuthToken"].Value)))  /*End of Session Fixation*/
-                        { //pass
-                            GridViewCart.DataSource = bookstorebo.GridViewTableSC();
-                            GridViewCart.DataBind();
-
-                        }//end of second check
-                        else
-                        {
-                            //unauthorised user access
-                            if (Session["LoginUserName"] != null && Session["AuthToken"] != null && Request.Cookies["AuthToken"] != null && Request.Cookies["CurrentLoggedInUser"] != null && Request.Cookies["ASP.NET_SessionId"] != null)
-                            {
-                                //  clear session
-                                Session.Clear();
-                                Session.Abandon();
-                                Session.RemoveAll();
-                                //invalidate all existing session
-                                if (Request.Cookies["ASP.NET_SessionId"] != null)
-                                {
-                                    Response.Cookies["ASP.NET_SessionId"].Value = string.Empty;
-                                    Response.Cookies["ASP.NET_SessionId"].Expires = DateTime.Now.AddMonths(-20);
-                                }
-                                if (Request.Cookies["AuthToken"] != null)
-                                {
-                                    //Empty Cookie
-                                    Response.Cookies["AuthToken"].Value = string.Empty;
-                                    Response.Cookies["AuthToken"].Expires = DateTime.Now.AddMonths(-20);
-                                }
-                                if (Request.Cookies["CurrentLoggedInUser"] != null)
-                                {
-                                    //Empty Cookie
-                                    Response.Cookies["CurrentLoggedInUser"].Value = string.Empty;
-                                    Response.Cookies["CurrentLoggedInUser"].Expires = DateTime.Now.AddMonths(-20);
-                                }
-                            }
-                            ScriptManager.RegisterStartupScript(this, GetType(), "", "sessionStorage.removeItem('browid');", true);
-                            Response.Redirect("LoginPage.aspx");
-                        }
-
-                    }//end of first check
-                    else
-                    {
-                        //unauthorised user access
-                        if (Session["LoginUserName"] != null && Session["AuthToken"] != null && Request.Cookies["AuthToken"] != null && Request.Cookies["CurrentLoggedInUser"] != null && Request.Cookies["ASP.NET_SessionId"] != null)
-                        {
-                            //  clear session
-                            Session.Clear();
-                            Session.Abandon();
-                            Session.RemoveAll();
-                            //invalidate all existing session
-                            if (Request.Cookies["ASP.NET_SessionId"] != null)
-                            {
-                                Response.Cookies["ASP.NET_SessionId"].Value = string.Empty;
-                                Response.Cookies["ASP.NET_SessionId"].Expires = DateTime.Now.AddMonths(-20);
-                            }
-                            if (Request.Cookies["AuthToken"] != null)
-                            {
-                                //Empty Cookie
-                                Response.Cookies["AuthToken"].Value = string.Empty;
-                                Response.Cookies["AuthToken"].Expires = DateTime.Now.AddMonths(-20);
-                            }
-                            if (Request.Cookies["CurrentLoggedInUser"] != null)
-                            {
-                                //Empty Cookie
-                                Response.Cookies["CurrentLoggedInUser"].Value = string.Empty;
-                                Response.Cookies["CurrentLoggedInUser"].Expires = DateTime.Now.AddMonths(-20);
-                            }
-                        }
-                        ScriptManager.RegisterStartupScript(this, GetType(), "", "sessionStorage.removeItem('browid');", true);
-                        Response.Redirect("LoginPage.aspx");
-                    }
-
-                }
-
+            if (!Page.IsPostBack)
+            {
+                GridViewCart.DataSource = bookstorebo.GridViewTableSC();
+                GridViewCart.DataBind();
             }
+        }
+
 
         protected void btn_pay_Click(object sender, EventArgs e)
         {
@@ -135,7 +61,7 @@ namespace EADP_Project_Education
 
 
         protected void TB_CardNum_TextChanged(object sender, EventArgs e)
-        {
+        { 
             if (TB_CardNum.Text.StartsWith("4") && TB_CardNum.Text.Length == 16)
             {
                 ImageCardType.ImageUrl = "~/img/visa.png";
@@ -150,7 +76,7 @@ namespace EADP_Project_Education
         {
             StringBuilder sb = new StringBuilder();
             int count = 0;
-            if (TB_CardNum.Text == "")
+            if(TB_CardNum.Text == "")
             {
                 count++;
                 sb.AppendLine("Ensure that your credit card number is filled in");
@@ -170,8 +96,8 @@ namespace EADP_Project_Education
                 count++;
                 sb.AppendLine("Ensure that your name is filled in");
             }
-
-            if (count > 0)
+            
+            if(count > 0)
             {
                 TB_ErrorCard.Visible = true;
                 TB_ErrorCard.Text = sb.ToString();

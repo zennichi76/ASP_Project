@@ -49,13 +49,13 @@ namespace EADP_Project {
         protected global::System.Web.UI.WebControls.Button cancelBtn;
         
         /// <summary>
-        /// submitIdBtn control.
+        /// submitEmailBtn control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button submitIdBtn;
+        protected global::System.Web.UI.WebControls.Button submitEmailBtn;
         
         /// <summary>
         /// passwordPanel control.
@@ -65,15 +65,6 @@ namespace EADP_Project {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel passwordPanel;
-        
-        /// <summary>
-        /// inputPasswordTB control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox inputPasswordTB;
         
         /// <summary>
         /// cancelBtnForPassword control.
@@ -103,22 +94,13 @@ namespace EADP_Project {
         protected global::System.Web.UI.WebControls.Panel answerSecurityQ;
         
         /// <summary>
-        /// errLbl control.
+        /// Label1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label errLbl;
-        
-        /// <summary>
-        /// imageDDL control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList imageDDL;
+        protected global::System.Web.UI.WebControls.Label Label1;
         
         /// <summary>
         /// Image1 control.
@@ -130,13 +112,13 @@ namespace EADP_Project {
         protected global::System.Web.UI.WebControls.Image Image1;
         
         /// <summary>
-        /// securityQntAnsTB control.
+        /// Image2 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox securityQntAnsTB;
+        protected global::System.Web.UI.WebControls.Image Image2;
         
         /// <summary>
         /// cancelBtnForSecurityQuestion control.
@@ -164,69 +146,6 @@ namespace EADP_Project {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel resetSeurityPanel;
-        
-        /// <summary>
-        /// imageUpload control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.FileUpload imageUpload;
-        
-        /// <summary>
-        /// firstImageAnsTB control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox firstImageAnsTB;
-        
-        /// <summary>
-        /// image2Upload control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.FileUpload image2Upload;
-        
-        /// <summary>
-        /// secondImageAnsTB control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox secondImageAnsTB;
-        
-        /// <summary>
-        /// image3Upload control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.FileUpload image3Upload;
-        
-        /// <summary>
-        /// thirdImageAnsTB control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox thirdImageAnsTB;
-        
-        /// <summary>
-        /// errLblForSQ control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label errLblForSQ;
         
         /// <summary>
         /// cancel control.

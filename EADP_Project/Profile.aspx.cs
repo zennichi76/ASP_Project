@@ -3,10 +3,6 @@ using EADP_Project.Entities;
 using Google.Authenticator;
 using OtpSharp;
 using System;
-using System.Configuration;
-using System.Web;
-using System.Web.Configuration;
-using System.Web.UI;
 
 namespace EADP_Project
 {
@@ -30,39 +26,17 @@ namespace EADP_Project
                 ////GAuth Test////
                 if (userobj.gAuth_Enabled == true)
                 {
-                    if ((Session["AuthToken"].ToString().Equals(Request.Cookies["AuthToken"].Value)))  /*End of Session Fixation*/
-                    { //pass
-                        UserBO userbo = new UserBO();
-                        String currentLoggedInUser = Request.Cookies["CurrentLoggedInUser"].Value;
-                        user userobj = new user();
-                        userobj = userbo.getUserById(currentLoggedInUser);
-                        UsernameTB.Text = userobj.User_ID;
-                        NameTB.Text = userobj.name;
-                        EmailTB.Text = userobj.email;
-                        LastPwdChangeLbl.Text = userobj.pwd_startDate.ToShortDateString().ToString();
-                        DaysToChangeLbl.Text = (userobj.pwd_endDate - userobj.pwd_startDate).Days.ToString() + " days";
-                        ////GAuth Test////
-                        if (userobj.gAuth_Enabled == true)
-                        {
-                            gAuthEnableLink.Visible = false;
-                            gAuthDisableLink.Visible = true;
-                        }
-                        else
-                        {
-                            gAuthEnableLink.Visible = true;
-                            gAuthDisableLink.Visible = false;
-                        }
-                        gAuthCard.Visible = false;
-
-                    }//end of second check
-
-                }//end of first check
+                    gAuthEnableLink.Visible = false;
+                    gAuthDisableLink.Visible = true;
+                }
                 else
                 {
-                    Response.Redirect("LoginPage.aspx");
+                    gAuthEnableLink.Visible = true;
+                    gAuthDisableLink.Visible = false;
                 }
+                gAuthCard.Visible = false;
 
-            }
+                }
 
         }
 
@@ -163,67 +137,5 @@ namespace EADP_Project
             gAuthEnableLink.Visible = true;
             gAuthSuccessMessage.Text = "Google Authenticator Activated";
         }
-
-
-        //session fixation for timeout
-        protected void RemoveSessionBtn_OnClick(object Source, EventArgs e)
-        {
-            try
-            {
-                //  clear session
-                Session.Clear();
-                Session.Abandon();
-                Session.RemoveAll();
-                if (Request.Cookies["ASP.NET_SessionId"] != null)
-                {
-                    Response.Cookies["ASP.NET_SessionId"].Value = string.Empty;
-                    Response.Cookies["ASP.NET_SessionId"].Expires = DateTime.Now.AddMonths(-20);
-                }
-                if (Request.Cookies["AuthToken"] != null)
-                {
-                    //Empty Cookie
-                    Response.Cookies["AuthToken"].Value = string.Empty;
-                    Response.Cookies["AuthToken"].Expires = DateTime.Now.AddMonths(-20);
-                }
-                if (Request.Cookies["CurrentLoggedInUser"] != null)
-                {
-                    //Empty Cookie
-                    Response.Cookies["CurrentLoggedInUser"].Value = string.Empty;
-                    Response.Cookies["CurrentLoggedInUser"].Expires = DateTime.Now.AddMonths(-20);
-                }
-                ScriptManager.RegisterStartupScript(this, GetType(), "", "sessionStorage.removeItem(browid);", true);
-                Response.Redirect("LoginPage.aspx");
-            }
-            catch
-            {
-
-            }
-
-
-        }
-
-        //session reset
-        protected void ResetSessionBtn_OnClick(object Source, EventArgs e)
-        {
-            try
-            {
-                HttpContext.Current.Session["Reset"] = true;
-                //Session["Reset"] = true;
-                Configuration config = WebConfigurationManager.OpenWebConfiguration("~/Web.Config");
-                SessionStateSection section = (SessionStateSection)config.GetSection("system.web/sessionState");
-                int totalTime = (int)section.Timeout.TotalMinutes * 1000 * 60;
-                this.Page.ClientScript.RegisterStartupScript(this.GetType(), "", "sessionAlert(" + totalTime + ");", true);
-                 this.Page.ClientScript.RegisterStartupScript(this.GetType(), "Pop", "openModal();", true);
-
-            }
-            catch
-            {
-                this.Page.ClientScript.RegisterStartupScript(this.GetType(), "Pop", "openFModal();", true);
-
-            }
-
-        }
-
-
     }
 }

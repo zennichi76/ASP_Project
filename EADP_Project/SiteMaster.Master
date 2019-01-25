@@ -4,10 +4,65 @@
 
 <html>
 <head runat="server">
+    <%--<META HTTP-EQUIV="REFRESH" CONTENT="10;URL=LoginPage.aspx">--%>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>EADP_Project</title>
     <link href="css/bootstrap.min.css" rel="stylesheet" />
     <script src="js/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript">
+
+        ////Testing for idle timeout 
+        var idleTime = 0;
+        var timeout = 0;
+        var tempTime = 0;
+
+        function sessionAlert(timeout) {
+            //Increment the idle time counter every minute.
+            var time = timeout;
+            var seconds = timeout / 1000;
+
+            $(document).ready(function () {
+                //Increment the idle time counter every minute.
+                var idleInterval = setInterval(timerIncrement, 60000); // 1 minute
+                //Zero the idle timer on mouse movement.
+                $(this).mousemove(function (e) {
+                    idleTime = 0;
+                    console.log("mouse move");
+                });
+                $(this).keypress(function (e) {
+                    idleTime = 0;
+                    console.log("key press");
+                });
+            });
+
+            function timerIncrement() {
+                idleTime++;
+                if (idleTime > 1) {
+                    $("#seconds").html(seconds);
+                    // $("#seconds").html(seconds);
+                    setInterval(function () {
+                        seconds--;
+                        $("#seconds").html(seconds);
+                    }, 1000);
+                    setTimeout(function () {
+                        //Show Popup before 20 seconds of timeout.
+                        $('#sessionTimeOutWarningModal').modal('show');
+                    }, timeout - 20 * 1000);
+                    //
+                    setTimeout(function () {
+                        //Show Popup after the previous popup
+                        $('#sessionTimeOutWarningModal').modal('hide');
+                        $('#redirectWarningModal').modal('show');
+                        //setTimeout(function () {
+                        //    $("#RemoveSessionBtn").simulate("click");
+                        //}, 6000);
+                    }, timeout - 0 * 1000);
+                }
+            }
+        }
+
+
+</script>
     <style>
         #bg {
             position: fixed;
@@ -30,7 +85,7 @@
     </asp:ContentPlaceHolder>
 </head>
 <body>
-   <div>
+    <div>
         <nav class="navbar_custom navbar navbar-expand-lg navbar-light bg-light">
             <a class="navbar-brand" href="#">Team Orion</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse">
@@ -46,6 +101,7 @@
                             <a class="dropdown-item" href="Profile.aspx">Edit Profile</a>
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="LoginPage.aspx" onserverclick="logOut_OnClick" runat="server" id="logOutBtn">Log out</a>
+
                         </div>
                     </li>
                     <div runat="server" id="EventNavItem">
@@ -71,16 +127,18 @@
         </nav>
     </div>
 
-     <div class="modal" tabindex="-1" role="dialog" id="reloadWarning" data-keyboard="false" data-backdrop="static">
+    <div class="modal" tabindex="-1" role="dialog" id="reloadWarning" data-keyboard="false" data-backdrop="static">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Session Timeout</h5>
-                    
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
                 <div class="modal-body">
                     <p>
-                       Your Session has timed out, Click the button to go back to Login Page.
+                       Redirecting to Login Page.
                     </p>
                 </div>
                 <div class="modal-footer">
@@ -90,14 +148,13 @@
         </div>
     </div>
     <!--end of session modal-->
-   
- <button type="button" class="btn btn-light" id="invalidateSessionbtn" onserverclick="invalidateSessionBtn_OnClick" runat="server" style="display:none;" ></button>
+    
+        <button type="button" class="btn btn-light" id="invalidateSessionbtn" onserverclick="invalidateSessionBtn_OnClick" runat="server" style="display:none;" ></button>
 
 
     <div id="bg">
     </div>
     <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
-
     </asp:ContentPlaceHolder>
 
     <script src="js/popper.min.js"></script>
@@ -135,10 +192,14 @@
         if (performance.navigation.type == 1) {
             console.log("This page is reloaded");
             $('#reloadWarning').modal('show');
+            //$("#RemoveSessionBtn").simulate("click");
             
         } else {
             console.log("This page is not reloaded");
         }
+
+       
+
 
     </script>
 
