@@ -166,6 +166,15 @@ namespace EADP_Project {
         protected global::System.Web.UI.WebControls.TextBox tb_blacklist;
         
         /// <summary>
+        /// tb_crud control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox tb_crud;
+        
+        /// <summary>
         /// btn_apply control.
         /// </summary>
         /// <remarks>
@@ -173,5 +182,14 @@ namespace EADP_Project {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btn_apply;
+        
+        /// <summary>
+        /// btn_remove control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btn_remove;
     }
 }

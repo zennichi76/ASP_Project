@@ -17,6 +17,7 @@ namespace EADP_Project
 {
     public partial class AdminManagement : System.Web.UI.Page
     {
+        private StreamWriter sw;
         public string ip1, ip2, ip3, ip4, ip5, count1, count2, count3, count4, count5, flag_ips;
 
         protected void Page_Load(object sender, EventArgs e)
@@ -203,7 +204,12 @@ namespace EADP_Project
 
         protected void btn_apply_Click(object sender, EventArgs e)
         {
-            File.WriteAllText(@"C:\Users\Justin Tan\Documents\GitHub\ASP_Project\EADP_Project\App_Data\blacklist.txt", tb_blacklist.Text);
+            sw = File.AppendText(@"C:\Users\Justin Tan\Documents\GitHub\ASP_Project\EADP_Project\App_Data\blacklist.txt");
+            sw.Write("\n" + tb_crud.Text.ToString().Trim());
+            sw.Close();
+            Page.Response.Redirect(Page.Request.Url.ToString(), true);
+
+            //File.WriteAllText(@"C:\Users\Justin Tan\Documents\GitHub\ASP_Project\EADP_Project\App_Data\blacklist.txt", tb_blacklist.Text);
             //File.WriteAllText(@"~\App_Data\blacklist.txt", tb_blacklist.Text);
 
             //string path = HttpContext.Current.Server.MapPath("~/App_Data/blacklisk.txt");
@@ -213,6 +219,34 @@ namespace EADP_Project
             //updated_ip.Add(tb_blacklist.Text);
             //StreamWriter sw = File.WriteAllLines(@"C:\Users\Justin Tan\Documents\GitHub\ASP_Project\EADP_Project\App_Data\blacklist.txt", updated_ip);
         }
+
+        protected void btn_remove_Click(object sender, EventArgs e)
+        {
+            //StreamReader sr = File.OpenText(@"C:\Users\Justin Tan\Documents\GitHub\ASP_Project\EADP_Project\App_Data\blacklist.txt");
+            //string[] blacklist_data = File.ReadAllLines(@"C:\Users\Justin Tan\Documents\GitHub\ASP_Project\EADP_Project\App_Data\blacklist.txt");
+            //if (blacklist_data.Contains(tb_blacklist.Text.ToString().Trim()))
+            //{
+            //    blacklist_data = blacklist_data.Removeall;
+            //    blacklist_data.RemoveAll(u => u.Contains());
+            //}
+            //sr.Close();
+
+            string search_text = tb_crud.Text.ToString().Trim();
+            string old;
+            string n = "";
+            StreamReader sr = File.OpenText(@"C:\Users\Justin Tan\Documents\GitHub\ASP_Project\EADP_Project\App_Data\blacklist.txt");
+            while ((old = sr.ReadLine()) != null)
+            {
+                if (!old.Contains(search_text))
+                {
+                    n += old + Environment.NewLine;
+                }
+            }
+            sr.Close();
+            File.WriteAllText(@"C:\Users\Justin Tan\Documents\GitHub\ASP_Project\EADP_Project\App_Data\blacklist.txt", n.Trim());
+            Page.Response.Redirect(Page.Request.Url.ToString(), true);
+        }
+
 
     }
 }

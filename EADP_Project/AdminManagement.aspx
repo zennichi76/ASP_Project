@@ -120,14 +120,16 @@
                                         </tr>
                                         <tr>
                                             <td class="auto-style2">
-                                                <asp:TextBox ID="tb_blacklist" runat="server" Height="300px" OnTextChanged="tb_blacklist_TextChanged" TextMode="MultiLine" Width="625px"></asp:TextBox>
+                                                <asp:TextBox ID="tb_blacklist" runat="server" Height="300px" OnTextChanged="tb_blacklist_TextChanged" TextMode="MultiLine" Width="625px" ReadOnly="True"></asp:TextBox>
                                             </td>
                                             <td>
                                                 </td>
                                             <td>&nbsp;</td>
                                         </tr>
                                         </table>
-                                    <asp:Button ID="btn_apply" runat="server" OnClick="btn_apply_Click" Text="Apply Changes" />
+                                    <asp:TextBox ID="tb_crud" runat="server"></asp:TextBox>
+&nbsp;<asp:Button ID="btn_apply" runat="server" OnClick="btn_apply_Click" Text="Insert" />
+                                    &nbsp;<asp:Button ID="btn_remove" runat="server" OnClick="btn_remove_Click" Text="Remove" />
                                     <br />
                                     <br />
                                 </div>
