@@ -1,6 +1,9 @@
 ﻿using EADP_Project.BO;
+using EADP_Project.Entities;
 using ImagesComparator;
-
+using Newtonsoft.Json.Linq;
+using Shipwreck.Phash;
+using Shipwreck.Phash.Bitmaps;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -9,6 +12,7 @@ using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Security.Cryptography;
 using System.Text.RegularExpressions;
 using System.Web;
@@ -24,29 +28,27 @@ namespace EADP_Project
         protected void Page_Load(object sender, EventArgs e)
         {
             Response.Cache.SetCacheability(HttpCacheability.NoCache);
-            if (!IsPostBack)
+            if (Session["AuthToken"] != null && Request.Cookies["AuthToken"] != null)
             {
-                //SessionIDManager manager = new SessionIDManager();
-                //string currSessionID = manager.GetSessionID(Context);
-
-                if (Session["AuthToken"] != null && Request.Cookies["AuthToken"] != null)
+                //second check for cookie has the same value as the second session
+                if ((Session["AuthToken"].ToString().Equals(Request.Cookies["AuthToken"].Value)))
                 {
-                    //second check for cookie has the same value as the second session
-                    if ((Session["AuthToken"].ToString().Equals(Request.Cookies["AuthToken"].Value)))  
+                    if (!IsPostBack)
                     {
 
                     }
+
                 }
-
-            
-                Session["Reset"] = true;
-                Configuration config = WebConfigurationManager.OpenWebConfiguration("~/Web.Config");
-                SessionStateSection section = (SessionStateSection)config.GetSection("system.web/sessionState");
-                int totalTime = (int)section.Timeout.TotalMinutes * 1000 * 60;
-
-               ClientScript.RegisterStartupScript(this.GetType(), "", "sessionAlert(" + totalTime + ");", true);
             }
+
+            Session["Reset"] = true;
+            Configuration config = WebConfigurationManager.OpenWebConfiguration("~/Web.Config");
+            SessionStateSection section = (SessionStateSection)config.GetSection("system.web/sessionState");
+            int totalTime = (int)section.Timeout.TotalMinutes * 1000 * 60;
+
+            ClientScript.RegisterStartupScript(this.GetType(), "", "sessionAlert(" + totalTime + ");", true);
         }
+        
 
         //remove session if user didn't choose anything
         public void removeSession()
@@ -70,8 +72,23 @@ namespace EADP_Project
         }
 
         //session fixation for timeout
+        //session fixation for timeout
         protected void RemoveSessionBtn_OnClick(object Source, EventArgs e)
         {
+            errNameLbl.Visible = false;
+            errLblForSQ.Text = "";
+            errLblForSQ.Visible = false;
+            inputNameTB.Text = "";
+            inputNRICTB.Text = "";
+            emailTB.Text = "";
+            passwordTB.Text = "";
+            ConfirmPasswordTB.Text = "";
+            imageUpload.Dispose();
+            image2Upload.Dispose();
+            image3Upload.Dispose();
+            firstImageAnsTB.Text = "";
+            secondImageAnsTB.Text = "";
+            thirdImageAnsTB.Text = "";
             //  clear session
             Session.Clear();
             Session.Abandon();
@@ -92,8 +109,7 @@ namespace EADP_Project
         }
 
 
-
-        //session reset(dk if it's working not)
+        //session reset
         protected void ResetSessionBtn_OnClick(object Source, EventArgs e)
         {
             Session["Reset"] = true;
@@ -102,28 +118,67 @@ namespace EADP_Project
             int totalTime = (int)section.Timeout.TotalMinutes * 1000 * 60;
 
             ClientScript.RegisterStartupScript(this.GetType(), "", "sessionAlert(" + totalTime + ");", true);
-           
+
+        }
+
+        public bool IsReCaptchValid()
+        {
+            var result = false;
+            var captchaResponse = Request.Form["g-recaptcha-response"];
+            var secretKey = ConfigurationManager.AppSettings["SecretKey"];
+            var apiUrl = "https://www.google.com/recaptcha/api/siteverify?secret={0}&response={1}";
+            var requestUri = string.Format(apiUrl, secretKey, captchaResponse);
+            var request = (HttpWebRequest)WebRequest.Create(requestUri);
+
+            using (WebResponse response = request.GetResponse())
+            {
+                using (StreamReader stream = new StreamReader(response.GetResponseStream()))
+                {
+                    JObject jResponse = JObject.Parse(stream.ReadToEnd());
+                    var isSuccess = jResponse.Value<bool>("success");
+                    result = (isSuccess) ? true : false;
+                }
+            }
+            return result;
         }
 
         public bool isValidated()
         {
             bool pass = true;
             int number;
-            String name = inputNameTB.Text.Trim();
+            string name = inputNameTB.Text.Trim();
+            string email = emailTB.Text.Trim();
             string firstImageAns = firstImageAnsTB.Text.Trim();
             string secondImageAns = secondImageAnsTB.Text.Trim();
             string thirdImageAns = thirdImageAnsTB.Text.Trim();
+            string filePath;
+            string filename;
+            string extension;
+            string SecfilePath;
+            string Secfilename;
+            string thirdfilePath;
+            string thirdfilename;
+            string passwrd = passwordTB.Text.Trim();
+            string cpw = ConfirmPasswordTB.Text.Trim();
 
+            //check for valid characters
             if (int.TryParse(name, out number) == true)
             {
                 pass = false;
-                errLblForName.Text = "Only alphabets is allowed";
+                errNameLbl.Text = "Only alphabets is allowed";
                 inputNameTB.BorderColor = System.Drawing.Color.Red;
-                errLblForName.Visible = true;
+                errNameLbl.Visible = true;
 
             }
+            else if (passwrd.Equals(cpw) != true)
+            {
+                pass = false;
+                passwordTB.BorderColor = System.Drawing.Color.Red;
+                ConfirmPasswordTB.BorderColor = System.Drawing.Color.Red;
+                errNameLbl.Visible = true;
+            }
             //for checking if two input is same
-            if (firstImageAns.Equals(secondImageAns))
+            else if (firstImageAns.Equals(secondImageAns))
             {
                 pass = false;
                 errLblForSQ.Text = "No two answer should be the same";
@@ -131,7 +186,7 @@ namespace EADP_Project
                 secondImageAnsTB.BorderColor = System.Drawing.Color.Red;
                 errLblForSQ.Visible = true;
             }
-            if (firstImageAns.Equals(thirdImageAns))
+            else if (firstImageAns.Equals(thirdImageAns))
             {
                 pass = false;
                 errLblForSQ.Text = "No two answer should be the same";
@@ -139,7 +194,7 @@ namespace EADP_Project
                 thirdImageAnsTB.BorderColor = System.Drawing.Color.Red;
                 errLblForSQ.Visible = true;
             }
-            if (secondImageAns.Equals(firstImageAns))
+            else if (secondImageAns.Equals(firstImageAns))
             {
                 pass = false;
                 errLblForSQ.Text = "No two answer should be the same";
@@ -147,7 +202,7 @@ namespace EADP_Project
                 secondImageAnsTB.BorderColor = System.Drawing.Color.Red;
                 errLblForSQ.Visible = true;
             }
-            if (secondImageAns.Equals(thirdImageAns))
+            else if (secondImageAns.Equals(thirdImageAns))
             {
                 pass = false;
                 errLblForSQ.Text = "No two answer should be the same";
@@ -155,7 +210,7 @@ namespace EADP_Project
                 secondImageAnsTB.BorderColor = System.Drawing.Color.Red;
                 errLblForSQ.Visible = true;
             }
-            if (thirdImageAns.Equals(secondImageAns))
+            else if (thirdImageAns.Equals(secondImageAns))
             {
                 pass = false;
                 errLblForSQ.Text = "No two answer should be the same";
@@ -163,7 +218,7 @@ namespace EADP_Project
                 secondImageAnsTB.BorderColor = System.Drawing.Color.Red;
                 errLblForSQ.Visible = true;
             }
-            if (thirdImageAns.Equals(firstImageAns))
+            else if (thirdImageAns.Equals(firstImageAns))
             {
                 pass = false;
                 errLblForSQ.Text = "No two answer should be the same";
@@ -171,11 +226,12 @@ namespace EADP_Project
                 firstImageAnsTB.BorderColor = System.Drawing.Color.Red;
                 errLblForSQ.Visible = true;
             }
-            if (imageUpload.HasFile)
+            //check if image got file
+            else if (imageUpload.HasFile)
             {
-                string filePath = imageUpload.PostedFile.FileName;
-                string filename = Path.GetFileName(filePath);
-                string extension = Path.GetExtension(filename);
+                filePath = imageUpload.PostedFile.FileName;
+                filename = Path.GetFileName(filePath);
+                extension = Path.GetExtension(filename);
                 if (extension == ".jpg" || extension == ".png" || extension == ".jpeg")
                 {
                     pass = true;
@@ -188,11 +244,11 @@ namespace EADP_Project
                 }
 
             }
-            if (image2Upload.HasFile)
+            else if (image2Upload.HasFile)
             {
-                string SecfilePath = image2Upload.PostedFile.FileName;
-                string Secfilename = Path.GetFileName(SecfilePath);
-                string extension = Path.GetExtension(Secfilename);
+                SecfilePath = image2Upload.PostedFile.FileName;
+                Secfilename = Path.GetFileName(SecfilePath);
+                extension = Path.GetExtension(Secfilename);
                 if (extension == ".jpg" || extension == ".png" || extension == ".jpeg")
                 {
                     pass = true;
@@ -205,12 +261,12 @@ namespace EADP_Project
                 }
 
             }
-            if (image3Upload.HasFile)
+            else if (image3Upload.HasFile)
             {
-                string thirdfilePath = image3Upload.PostedFile.FileName;
-                string thirdfilename = Path.GetFileName(thirdfilePath);
-                string extension = Path.GetExtension(thirdfilename);
-                if (extension != ".jpg" || extension != ".png" || extension != ".jpeg")
+                thirdfilePath = image3Upload.PostedFile.FileName;
+                thirdfilename = Path.GetFileName(thirdfilePath);
+                extension = Path.GetExtension(thirdfilename);
+                if (extension == ".jpg" || extension == ".png" || extension == ".jpeg")
                 {
                     pass = true;
                 }
@@ -227,250 +283,285 @@ namespace EADP_Project
             return pass;
         }
 
-
-        public enum CompareResult
+        private static System.Drawing.Image resizeImage(System.Drawing.Image imgToResize, Size size)
         {
-            ciCompareOk,
-            ciPixelMismatch,
-            ciSizeMismatch
-        };
+            int sourceWidth = imgToResize.Width;
+            int sourceHeight = imgToResize.Height;
 
-        public static CompareResult Compare(Bitmap bmp1, Bitmap bmp2)
-        {
-            CompareResult cr = CompareResult.ciCompareOk;
+            float nPercent = 0;
+            float nPercentW = 0;
+            float nPercentH = 0;
 
-            //Test to see if we have the same size of image
-            if (bmp1.Size != bmp2.Size)
-            {
-                cr = CompareResult.ciSizeMismatch;
-            }
+            nPercentW = ((float)size.Width / (float)sourceWidth);
+            nPercentH = ((float)size.Height / (float)sourceHeight);
+
+            if (nPercentH < nPercentW)
+                nPercent = nPercentH;
             else
-            {
-                //Convert each image to a byte array
-                System.Drawing.ImageConverter ic = new System.Drawing.ImageConverter();
-                byte[] btImage1 = new byte[1];
-                btImage1 = (byte[])ic.ConvertTo(bmp1, btImage1.GetType());
-                byte[] btImage2 = new byte[1];
-                btImage2 = (byte[])ic.ConvertTo(bmp2, btImage2.GetType());
+                nPercent = nPercentW;
 
-                //Compute a hash for each image
-                SHA256Managed shaM = new SHA256Managed();
-                byte[] hash1 = shaM.ComputeHash(btImage1);
-                byte[] hash2 = shaM.ComputeHash(btImage2);
+            int destWidth = (int)(sourceWidth * nPercent);
+            int destHeight = (int)(sourceHeight * nPercent);
 
-                //Compare the hash values
-                for (int i = 0; i < hash1.Length && i < hash2.Length && cr == CompareResult.ciCompareOk; i++)
-                {
-                    if (hash1[i] != hash2[i])
-                        cr = CompareResult.ciPixelMismatch;
-                }
-                shaM.Clear();
-            }
+            Bitmap b = new Bitmap(destWidth, destHeight);
+            Graphics g = Graphics.FromImage((System.Drawing.Image)b);
+            g.InterpolationMode = InterpolationMode.HighQualityBicubic;
 
-            return cr;
+            g.DrawImage(imgToResize, 0, 0, destWidth, destHeight);
+            g.Dispose();
+
+            return (System.Drawing.Image)b;
         }
-        
-        public static List<bool> GetHash(Bitmap bmpSource)
+
+        //convert image back to byte
+        public static byte[] ImageToByte(System.Drawing.Image img)
         {
-            List<bool> lResult = new List<bool>();
-            //create new image with 16x16 pixel
-            Bitmap bmpMin = new Bitmap(bmpSource, new Size(16, 16));
-            for (int j = 0; j < bmpMin.Height; j++)
-            {
-                for (int i = 0; i < bmpMin.Width; i++)
-                {
-                    //reduce colors to true / false                
-                    lResult.Add(bmpMin.GetPixel(i, j).GetBrightness() < 0.5f);
-                }
-            }
-            return lResult;
+            ImageConverter converter = new ImageConverter();
+            return (byte[])converter.ConvertTo(img, typeof(byte[]));
         }
 
+        //check if image is the same
+        public bool checkSameImage(Byte[] bytes, Byte[] secbytes, Byte[] thirdbytes)
+        {
+            bool pass = true;
 
-    
+            //Converting Byte Array To Image And Then Into Bitmap
+            ImageConverter ic = new ImageConverter();
+            System.Drawing.Image img = (System.Drawing.Image)ic.ConvertFrom(bytes);
+            System.Drawing.Image img2 = (System.Drawing.Image)ic.ConvertFrom(secbytes);
+            System.Drawing.Image img3 = (System.Drawing.Image)ic.ConvertFrom(thirdbytes);
+
+            //resize image
+            Size currsize = new Size();
+            currsize.Height = 600;
+            currsize.Width = 600;
+            System.Drawing.Image ResizeImg = resizeImage(img, currsize);
+            System.Drawing.Image ResizeImg2 = resizeImage(img2, currsize);
+            System.Drawing.Image ResizeImg3 = resizeImage(img3, currsize);
+
+            var bitmap = (Bitmap)ResizeImg;
+            var hash = ImagePhash.ComputeDigest(bitmap.ToLuminanceImage());
+
+            var bitmap2 = (Bitmap)ResizeImg2;
+            var hash2 = ImagePhash.ComputeDigest(bitmap2.ToLuminanceImage());
+
+            var bitmap3 = (Bitmap)ResizeImg3;
+            var hash3 = ImagePhash.ComputeDigest(bitmap3.ToLuminanceImage());
+
+            var score = ImagePhash.GetCrossCorrelation(hash, hash2); //check for image 1 and 2
+            var score2 = ImagePhash.GetCrossCorrelation(hash, hash3); //check for image 1 and 3
+            var score3 = ImagePhash.GetCrossCorrelation(hash2, hash3); //check for image 2 and 3
+
+
+            if (score > 0.7)
+            {
+                errLblForSQ.Text = " Please choose a different image for Q1 and Q2";
+                pass = false;
+            }
+
+            if (score2 > 0.7)
+            {
+                errLblForSQ.Text = " Please choose a different image for Q1 and Q3";
+                pass = false;
+            }
+
+            if (score3 > 0.7)
+            {
+                errLblForSQ.Text = " Please choose a different image for Q2 and Q3";
+                pass = false;
+            }
+
+            return pass;
+        }
+
+        public bool userExist()
+        {
+            bool userExist = false;
+            bool result = false;
+            RegistrationBO addUser = new RegistrationBO();
+            string User_ID = inputNRICTB.Text;
+            string email = emailTB.Text;
+            userExist = addUser.checkIfUserExist(User_ID, email);
+            if (userExist == true)
+            {
+                result = true; //user does not exist
+            }
+            else if (userExist == false)
+            {
+                //user  exist
+                result = false;
+            }
+
+            return result;
+
+        }
 
         protected void RegisterBtn_Click(object sender, EventArgs e)
         {
             bool success = isValidated();
+            bool userisValid = userExist();
+            bool captchaPass = IsReCaptchValid();
             if (success == false)
             {
 
             }
             else
             {
-                string User_ID = inputNRICTB.Text;
-                string password = passwordTB.Text;
-                string name = inputNameTB.Text;
-                string email = emailTB.Text;
-                string confirmEmail = "false";
-                string role = "Student";
-                //String school_ID, String education_level, String education_class;
-                string firstImageAns = firstImageAnsTB.Text.Trim();
-                string secondImageAns = secondImageAnsTB.Text.Trim();
-                string thirdImageAns = thirdImageAnsTB.Text.Trim();
-
-                ////////////////////////////////////////////////////////////////////////////////////////////////
-
-                // For 1st SQ: Read the file and convert it to Byte Array
-                string filePath = imageUpload.PostedFile.FileName;
-                string filename = Path.GetFileName(filePath);
-                //string ext = Path.GetExtension(filename);
-
-                // For 2nd SQ: Read the file and convert it to Byte Array
-                string SecfilePath = image2Upload.PostedFile.FileName;
-                string Secfilename = Path.GetFileName(SecfilePath);
-
-                // For 3rd SQ: Read the file and convert it to Byte Array
-                string thirdfilePath = image3Upload.PostedFile.FileName;
-                string thirdfilename = Path.GetFileName(thirdfilePath);
-
-
-                System.Drawing.Image firstUploaded = System.Drawing.Image.FromStream(imageUpload.PostedFile.InputStream);
-                System.Drawing.Image secUploaded = System.Drawing.Image.FromStream(image2Upload.PostedFile.InputStream);
-                System.Drawing.Image thirdUploaded = System.Drawing.Image.FromStream(image3Upload.PostedFile.InputStream);
-
-                int originalWidth = firstUploaded.Width;
-                int originalHeight = firstUploaded.Height;
-                float percentWidth = (float)256 / (float)originalWidth;
-                float percentHeight = (float)256 / (float)originalHeight;
-                float percent = percentHeight < percentWidth ? percentHeight : percentWidth;
-                int newWidth = (int)(originalWidth * percent);
-                int newHeight = (int)(originalHeight * percent);
-
-                int originalWidth2 = secUploaded.Width;
-                int originalHeight2 = secUploaded.Height;
-                float percentWidth2 = (float)256 / (float)originalWidth2;
-                float percentHeight2 = (float)256 / (float)originalHeight2;
-                float percent2 = percentHeight2 < percentWidth2 ? percentHeight2 : percentWidth2;
-                int newWidth2 = (int)(originalWidth2 * percent2);
-                int newHeight2 = (int)(originalHeight2 * percent2);
-
-                int originalWidth3 = thirdUploaded.Width;
-                int originalHeight3 = thirdUploaded.Height;
-                float percentWidth3 = (float)256 / (float)originalWidth3;
-                float percentHeight3 = (float)256 / (float)originalHeight3;
-                float percent3 = percentHeight3 < percentWidth3 ? percentHeight3 : percentWidth3;
-                int newWidth3 = (int)(originalWidth3 * percent3);
-                int newHeight3 = (int)(originalHeight3 * percent3);
-
-                System.Drawing.Image newImage1 = new Bitmap(newWidth, newHeight);
-                using (Graphics g = Graphics.FromImage(newImage1))
+                try
                 {
-                    g.InterpolationMode = InterpolationMode.HighQualityBicubic;
-                    g.DrawImage(firstUploaded, 0, 0, newWidth, newHeight);
-                }
-
-                System.Drawing.Image newImage2 = new Bitmap(newWidth, newHeight);
-                using (Graphics g = Graphics.FromImage(newImage2))
-                {
-                    g.InterpolationMode = InterpolationMode.HighQualityBicubic;
-                    g.DrawImage(secUploaded, 0, 0, newWidth, newHeight);
-                }
-
-                System.Drawing.Image newImage3 = new Bitmap(newWidth, newHeight);
-                using (Graphics g = Graphics.FromImage(newImage3))
-                {
-                    g.InterpolationMode = InterpolationMode.HighQualityBicubic;
-                    g.DrawImage(thirdUploaded, 0, 0, newWidth, newHeight);
-                }
-
-                ////////////////////////////////////////////////////////////////////////////////////////////////////
-                byte[] results;
-                using (MemoryStream ms = new MemoryStream())
-                {
-                    ImageCodecInfo codec = ImageCodecInfo.GetImageEncoders().FirstOrDefault(c => c.FormatID == ImageFormat.Jpeg.Guid);
-                    EncoderParameters jpegParms = new EncoderParameters(1);
-                    jpegParms.Param[0] = new EncoderParameter(Encoder.Quality, 95L);
-                    newImage1.Save(ms, codec, jpegParms);
-                    results = ms.ToArray();
-
-                    for (int i = 0; i < results.Length; i++)
+                    if (captchaPass == true)
                     {
-                        //Stream test = firstUploaded;
+                        if (userisValid == true)
+                        {
+                            string activationCode;
+                            string User_ID = inputNRICTB.Text;
+                            string password = passwordTB.Text;
+                            string name = inputNameTB.Text;
+                            string email = emailTB.Text;
+                            string confirmEmail = "False";
+                            string role = "Student";
+                            string firstImageAns = firstImageAnsTB.Text.Trim();
+                            string secondImageAns = secondImageAnsTB.Text.Trim();
+                            string thirdImageAns = thirdImageAnsTB.Text.Trim();
+
+                            ////////////////////////////////For activation Email//////////////////////////////////////////////////
+                            //generate random code for activation
+                            Random random = new Random();
+                            activationCode = random.Next(1001, 9999).ToString();
+
+                            string msgSub = "Registration Confirmation";
+                            string emailTo = emailTB.Text;
+                            string breakTag = "\n";
+                            string msgBod = "Hi " + inputNameTB.Text + ", ";
+
+                            msgBod += breakTag + "Thank you for signing up with Orion. You are only one step away from using your newly created account. ";
+                            msgBod += breakTag + "Please enter the following code to verify your account: " + activationCode;
+                            msgBod += breakTag + "Please note that the code will expired in 3 hours";
+                            msgBod += breakTag + "Yours Faithfully," + breakTag + "Orion Team";
+
+                            ////////////////////////////////For SQ Questions///////////////////////////////////
+                            Stream fs = imageUpload.PostedFile.InputStream;
+                            BinaryReader br = new BinaryReader(fs);
+                            Byte[] bytes = br.ReadBytes((Int32)fs.Length);
+
+                            Stream secfs = image2Upload.PostedFile.InputStream;
+                            BinaryReader secbr = new BinaryReader(secfs);
+                            Byte[] secbytes = secbr.ReadBytes((Int32)secfs.Length);
+
+                            Stream thirdfs = image3Upload.PostedFile.InputStream;
+                            BinaryReader thirdbr = new BinaryReader(thirdfs);
+                            Byte[] thirdbytes = thirdbr.ReadBytes((Int32)thirdfs.Length);
+                            bool pass = checkSameImage(bytes, secbytes, thirdbytes);
+                            if (pass == true)
+                            {
+                                try
+                                {
+                                    //Converting Byte Array To Image And Then Into Bitmap
+                                    ImageConverter ic = new ImageConverter();
+                                    System.Drawing.Image img = (System.Drawing.Image)ic.ConvertFrom(bytes);
+                                    System.Drawing.Image img2 = (System.Drawing.Image)ic.ConvertFrom(secbytes);
+                                    System.Drawing.Image img3 = (System.Drawing.Image)ic.ConvertFrom(thirdbytes);
+
+                                    //resize image
+                                    Size currsize = new Size();
+                                    currsize.Height = 500;
+                                    currsize.Width = 500;
+                                    System.Drawing.Image ResizeImg = resizeImage(img, currsize);
+                                    System.Drawing.Image ResizeImg2 = resizeImage(img2, currsize);
+                                    System.Drawing.Image ResizeImg3 = resizeImage(img3, currsize);
+                                    Byte[] newimg = ImageToByte(ResizeImg);
+                                    Byte[] newimg2 = ImageToByte(ResizeImg2);
+                                    Byte[] newimg3 = ImageToByte(ResizeImg3);
+                                    //////////////////////////////////////////////////////////////////////////////////////////////
+                                    RegistrationBO addUser = new RegistrationBO();
+                                    //for activationCode
+                                    DateTime currDT = DateTime.Now;
+                                    DateTime futureDT = currDT.AddHours(3.0);
+                                    //add to userdb
+                                    addUser.insertUser(User_ID, password, name, email, confirmEmail, role, activationCode, futureDT);
+                                    //add to sq
+                                    addUser.insertSQ(User_ID, newimg, firstImageAns, newimg2, secondImageAns, newimg3, thirdImageAns);
+
+                                    /////////////////////////////Send Email////////////////////////////////////////////////////
+
+                                    mailService sendMail = new mailService();
+                                    sendMail.sendmail(emailTo, msgSub, msgBod);
+                                    ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openRedirectModal();", true);
+
+                                    Session["userName"] = User_ID;
+                                    Session["RegistrationPage"] = "Registration";
+                                    errNameLbl.Visible = false;
+                                    errLblForSQ.Text = "";
+                                    errLblForSQ.Visible = false;
+                                    inputNameTB.Text = "";
+                                    inputNRICTB.Text = "";
+                                    emailTB.Text = "";
+                                    passwordTB.Text = "";
+                                    ConfirmPasswordTB.Text = "";
+                                    imageUpload.Dispose();
+                                    image2Upload.Dispose();
+                                    image3Upload.Dispose();
+                                    firstImageAnsTB.Text = "";
+                                    secondImageAnsTB.Text = "";
+                                    thirdImageAnsTB.Text = "";
+                                    Response.AddHeader("refresh", "5;URL=ConfirmAccount.aspx");
+
+                                }
+                                catch
+                                {
+                                    errNameLbl.Visible = true;
+                                    errLblForSQ.Visible = true;
+                                    //reset session
+                                    Session["Reset"] = true;
+                                    Configuration config = WebConfigurationManager.OpenWebConfiguration("~/Web.Config");
+                                    SessionStateSection section = (SessionStateSection)config.GetSection("system.web/sessionState");
+                                    int totalTime = (int)section.Timeout.TotalMinutes * 1000 * 60;
+                                    ClientScript.RegisterStartupScript(this.GetType(), "", "sessionAlert(" + totalTime + ");", true);
+                                    ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openAccFModal();", true); //creation fail
+                                }
+
+                            }
+                            else
+                            {
+                                errNameLbl.Visible = true;
+                                errLblForSQ.Visible = true;
+                                //reset session
+                                Session["Reset"] = true;
+                                Configuration config = WebConfigurationManager.OpenWebConfiguration("~/Web.Config");
+                                SessionStateSection section = (SessionStateSection)config.GetSection("system.web/sessionState");
+                                int totalTime = (int)section.Timeout.TotalMinutes * 1000 * 60;
+                                ClientScript.RegisterStartupScript(this.GetType(), "", "sessionAlert(" + totalTime + ");", true);
+                            }
+                        }
+                        else
+                        {
+                            //reset session
+                            Session["Reset"] = true;
+                            Configuration config = WebConfigurationManager.OpenWebConfiguration("~/Web.Config");
+                            SessionStateSection section = (SessionStateSection)config.GetSection("system.web/sessionState");
+                            int totalTime = (int)section.Timeout.TotalMinutes * 1000 * 60;
+                            ClientScript.RegisterStartupScript(this.GetType(), "", "sessionAlert(" + totalTime + ");", true);
+                            ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openModal();", true); //USER EXIST
+                        }
                     }
-
-                    Stream fs = imageUpload.PostedFile.InputStream;
-                    BinaryReader br = new BinaryReader(fs);
-                    Byte[] bytes = br.ReadBytes((Int32)fs.Length);
-
-                    Stream secfs = image2Upload.PostedFile.InputStream;
-                    BinaryReader secbr = new BinaryReader(secfs);
-                    Byte[] secbytes = secbr.ReadBytes((Int32)secfs.Length);
-
-                    Stream thirdfs = image3Upload.PostedFile.InputStream;
-                    BinaryReader thirdbr = new BinaryReader(thirdfs);
-                    Byte[] thirdbytes = thirdbr.ReadBytes((Int32)thirdfs.Length);
-                    //Converting Byte Array To Image And Then Into Bitmap
-                    ImageConverter ic = new ImageConverter();
-                    System.Drawing.Image img = (System.Drawing.Image)ic.ConvertFrom(bytes);
-                    Bitmap bmp1 = new Bitmap(img);
-                    System.Drawing.Image img1 = (System.Drawing.Image)ic.ConvertFrom(secbytes);
-                    Bitmap bmp2 = new Bitmap(img1);
-                    System.Drawing.Image img2 = (System.Drawing.Image)ic.ConvertFrom(thirdbytes);
-                    Bitmap bmp3 = new Bitmap(img2);
-
-                    List<bool> iHash1 = GetHash(new Bitmap(img));
-                    List<bool> iHash2 = GetHash(new Bitmap(img1));
-                    List<bool> iHash3 = GetHash(new Bitmap(img2));
-
-                    //determine the number of equal pixel (x of 256)
-                    int equalForOneTwo = iHash1.Zip(iHash2, (i, j) => i == j).Count(eq => eq); //compare img1 and img2 similarity
-                    int equalForOneThree = iHash1.Zip(iHash3, (i, j) => i == j).Count(eq => eq); //compare img1 and img3 similarity
-                    int equalForTwoThree = iHash2.Zip(iHash3, (i, j) => i == j).Count(eq => eq); //compare img2 and img3 similarity
-                                                                                                 //     int equalElements3 = iHash2.Zip(iHash3, (i, j) => i == j).Count(eq => eq);
-
-                    //    int equalElements4 = iHash3.Zip(iHash1, (i, j) => i == j).Count(eq => eq);
-                    //    int equalElements5 = iHash3.Zip(iHash2, (i, j) => i == j).Count(eq => eq);
-
-                    if (equalForOneTwo >= 150)
-                    { //check if similarity is more than 60%
-                        Label1.Text = "Please choose a different image For Image one and two";
-                    }
-                    if (equalForOneThree >= 156)
+                    else
                     {
-                        Label1.Text = "Please choose a different image For Image one and three";
+                        errCaptcha.Visible = true;
                     }
-                    if (equalForTwoThree >= 156)
-                    {
-                        Label1.Text = "Please choose a different image For Image two and three";
-                    }
-
-
+                }
+                catch
+                {
+                    errNameLbl.Visible = true;
+                    errLblForSQ.Visible = true;
+                    //reset session
+                    Session["Reset"] = true;
+                    Configuration config = WebConfigurationManager.OpenWebConfiguration("~/Web.Config");
+                    SessionStateSection section = (SessionStateSection)config.GetSection("system.web/sessionState");
+                    int totalTime = (int)section.Timeout.TotalMinutes * 1000 * 60;
+                    ClientScript.RegisterStartupScript(this.GetType(), "", "sessionAlert(" + totalTime + ");", true);
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openAccFModal();", true); //creation fail
                 }
 
-
-
-                ////Calling Compare Function
-                //if (Compare(bmp1, bmp2) == CompareResult.ciCompareOk)
-                //{
-                //    Label1.Visible = true;
-                //    Label1.Text = "Images Are Same";
-                //}
-                //else if (Compare(bmp1, bmp2) == CompareResult.ciPixelMismatch)
-                //{
-                //    Label1.Visible = true;
-                //    Label1.Text = "Pixel not Matching";
-                //}
-                //else if (Compare(bmp1, bmp2) == CompareResult.ciSizeMismatch)
-                //{
-                //    Label1.Visible = true;
-                //    Label1.Text = "Size Is Not Same";
-                //}
-
-
-                //Label1.Text = equalElements.ToString() + " - "+ equalElements1.ToString() + " - " +  equalElements2.ToString();
-
-
-
-                //////////////////////////////////////////////////////////////////////////////////////////////
-                RegistrationBO addUser = new RegistrationBO();
-                addUser.insertUser(User_ID, password, name, email, confirmEmail, role);
-                //addUser.insertSQ(User_ID, bytes, firstImageAns, secbytes, secondImageAns, thirdbytes, thirdImageAns);
-                
-                errLblForSQ.Text = "";
-                errLblForSQ.Visible = false;
-                errLblForName.Text = "";
-                errLblForName.Visible = false;
 
             }
         }
@@ -479,5 +570,11 @@ namespace EADP_Project
 
 
 
+
     }
-}
+
+
+
+
+
+    }

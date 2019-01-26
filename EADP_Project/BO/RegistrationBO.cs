@@ -11,7 +11,7 @@ namespace EADP_Project.BO
     {
         public RegistrationDAO objRegister = new RegistrationDAO();
         /*school_ID, education_level, education_class*/
-        public String insertUser(String User_ID, String password, String name, String email, String confirmEmail, String role)
+        public String insertUser(String User_ID, String password, String name, String email, String confirmEmail, String role, String activationCode, DateTime codeEDate)
         {
             string result = "";
             if (result == "")
@@ -21,7 +21,7 @@ namespace EADP_Project.BO
                 crypto.password_crypto(User_ID, password);
                 password = crypto.hashedPassword;
                 salt = crypto.salt;
-                objRegister.UserRegistration(User_ID, password, salt, name, email, confirmEmail, role);
+                objRegister.UserRegistration(User_ID, password, salt, name, email, confirmEmail, role, activationCode, codeEDate);
             }
             else
             {
@@ -37,7 +37,7 @@ namespace EADP_Project.BO
             string result = "";
             if (result == "")
             {
-                objRegister.insertSecurityQuestions(User_ID, firstSecurityQ, firstSecurityQA, secondSecurityQ, secondSecurityQA, thirdSecurityQ , thirdSecurityQA);
+                objRegister.insertSecurityQuestions(User_ID, firstSecurityQ, firstSecurityQA, secondSecurityQ, secondSecurityQA, thirdSecurityQ, thirdSecurityQA);
             }
             else
             {
@@ -55,6 +55,77 @@ namespace EADP_Project.BO
             result = objRegister.getSecurityQuestion(user_Id);
             return result;
 
+        }
+
+        //check for existing username
+        //prevent user to rejoining the event they have joined
+        public bool checkIfUserExist(string User_ID, string email)
+        {
+            bool result;
+            result = objRegister.checkIfUserExist(User_ID, email);
+
+            return result; //true = user no exist. false = user exist
+        }
+
+        //UPDATE SQ
+        //update
+        public String updateSQ(String User_ID, Byte[] firstSecurityQ, String firstSecurityQA, Byte[] secondSecurityQ, String secondSecurityQA, Byte[] thirdSecurityQ, String thirdSecurityQA)
+        {
+            string result = "";
+            if (result == "")
+            {
+                objRegister.updateSQ(User_ID, firstSecurityQ, firstSecurityQA, secondSecurityQ, secondSecurityQA, thirdSecurityQ, thirdSecurityQA);
+            }
+            else
+            {
+                result = "Error";
+            }
+
+            return "";
+        }
+
+        //check for existing email
+
+        //get activationCode 
+        public activationCode getACBasedOnID(string userId)
+        {
+            activationCode result = null;
+            result = objRegister.getActivationCodeBasedOnNRIC(userId);
+            return result;
+
+        }
+
+        public string resendCode(String User_ID, String activationCode, DateTime codeEDate)
+        {
+            string result = "";
+            if (result == "")
+            {
+                objRegister.getNewActivationCode(User_ID, activationCode, codeEDate);
+            }
+            else
+            {
+                result = "Error";
+            }
+
+
+            return ""; //successful
+        }
+
+        //activate account
+        public string activateAccount(String User_ID, String confirmEmail)
+        {
+            string result = "";
+            if (result == "")
+            {
+                objRegister.ValidateActivationCode(User_ID, confirmEmail);
+            }
+            else
+            {
+                result = "Error";
+            }
+
+
+            return ""; //successful
         }
 
 

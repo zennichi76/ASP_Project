@@ -69,8 +69,6 @@
             }
 
     </style>
-    <%-- google captcha--%>
-    <script src='https://www.google.com/recaptcha/api.js?render=6LfjWIkUAAAAAHwYX-DlJblPN_De5kIA8opCmfql'></script>
 
 </head>
 <body>
@@ -84,23 +82,23 @@
                     <div class="card-body">
                         <div class="form-row">
                             <div class="form-group col-md-6">
-                                <asp:TextBox ID="inputNameTB" runat="server" CssClass="form-control" placeholder="Full Name" required pattern="[a-zA-Z ]*"></asp:TextBox>
-                                <span id="spnError" style="color: Red; display: none">*Valid characters: Alphabets and space.</span>
-                                <asp:Label ID="errLblForName" runat="server" Text="" Visible="false" Font-Bold="True" ForeColor="Red"></asp:Label>
+                                <asp:TextBox ID="inputNameTB" runat="server" CssClass="form-control" placeholder="Full Name" required pattern ="^[a-zA-Z\s]*$"></asp:TextBox>
+                                <span id="spnError" style="color: Red; display: none"></span>
+                                 <asp:Label ID="errNameLbl" runat="server" Text="" Visible="false" Font-Bold="True" ForeColor="Red"></asp:Label>
                             </div>
 
                             <div class="form-group col-md-6">
-                                <asp:TextBox ID="inputNRICTB" runat="server" CssClass="form-control" placeholder="NRIC, This will be used as your user id"></asp:TextBox>
+                                <asp:TextBox ID="inputNRICTB" runat="server" CssClass="form-control" placeholder="NRIC, This will be used as your user id" required></asp:TextBox>
                             </div>
                         </div>
 
                         <div class="form-group">
                             <div class="mt-1">
-                                <asp:TextBox ID="emailTB" runat="server" CssClass="form-control" placeholder="email: @example.com" TextMode="Email"></asp:TextBox>
+                                <asp:TextBox ID="emailTB" runat="server" CssClass="form-control" placeholder="email: @example.com" TextMode="Email" required pattern="^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$" ></asp:TextBox>
                             </div>
                             <hr />
                             <div class="mt-1">
-                                <asp:TextBox ID="passwordTB" runat="server" CssClass="form-control" placeholder="Password" TextMode="Password" onkeyup="CheckPasswordStrength(this.value)"></asp:TextBox>
+                                <asp:TextBox ID="passwordTB" runat="server" CssClass="form-control" placeholder="Password" TextMode="Password" onkeyup="CheckPasswordStrength(this.value)" required></asp:TextBox>
                             </div>
 
                             <div class="mt-1">
@@ -117,43 +115,37 @@
                                     </ul>
                                 </div>
                             <div class="mt-1">
-                                <asp:TextBox ID="ConfirmPasswordTB" runat="server" CssClass="form-control" placeholder="Confirm Password" TextMode="Password"></asp:TextBox>
+                                <asp:TextBox ID="ConfirmPasswordTB" runat="server" CssClass="form-control" placeholder="Confirm Password" TextMode="Password" required></asp:TextBox>
                             </div>
                             <hr>
-                            <p class="text-center">Security Questions</p>
+                           <p class="text-center">Security Questions</p>
                             <div class="mt-2">
-                                <asp:FileUpload ID="imageUpload" runat="server" CssClass="form-control-file" />
-                                <%--onchange="ShowPreview(this)"--%>
-                                <asp:Image ID="firstImagePreview" runat="server" />
-                                <div class="mt-1">
-                                    <asp:TextBox ID="firstImageAnsTB" runat="server" CssClass="form-control" placeholder="Answer to the first image"></asp:TextBox>
-                                </div>
-                            </div>
-                            <div class="mt-2">
-                                <asp:FileUpload ID="image2Upload" runat="server" CssClass="form-control-file" />
-                                <%--onchange="ShowSecPreview(this)"--%>
-                                <asp:Image ID="secondImagePreview" runat="server" />
-                                <div class="mt-1">
-                                    <asp:TextBox ID="secondImageAnsTB" runat="server" CssClass="form-control" placeholder="Answer to the Second image"></asp:TextBox>
-                                </div>
-                            </div>
-                            <div class="mt-2">
-                                <asp:FileUpload ID="image3Upload" runat="server" CssClass="form-control-file" />
-                                <asp:Image ID="ThirdImagePreview" runat="server" />
-                                <div class="mt-1">
-                                    <asp:TextBox ID="thirdImageAnsTB" runat="server" CssClass="form-control" placeholder="Answer to the third image"></asp:TextBox>
-                                </div>
-                            </div>
-                            <asp:Label ID="errLblForSQ" runat="server" Text="" Visible="false" Font-Bold="True" ForeColor="Red"></asp:Label>
-                            <p class="text-center font-weight-light">These questions will be used to verify your identity and recover your password if you ever forget it.</p>
-                            <hr />
-                            
-                            <div id="ReCaptchContainer" >
-                                 <input type="hidden" id="g-recaptcha-response" name="g-recaptcha-response">
-                                <input type="hidden" name="action" value="validate_captcha">
-                            </div>
-                           
+                                <asp:FileUpload ID="imageUpload" runat="server" CssClass="form-control-file" required />
 
+                                <div class="mt-1">
+                                    <asp:TextBox ID="firstImageAnsTB" runat="server" CssClass="form-control" placeholder="Answer to the first image" required></asp:TextBox>
+                                </div>
+                            </div>
+                            <div class="mt-2">
+                                <asp:FileUpload ID="image2Upload" runat="server" CssClass="form-control-file" required/>
+                                <div class="mt-1">
+                                    <asp:TextBox ID="secondImageAnsTB" runat="server" CssClass="form-control" placeholder="Answer to the Second image" required></asp:TextBox>
+                                </div>
+                            </div>
+                            <div class="mt-2">
+                                <asp:FileUpload ID="image3Upload" runat="server" CssClass="form-control-file" required/>
+                                <div class="mt-1">
+                                    <asp:TextBox ID="thirdImageAnsTB" runat="server" CssClass="form-control" placeholder="Answer to the third image" required></asp:TextBox>
+                                </div>
+                            </div>
+                            <asp:Label ID="errLblForSQ" runat="server" Text="" Visible="false" Font-Bold="True" ForeColor="Red"></asp:Label> <br />
+                            <p class="text-center font-weight-light">These images will be used to verify your identity and recover your password if you ever forget it.</p>
+                            <hr />
+
+                            <div id="ReCaptchContainer"></div> 
+                               <asp:Label ID="errCaptcha" runat="server" Text="Captcha Fail. Please Redo the captcha." Visible="false" Font-Bold="True" ForeColor="Red"></asp:Label> 
+
+                            <hr />
                             <div class="text-center">
                                 <asp:Button ID="RegisterBtn" runat="server" Text="Register" class="btn btn-primary" OnClick="RegisterBtn_Click" />
                             </div>
@@ -163,6 +155,45 @@
                     </div>
                 </div>
 
+                <div class="modal" tabindex="-1" role="dialog" id="userExistModal" data-keyboard="false" data-backdrop="static">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Error: NRIC / Email Exist</h5>
+                            </div>
+                            <div class="modal-body">
+                                <p>
+                                   The current NRIC Exist/ Email Exist! Please type a new NRIC/Email. <br /> 
+                                    If you are an user, Please sign in instead.
+                                </p>
+                            </div>
+                            <div class="modal-footer">
+                                 <button type="button" class="btn btn-primary" id="closeModalBtn" data-dismiss="modal">Okay</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--end of userExistModal-->
+
+                <div class="modal" tabindex="-1" role="dialog" id="accountCreatedModal" data-keyboard="false" data-backdrop="static">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Account Created Successful</h5>
+                            </div>
+                            <div class="modal-body">
+                                <p>
+                                   Congratulation, Your account is created! You will be redirected to confirm your account.
+                                </p>
+                            </div>
+                            <div class="modal-footer">
+                               
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--end of userExistModal-->
+
                 <div class="modal" tabindex="-1" role="dialog" id="sessionTimeOutWarningModal" data-keyboard="false" data-backdrop="static">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
@@ -171,7 +202,7 @@
                             </div>
                             <div class="modal-body">
                                 <p>
-                                    Hello,You're going to be timed out due to inactivity in&nbsp;<span id="minute"></span>&nbsp;minutes and <span id="seconds"></span>&nbsp;seconds.<br />
+                                    Hello,You're going to be timed out due to inactivity in <span id="minutes"></span> minutes and <span id="seconds"></span>&nbsp;seconds.<br />
                                     Do You want to reset?'
                                 </p>
                             </div>
@@ -192,7 +223,7 @@
                             </div>
                             <div class="modal-body">
                                 <p>
-                                    Hello,Your session has timed out due to inactivity, You will be redirected to the homepage! 
+                                    Hello,Your session has timed out due to inactivity, Please proceed to login page
                                 </p>
                             </div>
                             <div class="modal-footer">
@@ -203,41 +234,133 @@
                 </div>
                 <!--end of redirect modal-->
 
+                                <div class="modal" tabindex="-1" role="dialog" id="accountCreationFail" data-keyboard="false" data-backdrop="static">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Account Created Failed</h5>
+                            </div>
+                            <div class="modal-body">
+                                <p>
+                                   Account Creation Fail. Please Try Again.
+                                </p>
+                            </div>
+                            <div class="modal-footer">
+                                 <button type="button" class="btn btn-primary"  data-dismiss="modal">Okay</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
 
             </div>
 
 
         </div>
-        <script src='https://www.google.com/recaptcha/api.js?render=6LfjWIkUAAAAAHwYX-DlJblPN_De5kIA8opCmfql'></script>
 
+                 <script src="https://www.google.com/recaptcha/api.js?onload=renderRecaptcha&render=explicit" async defer></script> 
         <script src="js/popper.min.js"></script>
         <script src="js/jquery-3.2.1.min.js"></script>
         <script src="js/bootstrap.min.js"></script>
         <script src="js/jquery.simulate.js"></script>
-       
+
         <script type="text/javascript">
-            grecaptcha.ready(function () {
-                grecaptcha.execute('6LfjWIkUAAAAAHwYX-DlJblPN_De5kIA8opCmfql', { action: 'homepage' })
-                    .then(function (token) {
-                        // Verify the token on the server.
-                        $.getJSON("/Home/RecaptchaV3Vverify?token=" + token, function (data) {
-                            console.log(data);
-                            document.getElementById('g-recaptcha-response').value = token;   // add token value to form
 
+            //for captcha
+            var your_site_key = '<%= ConfigurationManager.AppSettings["SiteKey"]%>';
+            var renderRecaptcha = function () {
+                grecaptcha.render('ReCaptchContainer', {
+                    'sitekey': your_site_key,
+                    'callback': reCaptchaCallback,
+                    theme: 'light', //light or dark    
+                    type: 'image',// image or audio    
+                    size: 'normal'//normal or compact    
+                });
+            };
 
-                        });
-                    });
-            });
+            var reCaptchaCallback = function (response) {
+                if (response !== '') {
+
+                }
+            };
+
             $(document).ready(function () {
                 //for validating password is the same
                 $('#<%=passwordTB.ClientID%>, #<%=ConfirmPasswordTB.ClientID%>').on('keyup', function () {
                     if ($('#<%=passwordTB.ClientID%>').val() == $('#<%=ConfirmPasswordTB.ClientID%>').val()) {
-                        document.getElementById("<%=ConfirmPasswordTB.ClientID%>").style.borderColor = "green";
+                        document.getElementById("<%=ConfirmPasswordTB.ClientID%>").style.borderColor = "Green";
+                        document.getElementById("<%=passwordTB.ClientID%>").style.borderColor = "Green";
                         document.getElementById("<%=ConfirmPasswordTB.ClientID%>").style.borderWidth = "2px";
+                        document.getElementById("<%=passwordTB.ClientID%>").style.borderWidth = "2px";
                     } else
-                        document.getElementById("<%=ConfirmPasswordTB.ClientID%>").style.borderColor = "red";
+                        document.getElementById("<%=ConfirmPasswordTB.ClientID%>").style.borderColor = "Red";
                     document.getElementById("<%=ConfirmPasswordTB.ClientID%>").style.borderWidth = "2px";
+                    document.getElementById("<%=passwordTB.ClientID%>").style.borderColor = "Red";
+                    document.getElementById("<%=passwordTB.ClientID%>").style.borderWidth = "2px";
+
                 });
+
+            });
+
+
+            $('#<%=inputNRICTB.ClientID%>').keyup(function () {
+                var nric_num = $(this).val();
+                nric_num = nric_num.replace(/[^0-9 a-z A-Z]+/g, "").replace(/(^\s||\s$)+/, "").toUpperCase();
+                $(this).val(nric_num);
+                if (nric_num.length == 9 && validateNRIC(nric_num)) {
+                    document.getElementById("<%=inputNRICTB.ClientID%>").style.borderColor = "Green";
+                        document.getElementById("<%=inputNRICTB.ClientID%>").style.borderWidth = "2px";
+                        document.getElementById("<%=RegisterBtn.ClientID%>").disabled = false;
+                    } else {
+                        document.getElementById("<%=inputNRICTB.ClientID%>").style.borderColor = "Red";
+                        document.getElementById("<%=inputNRICTB.ClientID%>").style.borderWidth = "2px";
+                        document.getElementById("<%=RegisterBtn.ClientID%>").disabled = true;
+                    }
+
+                }).click(function () {
+                    $(this).select();
+                }).blur(function () {
+
+                });
+
+            $('#<%=inputNameTB.ClientID%>').keyup(function () {
+                var requriedPattern = /^[a-zA-Z\s]*$/;
+                var value = $(this).val();
+                if (requriedPattern.test(value)) {
+                    //pass
+                    document.getElementById("<%=inputNameTB.ClientID%>").style.borderColor = "Green";
+                    document.getElementById("<%=inputNameTB.ClientID%>").style.borderWidth = "2px";
+                } else {
+                    //fail
+                    document.getElementById("<%=inputNameTB.ClientID%>").style.borderColor = "Red";
+                    document.getElementById("<%=inputNameTB.ClientID%>").style.borderWidth = "2px";
+
+                }
+
+            }).click(function () {
+                $(this).select();
+            }).blur(function () {
+
+            });
+
+            $('#<%=emailTB.ClientID%>').keyup(function () {
+                var requriedPattern = /^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+                var value = $(this).val();
+                if (requriedPattern.test(value)) {
+                    //pass
+                    document.getElementById("<%=emailTB.ClientID%>").style.borderColor = "Green";
+                    document.getElementById("<%=emailTB.ClientID%>").style.borderWidth = "2px";
+                } else {
+                    //fail
+                    document.getElementById("<%=emailTB.ClientID%>").style.borderColor = "Red";
+                    document.getElementById("<%=emailTB.ClientID%>").style.borderWidth = "2px";
+                }
+
+            }).click(function () {
+                $(this).select();
+            }).blur(function () {
+
+            });
 
                 // Password complexity
                 $('input[type=password]').keyup(function () {
@@ -284,7 +407,6 @@
                 }).blur(function () {
                     $('#pswd_info').hide();
                 });
-            });
 
             ////Testing for idle timeout 
             var idleTime = 0;
@@ -295,45 +417,32 @@
                 //Increment the idle time counter every minute.
                 var time = timeout;
                 var seconds = timeout / 1000;
+                console.log("reach");
+                setInterval(function () {
+                    seconds--;
+                    $("#seconds").html(seconds);
+                }, 1000);
+                setTimeout(function () {
+                    //Show Popup before 60 seconds of timeout.
+                    $('#sessionTimeOutWarningModal').modal('show');
+                }, timeout - 60 * 1000);
+                setTimeout(function () {
+                    //Show Popup after the previous popup
+                    $('#sessionTimeOutWarningModal').modal('hide');
+                    $('#redirectWarningModal').modal('show');
+                }, timeout - 0 * 1000);
+            }
 
-                $(document).ready(function () {
-                    //Increment the idle time counter every minute.
-                    var idleInterval = setInterval(timerIncrement, 60000); // 1 minute
-                    //Zero the idle timer on mouse movement.
-                    $(this).mousemove(function (e) {
-                        idleTime = 0;
-                        console.log("mouse move");
-                    });
-                    $(this).keypress(function (e) {
-                        idleTime = 0;
-                        console.log("key press");
-                    });
-                });
+            function openModal() {
+                $('#userExistModal').modal('show');
+            }
 
-                function timerIncrement() {
-                    idleTime++;
-                    if (idleTime > 1) {
-                        $("#seconds").html(seconds);
-                        // $("#seconds").html(seconds);
-                        setInterval(function () {
-                            seconds--;
-                            $("#seconds").html(seconds);
-                        }, 1000);
-                        setTimeout(function () {
-                            //Show Popup before 20 seconds of timeout.
-                            $('#sessionTimeOutWarningModal').modal('show');
-                        }, timeout - 20 * 1000);
-                        //
-                        setTimeout(function () {
-                            //Show Popup after the previous popup
-                            $('#sessionTimeOutWarningModal').modal('hide');
-                            $('#redirectWarningModal').modal('show');
-                            setTimeout(function () {
-                                $("#RemoveSessionBtn").simulate("click");
-                            }, 6000);
-                        }, timeout - 0 * 1000);
-                    }
-                }
+            function openRedirectModal() {
+                $('#accountCreatedModal').modal('show');
+            }
+
+            function openAccFModal() {
+                $('#accountCreationFail').modal('show');
             }
 
             //for validating NRIC
@@ -376,24 +485,6 @@
                 return (icArray[8] === theAlpha);
                 console.log("true");
             }
-
-            $('#<%=inputNRICTB.ClientID%>').keyup(function () {
-                var nric_num = $(this).val();
-                nric_num = nric_num.replace(/[^0-9 a-z A-Z]+/g, "").replace(/(^\s||\s$)+/, "").toUpperCase();
-                $(this).val(nric_num);
-                if (nric_num.length == 9 && validateNRIC(nric_num)) {
-                    document.getElementById("<%=inputNRICTB.ClientID%>").style.borderColor = "green";
-                    document.getElementById("<%=inputNRICTB.ClientID%>").style.borderWidth = "2px";
-                } else {
-                    document.getElementById("<%=inputNRICTB.ClientID%>").style.borderColor = "red";
-                    document.getElementById("<%=inputNRICTB.ClientID%>").style.borderWidth = "2px";
-                }
-
-            }).click(function () {
-                $(this).select();
-            }).blur(function () {
-
-                });
 
             // Password Strength 
             function CheckPasswordStrength(password) {
@@ -453,57 +544,8 @@
                 password_strength.style.color = color;
             }
 
-            
-
-           
-
-            //for previewing images
-            function ShowPreview(input) {
-                if (input.files && input.files[0]) {
-                    var ImageDir = new FileReader();
-                    ImageDir.onload = function (e) {
-                        $('#firstImagePreview').attr('src', e.target.result);
-                        $('#firstImagePreview').css('height', '300px').show();	//	just that simple
-                        $('#firstImagePreview').css('width', '400px').show();	//	just that simple
-
-                    }
-                    ImageDir.readAsDataURL(input.files[0]);
-                }
-            }
-
-            function ShowSecPreview(input) {
-                if (input.files && input.files[0]) {
-                    var ImageDir = new FileReader();
-                    ImageDir.onload = function (e) {
-                        $('#secondImagePreview').attr('src', e.target.result);
-                        $('#secondImagePreview').css('height', '300px').show();	//	just that simple
-                        $('#secondImagePreview').css('width', '400px').show();	//	just that simple
-                    }
-                    ImageDir.readAsDataURL(input.files[0]);
-                }
-            }
-
-
-            function ShowThirdPreview(input) {
-                if (input.files && input.files[0]) {
-                    var ImageDir = new FileReader();
-                    ImageDir.onload = function (e) {
-                        $('#ThirdImagePreview').attr('src', e.target.result);
-                        $('#ThirdImagePreview').css('height', '300px').show();	//	just that simple
-                        $('#ThirdImagePreview').css('width', '400px').show();	//	just that simple
-                    }
-                    ImageDir.readAsDataURL(input.files[0]);
-                }
-            }
-
-
-
-
         </script>
 
-
-
-        <asp:Label ID="Label1" runat="server" Text="Label"></asp:Label>
     </form>
 
 
