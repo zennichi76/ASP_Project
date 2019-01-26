@@ -130,8 +130,123 @@
 
         </div>
 
-        
+               <div class="modal" tabindex="-1" role="dialog" id="sessionTimeOutWarningModal" data-keyboard="false" data-backdrop="static">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Are you still there?</h5>
+                            </div>
+                            <div class="modal-body">
+                                <p><%--<span id="minute"></span>&nbsp;minutes and --%>
+                                    Hello,You're going to be timed out due to inactivity in&nbsp;<span id="seconds"></span>&nbsp;seconds.<br />
+                                    Do You want to reset?'
+                                </p>
+                            </div>
+                            <div class="modal-footer">
+                              <asp:Button ID="Button3" runat="server" Text="Yes" OnClick="ResetSessionBtn_OnClick" class="btn btn-light" UseSubmitBehavior="False" />
+                                <button type="button" class="btn btn-primary" id="Button1" onserverclick="RemoveSessionBtn_OnClick" runat="server">No</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--end of session modal-->
+
+             <div class="modal" tabindex="-1" role="dialog" id="redirectWarningModal" data-keyboard="false" data-backdrop="static">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Session Timeout</h5>
+                    
+                </div>
+                <div class="modal-body">
+                    <p>
+                       Your Session has timed out, Click the button to go back to Login Page.
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="RemoveSessionBtn" onserverclick="RemoveSessionBtn_OnClick" runat="server">Okay, I got it.</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--end of session modal-->
+
+       <div class="modal" tabindex="-1" role="dialog" id="sessionResetSucceed" data-keyboard="false" data-backdrop="static">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Session Reset Succeed</h5>
+                    
+                </div>
+                <div class="modal-body">
+                    <p>
+                       Your Session is reset successfully!
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Thank You.</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--end of session modal-->
+
+     <div class="modal" tabindex="-1" role="dialog" id="errModal" data-keyboard="false" data-backdrop="static">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Session Reset Failed</h5>
+                    
+                </div>
+                <div class="modal-body">
+                    <p>
+                      Your session is not reset. You will be redirected to the login page.
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary"  id="Button2" onserverclick="RemoveSessionBtn_OnClick" runat="server">Okay I got it.</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--end of session modal-->
   
+           <script src="js/jquery.simulate.js"></script>
+      <script type="text/javascript">
+
+          function openModal() {
+              $('#sessionResetSucceed').modal('show');
+          }
+
+          function openFModal() {
+              $('#errModal').modal('show');
+          }
+          var idleTime = 0;
+          var timeout = 0;
+          var tempTime = 0;
+
+          function sessionAlert(timeout) {
+              //Increment the idle time counter every minute.
+              var time = timeout;
+              var seconds = timeout / 1000;
+              console.log("reach");
+              setInterval(function () {
+                  seconds--;
+                  $("#seconds").html(seconds);
+              }, 1000);
+              setTimeout(function () {
+                  //Show Popup before 60 seconds of timeout.
+                  $('#sessionTimeOutWarningModal').modal('show');
+              }, timeout - 60 * 1000);
+              setTimeout(function () {
+                  //Show Popup after the previous popup
+                  $('#sessionTimeOutWarningModal').modal('hide');
+                  $('#redirectWarningModal').modal('show');
+              }, timeout - 0 * 1000);
+          }
+
+    </script>
+
 
     </form>
 
