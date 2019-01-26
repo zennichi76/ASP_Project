@@ -49,7 +49,11 @@ namespace EADP_Project
                     Bookstore_BO bookstorebo = new Bookstore_BO();
                     List<PurchasedItem> itemsList = new List<PurchasedItem>();
                     itemsList = bookstorebo.purchaseHistory(current_logged_in_user);
-
+                    
+                    if(DateTime.Compare(DateTime.Now, current_user_obj.pwd_endDate) > 0)
+                        {
+                            Response.Redirect("Profile.aspx#Change_Password");
+                        }
                     if (itemsList == null || itemsList.Count == 0)
                     {
                         ErrorLabelPurchase.Visible = true;

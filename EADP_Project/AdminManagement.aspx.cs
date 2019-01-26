@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -50,12 +51,43 @@ namespace EADP_Project
             }
             else
             {
+
+
             }
-            }
+        }
+        protected void gvUsers_PageIndexChanging(object sender, GridViewPageEventArgs e)
+        {
+            gvUsers.PageIndex = e.NewPageIndex;
+            PopulateGVUsers();
+        }
+
+        void PopulateGVUsers()
+        {
+            string selectedUsers = tbSearch.Text.Trim();
+            UserBO userinfobo = new UserBO();
+            DataTable dt = new DataTable();
+            dt = userinfobo.getUserInfo(selectedUsers);
+            gvUsers.DataSource = dt;
+            gvUsers.DataBind();
+
+        }
+
+        protected void btnSearch_Click(object sender, EventArgs e)
+        {
+            PopulateGVUsers();
+        }
+
+        protected void gvUsers_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
 
         protected void Button1_Click(object sender, EventArgs e)
         {
-
+            if (!IsPostBack)
+            {
+                PopulateGVUsers();
+            }
         }
 
         protected void btn_python_Click(object sender, EventArgs e)
