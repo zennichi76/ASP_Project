@@ -11,16 +11,26 @@ namespace EADP_Project
         protected void Page_Load(object sender, EventArgs e)
         {
             
+
             if (!Page.IsPostBack) {
                 UserBO userbo = new UserBO();
                 String currentLoggedInUser = Request.Cookies["CurrentLoggedInUser"].Value;
                 user userobj = new user();
                 userobj = userbo.getUserById(currentLoggedInUser);
+                if (DateTime.Compare(DateTime.Now, userobj.pwd_endDate) > 0)
+                {
+                    Response.Write("<script>alert('Your Password has expired. Please change your password');</script>");
+                    DaysToChangeLbl.Text = "Password expired " +  Math.Abs((userobj.pwd_endDate - DateTime.Now).Days).ToString() + " days ago";
+                }
+                else
+                {
+                    DaysToChangeLbl.Text = (userobj.pwd_endDate - DateTime.Now).Days.ToString() + " days";
+                }
                 UsernameTB.Text = userobj.User_ID;
                 NameTB.Text = userobj.name;
                 EmailTB.Text = userobj.email;
                 LastPwdChangeLbl.Text = userobj.pwd_startDate.ToShortDateString().ToString();
-                DaysToChangeLbl.Text = (userobj.pwd_endDate - DateTime.Now).Days.ToString() + " days";
+                
                 accessLogView.DataSource = userbo.getAccessLogById(currentLoggedInUser);
                 accessLogView.DataBind();
                 ////GAuth Test////

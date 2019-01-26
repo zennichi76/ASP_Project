@@ -46,7 +46,7 @@
                         </div>
                         <asp:Button ID="Button2" CssClass="btn btn-outline-dark" runat="server" Style="margin-top: 15px" Text="Change Email" OnClick="Button2_Click" UseSubmitBehavior="False" />
                         <p></p>
-                        <p>
+                        <p id="Change_Password">
                             Change Password:                       
                         </p>
                         <p style="color: grey">
@@ -93,11 +93,6 @@
                 </div>
             </div>
         </div>
-
-         <script src="js/popper.min.js"></script>
-        <script src="js/jquery-3.2.1.min.js"></script>
-        <script src="js/bootstrap.min.js"></script>
-        <script src="js/jquery.simulate.js"></script>
        
         <script type="text/javascript">     
 

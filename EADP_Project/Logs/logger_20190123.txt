@@ -1,0 +1,12 @@
+192.168.1.236 sends request at 23/1/2019 5:26:09 PM while accessing page LoginPage.aspx
+192.168.1.236 sends request at 23/1/2019 5:26:14 PM while accessing page favicon.ico
+192.168.1.236 sends request at 23/1/2019 5:26:26 PM while accessing page LoginPage.aspx
+192.168.1.236 sends request at 23/1/2019 5:26:27 PM while accessing page Dashboard.aspx
+192.168.1.236 sends request at 23/1/2019 5:26:28 PM while accessing page Dashboard.aspx
+192.168.1.236 sends request at 23/1/2019 5:26:28 PM while accessing page LoginPage.aspx
+192.168.1.236 sends request at 23/1/2019 5:26:30 PM while accessing page LoginPage.aspx
+192.168.1.236 sends request at 23/1/2019 5:26:30 PM while accessing page Dashboard.aspx
+192.168.1.236 sends request at 23/1/2019 5:26:32 PM while accessing page Dashboard.aspx
+192.168.1.236 sends request at 23/1/2019 5:26:35 PM while accessing page AdminManagement.aspx
+192.168.1.236 sends request at 23/1/2019 5:26:38 PM while accessing page Profile.aspx
+192.168.1.236 sends request at 23/1/2019 5:26:54 PM while accessing page Dashboard.aspx
