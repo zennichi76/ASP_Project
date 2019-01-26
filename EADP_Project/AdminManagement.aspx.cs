@@ -12,6 +12,8 @@ using EADP_Project.BO;
 using EADP_Project.Entities;
 using IronPython.Hosting;
 using Microsoft.Scripting.Hosting;
+using System.Configuration;
+using System.Web.Configuration;
 
 namespace EADP_Project
 {
@@ -22,11 +24,85 @@ namespace EADP_Project
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            UserBO userbo = new UserBO();
-            String currentLoggedInUser = Request.Cookies["CurrentLoggedInUser"].Value;
-            user userobj = new user();
-            userobj = userbo.getUserById(currentLoggedInUser);
-            if (userobj.role != "Admin")
+            try
+            {
+                Response.Cache.SetCacheability(HttpCacheability.NoCache);
+                Configuration config = WebConfigurationManager.OpenWebConfiguration("~/Web.Config");
+                SessionStateSection section = (SessionStateSection)config.GetSection("system.web/sessionState");
+                int totalTime = (int)section.Timeout.TotalMinutes * 1000 * 60;
+                ClientScript.RegisterStartupScript(this.GetType(), "", "sessionAlert(" + totalTime + ");", true);
+
+                if (Session["LoginUserName"] != null && Session["AuthToken"] != null && Request.Cookies["AuthToken"] != null && Request.Cookies["CurrentLoggedInUser"] != null)
+                {
+                    if ((Session["AuthToken"].ToString().Equals(Request.Cookies["AuthToken"].Value)))  /*End of Session Fixation*/
+                    {
+
+                        UserBO userbo = new UserBO();
+                        String currentLoggedInUser = Request.Cookies["CurrentLoggedInUser"].Value;
+                        user userobj = new user();
+                        userobj = userbo.getUserById(currentLoggedInUser);
+                        if (userobj.role != "Admin")
+                        {
+                            //  clear session
+                            Session.Clear();
+                            Session.Abandon();
+                            Session.RemoveAll();
+                            if (Request.Cookies["ASP.NET_SessionId"] != null)
+                            {
+                                Response.Cookies["ASP.NET_SessionId"].Value = string.Empty;
+                                Response.Cookies["ASP.NET_SessionId"].Expires = DateTime.Now.AddMonths(-20);
+                            }
+                            if (Request.Cookies["AuthToken"] != null)
+                            {
+                                //Empty Cookie
+                                Response.Cookies["AuthToken"].Value = string.Empty;
+                                Response.Cookies["AuthToken"].Expires = DateTime.Now.AddMonths(-20);
+                            }
+                            if (Request.Cookies["CurrentLoggedInUser"] != null)
+                            {
+                                //Empty Cookie
+                                Response.Cookies["CurrentLoggedInUser"].Value = string.Empty;
+                                Response.Cookies["CurrentLoggedInUser"].Expires = DateTime.Now.AddMonths(-20);
+                            }
+                            ScriptManager.RegisterStartupScript(this, GetType(), "", "sessionStorage.removeItem(browid);", true);
+                            Response.Redirect("LoginPage.aspx");
+                        }
+                        else
+                        {
+                         
+
+                        }
+
+                    }
+                }
+                else
+                {
+                    //  clear session
+                    Session.Clear();
+                    Session.Abandon();
+                    Session.RemoveAll();
+                    if (Request.Cookies["ASP.NET_SessionId"] != null)
+                    {
+                        Response.Cookies["ASP.NET_SessionId"].Value = string.Empty;
+                        Response.Cookies["ASP.NET_SessionId"].Expires = DateTime.Now.AddMonths(-20);
+                    }
+                    if (Request.Cookies["AuthToken"] != null)
+                    {
+                        //Empty Cookie
+                        Response.Cookies["AuthToken"].Value = string.Empty;
+                        Response.Cookies["AuthToken"].Expires = DateTime.Now.AddMonths(-20);
+                    }
+                    if (Request.Cookies["CurrentLoggedInUser"] != null)
+                    {
+                        //Empty Cookie
+                        Response.Cookies["CurrentLoggedInUser"].Value = string.Empty;
+                        Response.Cookies["CurrentLoggedInUser"].Expires = DateTime.Now.AddMonths(-20);
+                    }
+                    ScriptManager.RegisterStartupScript(this, GetType(), "", "sessionStorage.removeItem(browid);", true);
+                    Response.Redirect("LoginPage.aspx");
+                }
+            }
+            catch
             {
                 //  clear session
                 Session.Clear();
@@ -51,11 +127,6 @@ namespace EADP_Project
                 }
                 ScriptManager.RegisterStartupScript(this, GetType(), "", "sessionStorage.removeItem(browid);", true);
                 Response.Redirect("LoginPage.aspx");
-            }
-            else
-            {
-
-
             }
 
             tb_blacklist.Text = File.ReadAllText(@"C:\Users\Justin Tan\Documents\GitHub\ASP_Project\EADP_Project\App_Data\blacklist.txt");
@@ -245,6 +316,65 @@ namespace EADP_Project
             sr.Close();
             File.WriteAllText(@"C:\Users\Justin Tan\Documents\GitHub\ASP_Project\EADP_Project\App_Data\blacklist.txt", n.Trim());
             Page.Response.Redirect(Page.Request.Url.ToString(), true);
+        }
+
+        //session fixation for timeout
+        protected void RemoveSessionBtn_OnClick(object Source, EventArgs e)
+        {
+            try
+            {
+                //  clear session
+                Session.Clear();
+                Session.Abandon();
+                Session.RemoveAll();
+                if (Request.Cookies["ASP.NET_SessionId"] != null)
+                {
+                    Response.Cookies["ASP.NET_SessionId"].Value = string.Empty;
+                    Response.Cookies["ASP.NET_SessionId"].Expires = DateTime.Now.AddMonths(-20);
+                }
+                if (Request.Cookies["AuthToken"] != null)
+                {
+                    //Empty Cookie
+                    Response.Cookies["AuthToken"].Value = string.Empty;
+                    Response.Cookies["AuthToken"].Expires = DateTime.Now.AddMonths(-20);
+                }
+                if (Request.Cookies["CurrentLoggedInUser"] != null)
+                {
+                    //Empty Cookie
+                    Response.Cookies["CurrentLoggedInUser"].Value = string.Empty;
+                    Response.Cookies["CurrentLoggedInUser"].Expires = DateTime.Now.AddMonths(-20);
+                }
+                ScriptManager.RegisterStartupScript(this, GetType(), "", "sessionStorage.removeItem(browid);", true);
+                Response.Redirect("LoginPage.aspx");
+            }
+            catch
+            {
+
+            }
+
+
+        }
+
+        //session reset
+        protected void ResetSessionBtn_OnClick(object Source, EventArgs e)
+        {
+            try
+            {
+                HttpContext.Current.Session["Reset"] = true;
+                //Session["Reset"] = true;
+                Configuration config = WebConfigurationManager.OpenWebConfiguration("~/Web.Config");
+                SessionStateSection section = (SessionStateSection)config.GetSection("system.web/sessionState");
+                int totalTime = (int)section.Timeout.TotalMinutes * 1000 * 60;
+                this.Page.ClientScript.RegisterStartupScript(this.GetType(), "", "sessionAlert(" + totalTime + ");", true);
+                this.Page.ClientScript.RegisterStartupScript(this.GetType(), "Pop", "openModal();", true);
+
+            }
+            catch
+            {
+                this.Page.ClientScript.RegisterStartupScript(this.GetType(), "Pop", "openFModal();", true);
+
+            }
+
         }
 
 
