@@ -19,7 +19,7 @@ namespace EADP_Project.Entities
             {
                 MailMessage mailmessage = new MailMessage();
                 SmtpClient smtpClient = new SmtpClient("smtp.gmail.com", 587);
-                mailmessage.Subject = msg_subject;
+                mailmessage.Subject = msg_body;
                 mailmessage.Body = msg_body;
                 smtpClient.UseDefaultCredentials = false;
                 smtpClient.Credentials = new System.Net.NetworkCredential("zzen2461@gmail.com", "fqrppqguauyjwlis");

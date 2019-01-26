@@ -2,11 +2,8 @@
 using EADP_Project.Entities;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Drawing;
 using System.IO;
-using System.Web;
-using System.Web.Configuration;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -16,85 +13,37 @@ namespace EADP_Project
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            Response.Cache.SetCacheability(HttpCacheability.NoCache);
             if (!IsPostBack)
             {
-                /*Session Fixation*/
-                // check if the 2 sessions n cookie is not null
-                if (Session["LoginUserName"] != null && Session["AuthToken"] != null && Request.Cookies["AuthToken"] != null && Request.Cookies["CurrentLoggedInUser"] != null)
+                UserBO userbo = new UserBO();
+                
+                ConsentFormBO consentformbo = new ConsentFormBO();
+                String currentLoggedInUser = Request.Cookies["CurrentLoggedInUser"].Value;
+                user userobj = userbo.getUserById(currentLoggedInUser);
+                List<String> TeachingClasses = userbo.getTeachersTeachingClasses(currentLoggedInUser);
+                String FormID = Request.QueryString["FormId"];
+                String FoodPrefEnabled = Request.QueryString["FoodPref"];
+                ClassesDropDownList.DataSource = consentformbo.getSentClassesByFormID(FormID);
+                ClassesDropDownList.DataBind();
+                ClassesDropDownList.SelectedIndex = 0;
+                if(consentformbo.retrieveClassList(FormID, ClassesDropDownList.SelectedItem.Text, userobj.school) == null || consentformbo.retrieveClassList(FormID, ClassesDropDownList.SelectedItem.Text, userobj.school).Count == 0)
                 {
-                    if ((Session["AuthToken"].ToString().Equals(Request.Cookies["AuthToken"].Value)))  /*End of Session Fixation*/
-                    {
-                        //pass
-                        UserBO userbo = new UserBO();
-                        ConsentFormBO consentformbo = new ConsentFormBO();
-                        String currentLoggedInUser = Request.Cookies["CurrentLoggedInUser"].Value;
-                        user userobj = userbo.getUserById(currentLoggedInUser);
-                        List<String> TeachingClasses = userbo.getTeachersTeachingClasses(currentLoggedInUser);
-                        String FormID = Request.QueryString["FormId"];
-                        String FoodPrefEnabled = Request.QueryString["FoodPref"];
-                        ClassesDropDownList.DataSource = consentformbo.getSentClassesByFormID(FormID);
-                        ClassesDropDownList.DataBind();
-                        ClassesDropDownList.SelectedIndex = 0;
-                        if (consentformbo.retrieveClassList(FormID, ClassesDropDownList.SelectedItem.Text, userobj.school) == null || consentformbo.retrieveClassList(FormID, ClassesDropDownList.SelectedItem.Text, userobj.school).Count == 0)
-                        {
-                            noStudentsMsg.Visible = true;
-                        }
-                        else
-                        {
-                            noStudentsMsg.Visible = false;
-                        }
-                        StudentTables.DataSource = consentformbo.retrieveClassList(FormID, ClassesDropDownList.SelectedItem.Text, userobj.school);
-                        StudentTables.DataBind();
-                        if (FoodPrefEnabled == "True")
-                        {
-                            StudentTables.Columns[2].Visible = true;
-                        }
-                        else if (FoodPrefEnabled == "False")
-                        {
-                            StudentTables.Columns[2].Visible = false;
-                        }
-
-                    }//end of second check
-                    else
-                    {
-                        //unauthorised user access
-                        if (Session["LoginUserName"] != null && Session["AuthToken"] != null && Request.Cookies["AuthToken"] != null && Request.Cookies["CurrentLoggedInUser"] != null && Request.Cookies["ASP.NET_SessionId"] != null)
-                        {
-                            //  clear session
-                            Session.Clear();
-                            Session.Abandon();
-                            Session.RemoveAll();
-                            //invalidate all existing session
-                            if (Request.Cookies["ASP.NET_SessionId"] != null)
-                            {
-                                Response.Cookies["ASP.NET_SessionId"].Value = string.Empty;
-                                Response.Cookies["ASP.NET_SessionId"].Expires = DateTime.Now.AddMonths(-20);
-                            }
-                            if (Request.Cookies["AuthToken"] != null)
-                            {
-                                //Empty Cookie
-                                Response.Cookies["AuthToken"].Value = string.Empty;
-                                Response.Cookies["AuthToken"].Expires = DateTime.Now.AddMonths(-20);
-                            }
-                            if (Request.Cookies["CurrentLoggedInUser"] != null)
-                            {
-                                //Empty Cookie
-                                Response.Cookies["CurrentLoggedInUser"].Value = string.Empty;
-                                Response.Cookies["CurrentLoggedInUser"].Expires = DateTime.Now.AddMonths(-20);
-                            }
-                        }
-                        ScriptManager.RegisterStartupScript(this, GetType(), "", "sessionStorage.removeItem('browid');", true);
-                        Response.Redirect("LoginPage.aspx");
-                    }
-
-                }//end of first check
+                    noStudentsMsg.Visible = true;
+                }
                 else
                 {
-                    //unauthorised user access
-                    Response.Redirect("LoginPage.aspx");
+                    noStudentsMsg.Visible = false;
                 }
-              
+                StudentTables.DataSource = consentformbo.retrieveClassList(FormID, ClassesDropDownList.SelectedItem.Text, userobj.school);
+                StudentTables.DataBind();
+                if (FoodPrefEnabled == "True")
+                {
+                    StudentTables.Columns[2].Visible = true;
+                }
+                else if (FoodPrefEnabled == "False")
+                {
+                    StudentTables.Columns[2].Visible = false;
+                }
 
                 //List<ConsentForm> consentFormRecords = consentformbo.getConsentFormsBySenderID(currentLoggedInUser);
                 //consentFormRecords.Reverse(); //sorts by latest at the top
@@ -184,65 +133,5 @@ namespace EADP_Project
         {
             /* Verifies that the control is rendered */
         }
-
-        //session fixation for timeout
-        protected void RemoveSessionBtn_OnClick(object Source, EventArgs e)
-        {
-            try
-            {
-                //  clear session
-                Session.Clear();
-                Session.Abandon();
-                Session.RemoveAll();
-                if (Request.Cookies["ASP.NET_SessionId"] != null)
-                {
-                    Response.Cookies["ASP.NET_SessionId"].Value = string.Empty;
-                    Response.Cookies["ASP.NET_SessionId"].Expires = DateTime.Now.AddMonths(-20);
-                }
-                if (Request.Cookies["AuthToken"] != null)
-                {
-                    //Empty Cookie
-                    Response.Cookies["AuthToken"].Value = string.Empty;
-                    Response.Cookies["AuthToken"].Expires = DateTime.Now.AddMonths(-20);
-                }
-                if (Request.Cookies["CurrentLoggedInUser"] != null)
-                {
-                    //Empty Cookie
-                    Response.Cookies["CurrentLoggedInUser"].Value = string.Empty;
-                    Response.Cookies["CurrentLoggedInUser"].Expires = DateTime.Now.AddMonths(-20);
-                }
-                ScriptManager.RegisterStartupScript(this, GetType(), "", "sessionStorage.removeItem(browid);", true);
-                Response.Redirect("LoginPage.aspx");
-            }
-            catch
-            {
-
-            }
-
-
-        }
-
-        //session reset
-        protected void ResetSessionBtn_OnClick(object Source, EventArgs e)
-        {
-            try
-            {
-                HttpContext.Current.Session["Reset"] = true;
-                //Session["Reset"] = true;
-                Configuration config = WebConfigurationManager.OpenWebConfiguration("~/Web.Config");
-                SessionStateSection section = (SessionStateSection)config.GetSection("system.web/sessionState");
-                int totalTime = (int)section.Timeout.TotalMinutes * 1000 * 60;
-                this.Page.ClientScript.RegisterStartupScript(this.GetType(), "", "sessionAlert(" + totalTime + ");", true);
-                this.Page.ClientScript.RegisterStartupScript(this.GetType(), "Pop", "openModal();", true);
-
-            }
-            catch
-            {
-                this.Page.ClientScript.RegisterStartupScript(this.GetType(), "Pop", "openFModal();", true);
-
-            }
-
-        }
-
     }
 }

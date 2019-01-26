@@ -10,8 +10,6 @@ using System.Text.RegularExpressions;
 using EADP_Project.BO;
 using System.IO;
 using System.Drawing;
-using System.Configuration;
-using System.Web.Configuration;
 
 namespace WebApplication3
 {
@@ -21,40 +19,10 @@ namespace WebApplication3
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            Response.Cache.SetCacheability(HttpCacheability.NoCache);
-            try
+            if (!IsPostBack)
             {
-                Configuration config = WebConfigurationManager.OpenWebConfiguration("~/Web.Config");
-                SessionStateSection section = (SessionStateSection)config.GetSection("system.web/sessionState");
-                int totalTime = (int)section.Timeout.TotalMinutes * 1000 * 60;
-
-                ClientScript.RegisterStartupScript(this.GetType(), "", "sessionAlert(" + totalTime + ");", true);
-                  /*Session Fixation*/
-                    // check if the 2 sessions n cookie is not null
-                    if (Session["LoginUserName"] != null && Session["AuthToken"] != null && Request.Cookies["AuthToken"] != null && Request.Cookies["CurrentLoggedInUser"] != null)
-                    {
-                        if ((Session["AuthToken"].ToString().Equals(Request.Cookies["AuthToken"].Value)))  /*End of Session Fixation*/
-                        {
-                            //pass
-                            PopulateGVFood();
-                            PopulateGVDietTracker();
-                        }//end of second check
-                        else
-                        {
-
-
-                        }
-
-                    }//end of first check
-                    else
-                    {
-                        //unauthorised user access
-                        Response.Redirect("LoginPage.aspx");
-                    }
-            }
-            catch
-            {
-
+                PopulateGVFood();
+                PopulateGVDietTracker();
             }
        }
 
@@ -63,64 +31,7 @@ namespace WebApplication3
 
         }
 
-        //session fixation for timeout
-        protected void RemoveSessionBtn_OnClick(object Source, EventArgs e)
-        {
-            try
-            {
-                //  clear session
-                Session.Clear();
-                Session.Abandon();
-                Session.RemoveAll();
-                if (Request.Cookies["ASP.NET_SessionId"] != null)
-                {
-                    Response.Cookies["ASP.NET_SessionId"].Value = string.Empty;
-                    Response.Cookies["ASP.NET_SessionId"].Expires = DateTime.Now.AddMonths(-20);
-                }
-                if (Request.Cookies["AuthToken"] != null)
-                {
-                    //Empty Cookie
-                    Response.Cookies["AuthToken"].Value = string.Empty;
-                    Response.Cookies["AuthToken"].Expires = DateTime.Now.AddMonths(-20);
-                }
-                if (Request.Cookies["CurrentLoggedInUser"] != null)
-                {
-                    //Empty Cookie
-                    Response.Cookies["CurrentLoggedInUser"].Value = string.Empty;
-                    Response.Cookies["CurrentLoggedInUser"].Expires = DateTime.Now.AddMonths(-20);
-                }
-                ScriptManager.RegisterStartupScript(this, GetType(), "", "sessionStorage.removeItem(browid);", true);
-                Response.Redirect("LoginPage.aspx");
-            }
-            catch
-            {
 
-            }
-
-
-        }
-
-        //session reset
-        protected void ResetSessionBtn_OnClick(object Source, EventArgs e)
-        {
-            try
-            {
-                HttpContext.Current.Session["Reset"] = true;
-                //Session["Reset"] = true;
-                Configuration config = WebConfigurationManager.OpenWebConfiguration("~/Web.Config");
-                SessionStateSection section = (SessionStateSection)config.GetSection("system.web/sessionState");
-                int totalTime = (int)section.Timeout.TotalMinutes * 1000 * 60;
-                this.Page.ClientScript.RegisterStartupScript(this.GetType(), "", "sessionAlert(" + totalTime + ");", true);
-                this.Page.ClientScript.RegisterStartupScript(this.GetType(), "Pop", "openModal();", true);
-
-            }
-            catch
-            {
-                this.Page.ClientScript.RegisterStartupScript(this.GetType(), "Pop", "openFModal();", true);
-
-            }
-
-        }
 
 
 

@@ -2,7 +2,6 @@
 using EADP_Project.Entities;
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
 using System.Web;
 
@@ -97,12 +96,6 @@ namespace EADP_Project.BO
         {
             userDAO userdao = new userDAO();
             return userdao.retrieveClassListBySchoolAndClass(school, edu_class);
-        }
-
-        public DataTable getUserInfo(string selectedUser)
-        {
-            userDAO userinfodao = new userDAO();
-            return userinfodao.getUserInfo(selectedUser);
         }
     }
 }
