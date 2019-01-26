@@ -12,7 +12,7 @@ namespace EADP_Project.DAO
 {
     public class userDAO
     {
-   
+        string connectionString = ConfigurationManager.ConnectionStrings["ConnStr"].ConnectionString;
 
 
         public user getUserById(string user_ID)
@@ -322,6 +322,25 @@ namespace EADP_Project.DAO
             myConn.Open();
             result = cmd.ExecuteNonQuery();
             myConn.Close();
+        }
+
+        public DataTable getUserInfo(string selectedUser)
+        {
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand())
+                {
+                    cmd.CommandText = "SELECT Name, Email, Role FROM [User] WHERE Name LIKE '%' + @Name + '%' ORDER BY Role";
+                    cmd.Connection = con;
+                    cmd.Parameters.AddWithValue("@Name", selectedUser.Trim());
+                    DataTable dt = new DataTable();
+                    using (SqlDataAdapter sda = new SqlDataAdapter(cmd))
+                    {
+                        sda.Fill(dt);
+                        return dt;
+                    }
+                }
+            }
         }
 
     }

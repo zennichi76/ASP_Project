@@ -54,6 +54,7 @@
 <body>
     <div id="fullscreen_bg" class="fullscreen_bg" />
     <form id="form1" class="form-signin" runat="server">
+
         <div runat="server" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 10; background-color: rgba(0,0,0,0.5);" id="modalOverlay">
                 <div class="content" style="width: 600px; height: 100% auto; position: fixed; top: 50%; left: 50%; margin-top: -350px; margin-left: -350px; background-color: white; border-radius: 5px; text-align:left; z-index: 11; padding: 50px;">
                     <p>
@@ -62,8 +63,52 @@
                     <p>Please enter the code on your Google Authenticator App</p>
                     <asp:TextBox ID="gAuthTb" runat="server" CssClass="form-control col-lg-5" ></asp:TextBox>
                     <asp:Button ID="ProceedBtn" style="margin-top:15px" runat="server" CssClass="btn btn-light" Text="Proceed" UseSubmitBehavior="False" CausesValidation="False" OnClick="LoginBtn_Click" />
+
+                    <div class="content2">
+                     <p>I want to use Security Question instead</p>
+                     <p><asp:Button ID="sqBtn" style="margin-top:15px" runat="server" CssClass="btn btn-link" Text="Answer Security Questions" UseSubmitBehavior="False" CausesValidation="False" OnClick="sqBtn_Click"/></p>
+
+                </div>
                 </div>
         </div>
+
+        <div runat="server" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 10; background-color: rgba(0,0,0,0.5);" id="SQoverLay" visible="false">
+                <div class="content" style="width: 800px; height: 100% auto; position: fixed; top: 50%; left: 50%; margin-top: -350px; margin-left: -350px; background-color: white; border-radius: 5px; text-align:left; z-index: 11; padding: 50px;">
+                    <p>
+                        <asp:Label ID="SQlbl" runat="server"></asp:Label>
+                    </p>
+                     <div class="enterSecQ">
+                                <h4>Answer Your Current Security Questions</h4>
+                                <asp:Label ID="errLbl" runat="server" Text="" ForeColor="Red"></asp:Label>
+                                <div class="row">
+                                    <asp:Image ID="Image1" runat="server" />
+                                </div>
+                                <div class="row">
+                                    <asp:TextBox ID="FirstsecurityQnAnsTB" runat="server" CssClass="form-control"></asp:TextBox>
+                                </div>
+                          <div class="row">
+                                  <asp:Image ID="Image2" runat="server" />
+                              </div>
+                          <div class="row">
+                                <asp:TextBox ID="SecondsecurityQnAnsTB" runat="server" CssClass="form-control"></asp:TextBox>
+                              </div>
+                           <asp:Button ID="submitAnsweredSQBtn" style="margin-top:15px" runat="server" CssClass="btn btn-light" Text="Proceed" UseSubmitBehavior="False" CausesValidation="False" OnClick="submit_OnClick" />
+                              
+                            </div>
+                </div>
+        </div>
+        
+        <div runat="server" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 10; background-color: rgba(0,0,0,0.5);" id="accountNotActivated" visible="false">
+                <div class="content" style="width: 600px; height: 100% auto; position: fixed; top: 50%; left: 50%; margin-top: -250px; margin-left: -350px; background-color: white; border-radius: 5px; text-align:left; z-index: 11; padding: 50px;">
+                    <p>
+                        <asp:Label ID="activateAccountLbl" runat="server"></asp:Label>
+                    </p>
+                    <p> Hello, You have not activate your account, Please click the button below to be redirected to activate your account. </p>
+                    <asp:Button ID="actBtn" runat="server" CssClass="btn btn-light" Text="Go to Activate My Account"  CausesValidation="False" UseSubmitBehavior="False" OnClick="ActiveAccountBtn_Click" />
+                </div>
+        </div>
+
+
         <div class="container">
             <h1>TEAM ORION</h1>
             <h2>Please sign in</h2>
@@ -75,17 +120,46 @@
             <asp:Button ID="LoginBtn" CssClass="btn btn-primary" runat="server" Text="Sign in" OnClick="LoginBtn_Click" />
             <asp:Button ID="RegistrationBtn" CssClass="btn btn-danger" runat="server" Text="Register" OnClick="RegisterBtn_Click" CausesValidation="False" UseSubmitBehavior="False" />
 
+
             <div class="row">
-                <asp:Button ID="ForgetSecQnsBtn" CssClass="btn btn-link" runat="server" Text="Forget Security Questions" CausesValidation="False" UseSubmitBehavior="False" ForeColor="White" OnClick="ForgetSecQnsBtn_Click" />
+                <asp:Button ID="ForgetSecQnsBtn" CssClass="btn btn-link" runat="server" Text="Forget Security Questions" CausesValidation="False" UseSubmitBehavior="False" ForeColor="Black" OnClick="ForgetSecQnsBtn_Click" />
+            </div>
+
+               
+            <div class="row" id="captchaRow" runat="server" style="display:none">
+                   <div id="ReCaptchContainer" runat="server"></div> 
+                   <asp:Label ID="errCaptcha" runat="server" Visible="false" Font-Bold="True" ForeColor="Red" clientidmode="static"></asp:Label> 
             </div>
 
         </div>
 
+    
+
+ <script src="https://www.google.com/recaptcha/api.js?onload=renderRecaptcha&render=explicit" async defer></script> 
         <script src="js/popper.min.js"></script>
         <script src="js/jquery-3.2.1.min.js"></script>
         <script src="js/bootstrap.min.js"></script>
+        
         <script type="text/javascript">
-     // window.onload = assignName();
+
+            //for captcha
+            var your_site_key = '<%= ConfigurationManager.AppSettings["SiteKey"]%>';
+            var renderRecaptcha = function () {
+                grecaptcha.render('ReCaptchContainer', {
+                    'sitekey': your_site_key,
+                    'callback': reCaptchaCallback,
+                    theme: 'light', //light or dark    
+                    type: 'image',// image or audio    
+                    size: 'normal'//normal or compact    
+                });
+            };
+
+            var reCaptchaCallback = function (response) {
+                if (response !== '') {
+
+                }
+            };
+
             $(document).ready(function () {
 
             });
@@ -108,6 +182,8 @@
             } else {
                 alert("Sorry, your browser does not support Web Storage...");
             }
+
+           
         </script>
 
     </form>
