@@ -4,10 +4,11 @@ def raw_log(raw_text):
     raw_log_list = []
     ip_list = []
     for line in raw_text:
-        raw_log_list.append(line)
-        data = line.split(' ')
-        ip = data[0]
-        ip_list.append(ip)
+        if line != "":
+            raw_log_list.append(line)
+            data = line.split(' ')
+            ip = data[0]
+            ip_list.append(ip)
 
     checking_ip_list = []
     count_list = []
@@ -19,12 +20,14 @@ def raw_log(raw_text):
             count = ip_list.count(ip)
             count_list.append(count)
 
-    checking_ip = open("C:/Users/Yun/Desktop/ASP_Project/ASP_Project/EADP_Project/App_data/ip_list.txt", "w")
+    #checking_ip = open("C:/Users/Yun/Desktop/ASP_Project/ASP_Project/EADP_Project/App_data/ip_list.txt", "w")
+    checking_ip = open("C:/Users/Justin Tan/Documents/GitHub/ASP_Project/EADP_Project/App_Data/ip_list.txt", "w")
     for line in checking_ip_list:
         checking_ip.writelines(line + "\n")
     checking_ip.close()
 
-    counting = open("C:/Users/Yun/Desktop/ASP_Project/ASP_Project/EADP_Project/App_data/count_list.txt", "w")
+    #counting = open("C:/Users/Yun/Desktop/ASP_Project/ASP_Project/EADP_Project/App_data/count_list.txt", "w")
+    counting = open("C:/Users/Justin Tan/Documents/GitHub/ASP_Project/EADP_Project/App_Data/count_list.txt", "w")
     for line in count_list:
         counting.writelines(str(line) + "\n")
     counting.close()

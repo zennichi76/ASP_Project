@@ -1,0 +1,62 @@
+172.26.188.132 sends request at 25/1/2019 11:37:19 AM while accessing page LoginPage.aspx
+
+172.26.188.132 sends request at 25/1/2019 11:37:32 AM while accessing page css/bootstrap.min.css
+
+172.26.188.132 sends request at 25/1/2019 11:37:32 AM while accessing page js/bootstrap.min.js
+
+172.26.188.132 sends request at 25/1/2019 11:37:32 AM while accessing page js/popper.min.js
+
+172.26.188.132 sends request at 25/1/2019 11:37:32 AM while accessing page js/jquery-3.2.1.min.js
+
+172.26.188.132 sends request at 25/1/2019 11:37:32 AM while accessing page img/login_bg.jpeg
+
+172.26.188.132 sends request at 25/1/2019 11:37:34 AM while accessing page favicon.ico
+
+172.26.188.132 sends request at 25/1/2019 11:37:37 AM while accessing page LoginPage.aspx
+
+172.26.188.132 sends request at 25/1/2019 11:38:32 AM while accessing page LoginPage.aspx
+
+172.26.188.132 sends request at 25/1/2019 11:38:33 AM while accessing page favicon.ico
+
+172.26.188.132 sends request at 25/1/2019 11:38:38 AM while accessing page LoginPage.aspx
+
+172.26.188.132 sends request at 25/1/2019 11:38:38 AM while accessing page Dashboard.aspx
+
+172.26.188.132 sends request at 25/1/2019 11:38:38 AM while accessing page js/jquery.simulate.js
+
+172.26.188.132 sends request at 25/1/2019 11:38:39 AM while accessing page img/bookshelf.jpg
+
+172.26.188.132 sends request at 25/1/2019 11:38:41 AM while accessing page AdminManagement.aspx
+
+172.26.188.132 sends request at 25/1/2019 11:38:55 AM while accessing page AdminManagement.aspx
+
+172.26.188.132 sends request at 25/1/2019 11:39:47 AM while accessing page LoginPage.aspx
+
+172.26.188.132 sends request at 25/1/2019 11:39:48 AM while accessing page favicon.ico
+
+172.26.188.132 sends request at 25/1/2019 11:40:03 AM while accessing page LoginPage.aspx
+
+172.26.188.132 sends request at 25/1/2019 11:40:03 AM while accessing page Dashboard.aspx
+
+172.26.188.132 sends request at 25/1/2019 11:40:12 AM while accessing page AdminManagement.aspx
+
+172.26.188.132 sends request at 25/1/2019 11:40:22 AM while accessing page AdminManagement.aspx
+
+172.26.188.132 sends request at 25/1/2019 11:40:52 AM while accessing page AdminManagement.aspx
+
+172.26.188.132 sends request at 25/1/2019 11:41:25 AM while accessing page AdminManagement.aspx
+
+172.26.188.132 sends request at 25/1/2019 12:18:30 PM while accessing page LoginPage.aspx
+
+172.26.188.132 sends request at 25/1/2019 12:18:31 PM while accessing page favicon.ico
+
+172.26.188.132 sends request at 25/1/2019 12:24:23 PM while accessing page LoginPage.aspx
+
+172.26.188.132 sends request at 25/1/2019 12:24:31 PM while accessing page LoginPage.aspx
+
+172.26.188.132 sends request at 25/1/2019 12:24:32 PM while accessing page Dashboard.aspx
+
+172.26.188.132 sends request at 25/1/2019 12:24:35 PM while accessing page AdminManagement.aspx
+
+172.26.188.132 sends request at 25/1/2019 12:24:45 PM while accessing page AdminManagement.aspx
+

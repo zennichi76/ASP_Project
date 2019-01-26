@@ -154,7 +154,7 @@
         type: 'pie'
     },
     title: {
-        text: 'Highest Percentage of traffic by users'
+        text: 'Top 5 IPs Generating Traffic Today'
     },
     tooltip: {
         pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'

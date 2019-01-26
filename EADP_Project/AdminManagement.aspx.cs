@@ -29,16 +29,19 @@ namespace EADP_Project
 
             ScriptEngine engine = Python.CreateEngine();
             var scope = engine.CreateScope();
-            engine.ExecuteFile(@"C:/Users/Yun/Desktop/ASP_Project/ASP_Project/EADP_Project/Python_Scripts/test.py", scope);
+            //engine.ExecuteFile(@"C:/Users/Yun/Desktop/ASP_Project/ASP_Project/EADP_Project/Python_Scripts/test.py", scope);
+            engine.ExecuteFile(@"C:\Users\Justin Tan\Documents\GitHub\ASP_Project\EADP_Project\Python_Scripts\test.py", scope);
             var raw_content = scope.GetVariable("raw_log");
             raw_content(inputContent);
 
             var scope2 = engine.CreateScope();
-            engine.ExecuteFile(@"C:/Users/Yun/Desktop/ASP_Project/ASP_Project/EADP_Project/Python_scripts/test2.py", scope);
-            var raw_content_2 = scope.GetVariable("raw_log_2");
+            //engine.ExecuteFile(@"C:/Users/Yun/Desktop/ASP_Project/ASP_Project/EADP_Project/Python_Scripts/test2.py", scope2);
+            engine.ExecuteFile(@"C:\Users\Justin Tan\Documents\GitHub\ASP_Project\EADP_Project\Python_Scripts\test2.py", scope2);
+            var raw_content_2 = scope2.GetVariable("raw_log_2");
             raw_content_2(inputContent);
 
-            StreamReader readPythonIp = new StreamReader(@"C:/Users/Yun/Desktop/ASP_Project/ASP_Project/EADP_Project/App_data/ip_list.txt");
+            //StreamReader readPythonIp = new StreamReader(@"C:/Users/Yun/Desktop/ASP_Project/ASP_Project/EADP_Project/App_data/ip_list.txt");
+            StreamReader readPythonIp = new StreamReader(@"C:\Users\Justin Tan\Documents\GitHub\ASP_Project\EADP_Project\App_Data\ip_list.txt");
             try
             {
                 ip1 = readPythonIp.ReadLine().ToString();
@@ -82,7 +85,8 @@ namespace EADP_Project
 
             readPythonIp.Close();
 
-            StreamReader readPythonCount = new StreamReader(@"C:/Users/Yun/Desktop/ASP_Project/ASP_Project/EADP_Project/App_data/count_list.txt");
+            // StreamReader readPythonCount = new StreamReader(@"C:/Users/Yun/Desktop/ASP_Project/ASP_Project/EADP_Project/App_data/count_list.txt");
+            StreamReader readPythonCount = new StreamReader(@"C:\Users\Justin Tan\Documents\GitHub\ASP_Project\EADP_Project\App_Data\count_list.txt");
             count1 = readPythonCount.ReadLine();
             count2 = readPythonCount.ReadLine();
             count3 = readPythonCount.ReadLine();
@@ -91,7 +95,8 @@ namespace EADP_Project
 
             readPythonCount.Close();
 
-            StreamReader readPythonIntruder = new StreamReader(@"C:/Users/Yun/Desktop/ASP_Project/ASP_Project/EADP_Project/App_data/flag_list.txt");
+            //StreamReader readPythonIntruder = new StreamReader(@"C:/Users/Yun/Desktop/ASP_Project/ASP_Project/EADP_Project/App_data/flag_list.txt");
+            StreamReader readPythonIntruder = new StreamReader(@"C:\Users\Justin Tan\Documents\GitHub\ASP_Project\EADP_Project\App_Data\flag_list.txt");
             flag_ips = readPythonIntruder.ReadToEnd().ToString();
             tb_flag.Text = flag_ips;
             readPythonIntruder.Close();
@@ -126,6 +131,10 @@ namespace EADP_Project
         protected void btn_apply_Click(object sender, EventArgs e)
         {
             File.WriteAllText(@"C:\Users\Justin Tan\Documents\GitHub\ASP_Project\EADP_Project\App_Data\blacklist.txt", tb_blacklist.Text);
+            //File.WriteAllText(@"~\App_Data\blacklist.txt", tb_blacklist.Text);
+
+            //string path = HttpContext.Current.Server.MapPath("~/App_Data/blacklisk.txt");
+            //Stream w = new FileStream(path, FileMode.Create);
 
             //List<string> updated_ip = new List<string>();
             //updated_ip.Add(tb_blacklist.Text);

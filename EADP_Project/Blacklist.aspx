@@ -4,7 +4,7 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <form id="form1" runat="server">
         <asp:Panel ID="Panel1" runat="server" BackColor="White">
-            <asp:Label ID="Label1" runat="server" Text="  It seems that your IP address has been blacklisted by our administrator..." Font-Bold="True" Font-Size="18pt"></asp:Label>
+            <asp:Label ID="Label1" runat="server" Text="Your IP address has been blacklisted by our administrator due to illegal activity" Font-Bold="True" Font-Size="18pt"></asp:Label>
             <br />
             <asp:Label ID="Label2" runat="server" Font-Bold="True" Font-Size="18pt" Text="  If you have any enquiries please email to us at: orionedu@gmail.com"></asp:Label>
             <br />
