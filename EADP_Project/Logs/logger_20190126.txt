@@ -1,0 +1,13 @@
+192.168.1.236 sends request at 26/1/2019 3:18:53 PM while accessing page LoginPage.aspx
+192.168.1.236 sends request at 26/1/2019 3:18:53 PM while accessing page js/bootstrap.min.js
+192.168.1.236 sends request at 26/1/2019 3:18:53 PM while accessing page js/popper.min.js
+192.168.1.236 sends request at 26/1/2019 3:18:53 PM while accessing page js/jquery-3.2.1.min.js
+192.168.1.236 sends request at 26/1/2019 3:18:53 PM while accessing page css/bootstrap.min.css
+192.168.1.236 sends request at 26/1/2019 3:18:53 PM while accessing page img/login_bg.jpeg
+192.168.1.236 sends request at 26/1/2019 3:18:53 PM while accessing page favicon.ico
+192.168.1.236 sends request at 26/1/2019 3:19:08 PM while accessing page LoginPage.aspx
+192.168.1.236 sends request at 26/1/2019 3:19:10 PM while accessing page Dashboard.aspx
+192.168.1.236 sends request at 26/1/2019 3:19:10 PM while accessing page js/jquery.simulate.js
+192.168.1.236 sends request at 26/1/2019 3:19:13 PM while accessing page Profile.aspx
+192.168.1.236 sends request at 26/1/2019 3:20:14 PM while accessing page Profile.aspx
+192.168.1.236 sends request at 26/1/2019 3:20:14 PM while accessing page LoginPage.aspx

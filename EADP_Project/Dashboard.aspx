@@ -46,7 +46,7 @@
 
                             <a href="Profile.aspx" class="card-link">Click here to view or edit your profile!</a>
                         </div>
-                        `          
+                                  
                     </div>
                 </div>
                 <div class="col-lg-6">
@@ -68,7 +68,7 @@
                             </p>
                             <a href="PurchaseHistory.aspx" class="card-link">See Purchase History</a>
                         </div>
-                        `          
+                                  
                     </div>
                 </div>
             </div>
@@ -83,7 +83,7 @@
                             <p><asp:Label ID="pendingItemsLabel" runat="server"></asp:Label></p>
                             <asp:HyperLink ID="ToPendingItems" CssClass="card-link" runat="server" NavigateUrl="~/PendingConsentForms.aspx">Click here to see pending items</asp:HyperLink>
                         </div>
-                        `          
+                                 
                     </div>
                 </div>
                 <div class="col-lg-6" id="RegisteredActivities_Col" runat="server">

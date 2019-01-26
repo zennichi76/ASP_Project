@@ -6,6 +6,8 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using EADP_Project.BO;
+using EADP_Project.Entities;
 using IronPython.Hosting;
 using Microsoft.Scripting.Hosting;
 
@@ -16,8 +18,40 @@ namespace EADP_Project
         public string ip1, ip2, ip3, ip4, ip5, count1, count2, count3, count4, count5, flag_ips;
         protected void Page_Load(object sender, EventArgs e)
         {
-            
-        }
+            UserBO userbo = new UserBO();
+            String currentLoggedInUser = Request.Cookies["CurrentLoggedInUser"].Value;
+            user userobj = new user();
+            userobj = userbo.getUserById(currentLoggedInUser);
+            if (userobj.role != "Admin")
+            {
+                //  clear session
+                Session.Clear();
+                Session.Abandon();
+                Session.RemoveAll();
+                if (Request.Cookies["ASP.NET_SessionId"] != null)
+                {
+                    Response.Cookies["ASP.NET_SessionId"].Value = string.Empty;
+                    Response.Cookies["ASP.NET_SessionId"].Expires = DateTime.Now.AddMonths(-20);
+                }
+                if (Request.Cookies["AuthToken"] != null)
+                {
+                    //Empty Cookie
+                    Response.Cookies["AuthToken"].Value = string.Empty;
+                    Response.Cookies["AuthToken"].Expires = DateTime.Now.AddMonths(-20);
+                }
+                if (Request.Cookies["CurrentLoggedInUser"] != null)
+                {
+                    //Empty Cookie
+                    Response.Cookies["CurrentLoggedInUser"].Value = string.Empty;
+                    Response.Cookies["CurrentLoggedInUser"].Expires = DateTime.Now.AddMonths(-20);
+                }
+                ScriptManager.RegisterStartupScript(this, GetType(), "", "sessionStorage.removeItem(browid);", true);
+                Response.Redirect("LoginPage.aspx");
+            }
+            else
+            {
+            }
+            }
 
         protected void Button1_Click(object sender, EventArgs e)
         {
