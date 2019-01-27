@@ -247,12 +247,12 @@ namespace EADP_Project
                 Response.Redirect("LoginPage.aspx");
             }
 
-            //string blacklist = File.ReadAllText(@"C:\Users\Justin Tan\Documents\GitHub\ASP_Project\EADP_Project\App_Data\blacklist.txt");
-            //string ip = System.Net.Dns.GetHostEntry(System.Net.Dns.GetHostName()).AddressList.GetValue(1).ToString();
-            //if (blacklist.Contains(ip))
-            //{
-            //    Server.Transfer("Blacklist.aspx");
-            //}
+            string blacklist = File.ReadAllText(@"C:\Users\Yun\Desktop\ASP_Project\ASP_Project\EADP_Project\App_Data\blacklist.txt");
+            string ip = System.Net.Dns.GetHostEntry(System.Net.Dns.GetHostName()).AddressList.GetValue(1).ToString();
+            if (blacklist.Contains(ip))
+            {
+                Server.Transfer("Blacklist.aspx");
+            }
 
         }
 

@@ -129,7 +129,7 @@ namespace EADP_Project
                 Response.Redirect("LoginPage.aspx");
             }
 
-            tb_blacklist.Text = File.ReadAllText(@"C:\Users\Justin Tan\Documents\GitHub\ASP_Project\EADP_Project\App_Data\blacklist.txt");
+            tb_blacklist.Text = File.ReadAllText(@"C:\Users\Yun\Desktop\ASP_Project\ASP_Project\EADP_Project\App_Data\blacklist.txt");
         }
         protected void gvUsers_PageIndexChanging(object sender, GridViewPageEventArgs e)
         {
@@ -174,19 +174,19 @@ namespace EADP_Project
 
             ScriptEngine engine = Python.CreateEngine();
             var scope = engine.CreateScope();
-            //engine.ExecuteFile(@"C:/Users/Yun/Desktop/ASP_Project/ASP_Project/EADP_Project/Python_Scripts/test.py", scope);
-            engine.ExecuteFile(@"C:\Users\Justin Tan\Documents\GitHub\ASP_Project\EADP_Project\Python_Scripts\test.py", scope);
+            engine.ExecuteFile(@"C:/Users/Yun/Desktop/ASP_Project/ASP_Project/EADP_Project/Python_Scripts/test.py", scope);
+            //engine.ExecuteFile(@"C:\Users\Justin Tan\Documents\GitHub\ASP_Project\EADP_Project\Python_Scripts\test.py", scope);
             var raw_content = scope.GetVariable("raw_log");
             raw_content(inputContent);
 
             var scope2 = engine.CreateScope();
-            //engine.ExecuteFile(@"C:/Users/Yun/Desktop/ASP_Project/ASP_Project/EADP_Project/Python_Scripts/test2.py", scope2);
-            engine.ExecuteFile(@"C:\Users\Justin Tan\Documents\GitHub\ASP_Project\EADP_Project\Python_Scripts\test2.py", scope2);
+            engine.ExecuteFile(@"C:/Users/Yun/Desktop/ASP_Project/ASP_Project/EADP_Project/Python_Scripts/test2.py", scope2);
+            //engine.ExecuteFile(@"C:\Users\Justin Tan\Documents\GitHub\ASP_Project\EADP_Project\Python_Scripts\test2.py", scope2);
             var raw_content_2 = scope2.GetVariable("raw_log_2");
             raw_content_2(inputContent);
 
-            //StreamReader readPythonIp = new StreamReader(@"C:/Users/Yun/Desktop/ASP_Project/ASP_Project/EADP_Project/App_data/ip_list.txt");
-            StreamReader readPythonIp = new StreamReader(@"C:\Users\Justin Tan\Documents\GitHub\ASP_Project\EADP_Project\App_Data\ip_list.txt");
+            StreamReader readPythonIp = new StreamReader(@"C:/Users/Yun/Desktop/ASP_Project/ASP_Project/EADP_Project/App_data/ip_list.txt");
+            //StreamReader readPythonIp = new StreamReader(@"C:\Users\Justin Tan\Documents\GitHub\ASP_Project\EADP_Project\App_Data\ip_list.txt");
             try
             {
                 ip1 = readPythonIp.ReadLine().ToString();
@@ -230,8 +230,8 @@ namespace EADP_Project
 
             readPythonIp.Close();
 
-            // StreamReader readPythonCount = new StreamReader(@"C:/Users/Yun/Desktop/ASP_Project/ASP_Project/EADP_Project/App_data/count_list.txt");
-            StreamReader readPythonCount = new StreamReader(@"C:\Users\Justin Tan\Documents\GitHub\ASP_Project\EADP_Project\App_Data\count_list.txt");
+            StreamReader readPythonCount = new StreamReader(@"C:/Users/Yun/Desktop/ASP_Project/ASP_Project/EADP_Project/App_data/count_list.txt");
+            //StreamReader readPythonCount = new StreamReader(@"C:\Users\Justin Tan\Documents\GitHub\ASP_Project\EADP_Project\App_Data\count_list.txt");
             count1 = readPythonCount.ReadLine();
             count2 = readPythonCount.ReadLine();
             count3 = readPythonCount.ReadLine();
@@ -240,8 +240,8 @@ namespace EADP_Project
 
             readPythonCount.Close();
 
-            //StreamReader readPythonIntruder = new StreamReader(@"C:/Users/Yun/Desktop/ASP_Project/ASP_Project/EADP_Project/App_data/flag_list.txt");
-            StreamReader readPythonIntruder = new StreamReader(@"C:\Users\Justin Tan\Documents\GitHub\ASP_Project\EADP_Project\App_Data\flag_list.txt");
+            StreamReader readPythonIntruder = new StreamReader(@"C:/Users/Yun/Desktop/ASP_Project/ASP_Project/EADP_Project/App_data/flag_list.txt");
+            //StreamReader readPythonIntruder = new StreamReader(@"C:\Users\Justin Tan\Documents\GitHub\ASP_Project\EADP_Project\App_Data\flag_list.txt");
             flag_ips = readPythonIntruder.ReadToEnd().ToString();
             tb_flag.Text = flag_ips;
             readPythonIntruder.Close();
@@ -269,13 +269,13 @@ namespace EADP_Project
         protected void tb_blacklist_TextChanged(object sender, EventArgs e)
         {
             string updated_ip = tb_blacklist.Text;
-            File.WriteAllText(@"C:\Users\Justin Tan\Documents\GitHub\ASP_Project\EADP_Project\App_Data\blacklist.txt", updated_ip);
+            File.WriteAllText(@"C:\Users\Yun\Desktop\ASP_Project\ASP_Project\EADP_Project\App_Data\blacklist.txt", updated_ip);
 
         }
 
         protected void btn_apply_Click(object sender, EventArgs e)
         {
-            sw = File.AppendText(@"C:\Users\Justin Tan\Documents\GitHub\ASP_Project\EADP_Project\App_Data\blacklist.txt");
+            sw = File.AppendText(@"C:\Users\Yun\Desktop\ASP_Project\ASP_Project\EADP_Project\App_Data\blacklist.txt");
             sw.Write("\n" + tb_crud.Text.ToString().Trim());
             sw.Close();
             Page.Response.Redirect(Page.Request.Url.ToString(), true);
@@ -305,7 +305,7 @@ namespace EADP_Project
             string search_text = tb_crud.Text.ToString().Trim();
             string old;
             string n = "";
-            StreamReader sr = File.OpenText(@"C:\Users\Justin Tan\Documents\GitHub\ASP_Project\EADP_Project\App_Data\blacklist.txt");
+            StreamReader sr = File.OpenText(@"C:\Users\Yun\Desktop\ASP_Project\ASP_Project\EADP_Project\App_Data\blacklist.txt");
             while ((old = sr.ReadLine()) != null)
             {
                 if (!old.Contains(search_text))
@@ -314,7 +314,7 @@ namespace EADP_Project
                 }
             }
             sr.Close();
-            File.WriteAllText(@"C:\Users\Justin Tan\Documents\GitHub\ASP_Project\EADP_Project\App_Data\blacklist.txt", n.Trim());
+            File.WriteAllText(@"C:\Users\Yun\Desktop\ASP_Project\ASP_Project\EADP_Project\App_Data\blacklist.txt", n.Trim());
             Page.Response.Redirect(Page.Request.Url.ToString(), true);
         }
 
