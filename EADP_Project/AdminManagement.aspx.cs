@@ -130,6 +130,7 @@ namespace EADP_Project
             }
 
             tb_blacklist.Text = File.ReadAllText(@"C:\Users\Yun\Desktop\ASP_Project\ASP_Project\EADP_Project\App_Data\blacklist.txt");
+            PopulateGVUsers();
         }
         protected void gvUsers_PageIndexChanging(object sender, GridViewPageEventArgs e)
         {
